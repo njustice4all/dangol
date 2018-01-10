@@ -1,0 +1,31 @@
+@mixin fontValign($padding:2px) {
+    //font하단 여백으로 인해 글자가 위로 쏠려보이는 현상을 방지 하기 위한 코드
+    padding-top:$padding;
+}
+
+@mixin headerStyle {
+    font-size:0.9em;
+    background: #505050;
+    color: #fff;
+    position: relative;
+    .title {
+        padding: 10px;
+        text-align: center;
+        line-height: 30px;
+        font-size: 1.5em;
+    }
+    .btn {
+        &.back {
+            line-height: 40px;
+            position: absolute;
+            top: 10px;
+            width: 25px;
+            height: 25px;
+            left: 10px;
+            font-size: 2em;
+            &:before {
+                content:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='25' height='25'><style>polygon {fill:#fff}</style><polygon points='17.1,24.1 5.6,12.5 17.1,0.9 18.5,2.3 8.2,12.5 18.5,22.7 '/></svg>");
+            }
+        }
+    }
+}

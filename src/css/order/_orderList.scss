@@ -1,0 +1,70 @@
+.orderList {
+    .header {
+        @include headerStyle;
+    }
+    .body {
+        .bodyHeader {
+            text-align: center;
+            line-height: 26px;
+            background: #e2e2e2;
+            font-size: 0.9em;
+            @include fontValign;
+        }
+        .list-items {
+            .list-item {
+                border-bottom:1px solid #d7d7d7;
+            }
+        }
+        .content-wrapper {
+            overflow: hidden;
+            width: 100%;
+            padding: 10px 10px 10px 0;
+            line-height: 18px;
+            display: table;
+            .left-wrapper {display: table-cell;width: 33.3%;text-align: center;vertical-align: middle;}
+            .right-wrapper {display: table-cell;width: 66.7%;padding-left: 10px;vertical-align: middle;}
+            .orderno {color: #505050;font-size: 0.8em;}
+            .date {font-size: 2.6em;line-height: 31px;color:#505050;font-family: 'Noto Sans KR',serif;font-weight: 300;padding-bottom: 5px}
+            .info {color: #737373;line-height: 20px;font-size: 0.9em;}
+            .comment {font-size: 0.9em;color: #737373;padding-top:5px;}
+            .orderinfo {
+                padding:26px 0 10px;
+                line-height: 18px;
+                vertical-align: top;
+                .alert {line-height: 20px;font-size: 1.2em;vertical-align: top;}
+            }
+            .icon.mark { 
+                width: auto;
+                &:before {
+                    display: inline-block;
+                    width: 13px;
+                    height: 13px;
+                    vertical-align: middle;
+                    position: relative;
+                    top: -1px;
+                    content:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='13' height='13'><style>path {fill:#919091}</style><path d='M6.6,0.3C4.1,0.3,2,2.2,2,4.8C2,6,2.6,7.3,3.5,8C4,8.7,4.6,9.2,5.1,10c0.9,1.5,1,2.5,1,2.5 c0.1,0.2,0.3,0.3,0.5,0.3S7,12.6,7,12.5c0,0,0.1-0.9,1-2.5c0.5-0.8,1-1.3,1.6-2c0.9-0.9,1.4-2,1.4-3.2C11.1,2.2,9,0.3,6.6,0.3z M6.6,7c-1.2,0-2.3-1-2.3-2.3s1-2.3,2.3-2.3s2.3,1,2.3,2.3C8.8,6,7.8,7,6.6,7z'/></svg>");
+                }
+            }
+            
+            &.done {
+                padding:0;
+                .label {background: #ababab;}
+                .left-wrapper {padding:10px;}
+                .right-wrapper {padding:10px;}
+                .right-btn {display: table-cell;width: 20px;text-align: center;background: #fe931f;vertical-align: middle;color: #fff;padding:7px;}
+                &.cancel {
+                    background: #f3f3f3;
+                    .right-btn {background: #ababab;}
+                }
+            }
+        }
+    }
+}
+
+            .test {
+                .label {
+                    &.delivery {background:#fe931f }
+                    &.order {background:#7592f0 }
+                    &.package {background:#0ac71c }
+                }
+            }
