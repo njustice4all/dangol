@@ -7,14 +7,16 @@ import Signin from './Signin/Signin';
 import OrderReception from './OrderReception';
 import OrderProgress from './OrderProgress';
 import OrderComplete from './OrderComplete';
+import OrderDetail from './OrderDetail';
 
 import getClassNameByRoutes from '../utils/getClassNameByRoutes';
 
 class App extends Component {
   componentWillReceiveProps = nextProps => {
-    // FIXME: 선택실행 or redux router 방법 바꾸기
-    const { changeRoute, history } = this.props;
-    changeRoute(history.location);
+    const { changeRoute, history, location } = this.props;
+    if (location.pathname !== nextProps.location.pathname) {
+      changeRoute(history.location);
+    }
   };
 
   render() {
@@ -23,11 +25,12 @@ class App extends Component {
     return (
       <div className={routes.classname}>
         <SideMenu />
-        <Header title={routes.title} loggin={routes.buttonOpenSideMenu} />
+        <Header title={routes.title} loggin={routes.buttonOpenSideMenu} detail={routes.detail} />
         <Route exact path="/" component={Signin} />
         <Route exact path="/order/reception" component={OrderReception} />
         <Route exact path="/order/progress" component={OrderProgress} />
         <Route exact path="/order/complete" component={OrderComplete} />
+        <Route exact path="/order/detail/:no" component={OrderDetail} />
       </div>
     );
   }

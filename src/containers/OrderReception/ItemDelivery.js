@@ -3,32 +3,27 @@
 import React from 'react';
 
 type Props = {
-  no: string,
-  date: string,
-  type: string,
-  address: string,
-  distance: string,
-  takeTime: string,
-  request: string,
+  goDetail: (no: string) => void,
+  order: Object,
 };
 
-const ItemDelivery = ({ order }: { order: Props }) => (
-  <li className="list-item">
+const ItemDelivery = ({ goDetail, order }: Props) => (
+  <li className="list-item" onClick={goDetail(order.get('no'))}>
     <div className="content-wrapper">
       <div className="left-wrapper">
-        <div className="orderno">{order.no}</div>
-        <div className="date">{order.date}</div>
+        <div className="orderno">{order.get('no')}</div>
+        <div className="date">{order.get('date')}</div>
         <div className="label delivery">
           <span className="title">배달</span>
         </div>
       </div>
       <div className="right-wrapper">
-        <div className="address">{order.address}</div>
+        <div className="address">{order.get('address')}</div>
         <div className="info">
-          <span className="icon mark">{order.distance}</span> |{' '}
-          <span className="alert">{order.takeTime}</span> 소요
+          <span className="icon mark">{order.get('distance')}</span> |{' '}
+          <span className="alert">{order.get('takeTime')}</span> 소요
         </div>
-        <div className="comment">{order.request}</div>
+        <div className="comment">{order.get('request')}</div>
       </div>
     </div>
   </li>

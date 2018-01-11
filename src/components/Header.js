@@ -7,6 +7,7 @@ import cx from 'classnames';
 
 type Props = {
   loggin?: boolean,
+  detail?: boolean,
   title: string,
   routes: {
     hash: string,
@@ -25,6 +26,10 @@ const ButtonOpenSideMenu = () => {
       <div className="line l3" />
     </div>
   );
+};
+
+const ButtonBack = ({ goBack }) => {
+  return <div className="btn back" onClick={goBack} />;
 };
 
 const TabMenu = ({ path, handleRoutes }) => (
@@ -47,19 +52,41 @@ const TabMenu = ({ path, handleRoutes }) => (
   </div>
 );
 
+const OrderType = ({ type }) => {
+  let title: string = '매장';
+  if (type === 'delivery') {
+    title = '배달';
+  } else if (type === 'package') {
+    title = '포장';
+  }
+
+  return (
+    <div className={cx('order-title', type)}>
+      <span className="title">{title}</span>
+      <span className="date">09:30</span>
+    </div>
+  );
+};
+
 class Header extends Component<Props> {
   handleRoutes = (go: string) => () => {
     this.props.history.push(go);
   };
 
+  _goBack = () => {
+    this.props.history.goBack();
+  };
+
   render() {
-    const { loggin, title, routes } = this.props;
+    const { loggin, detail, title, routes } = this.props;
 
     return (
       <div className="header">
-        {!loggin && <ButtonOpenSideMenu />}
+        {loggin && <ButtonOpenSideMenu />}
+        {detail && <ButtonBack goBack={this._goBack} />}
         <div className="title">{title}</div>
-        {!loggin && <TabMenu handleRoutes={this.handleRoutes} path={routes.pathname} />}
+        {detail && <OrderType type={'delivery'} />}
+        {loggin && <TabMenu handleRoutes={this.handleRoutes} path={routes.pathname} />}
       </div>
     );
   }

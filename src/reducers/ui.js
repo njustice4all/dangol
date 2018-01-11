@@ -9,10 +9,7 @@ const StateRecord = Record({
   orderComplete: false, // 주문이 완료됨 (배달완료)
 });
 
-// FIXME: action의 type이다...
-const toggleUi = (state: string) => {};
-
-export default (ui = (state = new StateRecord(), action) => {
+export const ui = (state = new StateRecord(), action) => {
   switch (action.type) {
     case 'ui/OPEN_POPUP':
       return state;
@@ -21,4 +18,4 @@ export default (ui = (state = new StateRecord(), action) => {
     default:
       return state;
   }
-});
+};
