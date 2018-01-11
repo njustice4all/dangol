@@ -43,11 +43,14 @@
         }
     }
     .body {
+        .list-wrapper {height: calc(100vh - 135px);overflow: scroll;}
         .list-items {
             background: #fff;
             height: calc(100vh - 135px);
             .list-item {
+                position: relative;
                 border-bottom: 1px solid #d7d7d7;
+                border-right: 1px solid #d7d7d7;
                 .content-wrapper {padding: 10px;background: #fff;}
                 .icon {position: absolute;background: #fe931f;border-radius: 50%;width: 30px;height: 30px;display: block;
                     &:before {top:5px;left:5px;position: relative;}

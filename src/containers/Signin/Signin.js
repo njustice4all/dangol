@@ -7,19 +7,15 @@ class Signin extends Component {
 
   render() {
     return (
-      <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-        <div
-          onClick={this.onLogginButtonPress}
-          style={{
-            fontSize: 24,
-            padding: '10px',
-            width: '80%',
-            backgroundColor: 'black',
-            color: 'white',
-            textAlign: 'center',
-            marginTop: '50px',
-          }}>
-          로그인
+      <div className="body">
+        <div className="input-wrapper">
+          <input type="text" placeholder="아이디" />
+          <input type="password" placeholder="비밀번호" />
+        </div>
+        <div className="btn-wrapper">
+          <div className="btn big" onClick={this.onLogginButtonPress}>
+            로그인
+          </div>
         </div>
       </div>
     );

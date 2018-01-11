@@ -56,3 +56,17 @@
         }
     }
 }
+
+.popup-pannel.user-del {
+    .header {
+        .title {
+            .alert {color: #fe931f;}
+        }
+    }
+    .body {
+        padding:20px;
+        .content-wrapper {
+            background: #f3f3f3;padding: 20px;border-radius: 4px;line-height: 20px;text-align: center;
+        }
+    }
+}
