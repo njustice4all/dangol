@@ -47,6 +47,13 @@
         .list-items {
             background: #fff;
             height: calc(100vh - 135px);
+            .selected {
+                background: #fe931f;
+                color:#fff!important;
+                .content-wrapper {background: #fe931f!important;}
+                .title {color:#fff!important; }
+                a {color:#fff!important;}
+            }
             .list-item {
                 position: relative;
                 border-bottom: 1px solid #d7d7d7;
@@ -57,7 +64,10 @@
                 }
                 .title {padding-left:40px;line-height: 32px;color: #101010;}
                 &.sub {
+                    padding:10px 0;
+                    background: #fff;
                     .content-wrapper {padding: 0;}
+                    .title {padding-left:50px;}
                 }
             }
         }

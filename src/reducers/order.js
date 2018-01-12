@@ -34,8 +34,6 @@ const errorOnFetching = (state, action) => {
   return state.withMutations(s => s.set('isFetching', false).set('status', errors));
 };
 
-const getOrderDetail = (state, action) => {};
-
 export const order = (state = new StateRecord(), action) => {
   switch (action.type) {
     case 'order/FETCH_ORDER_LISTS':
@@ -43,11 +41,11 @@ export const order = (state = new StateRecord(), action) => {
       return state.set('isFetching', true);
     case 'order/FETCH_ORDER_LISTS_SUCCESS':
       return getNewLists(state, action);
+    case 'order/FETCH_ORDER_DETAIL_SUCCESS':
+      return state.set('detail', fromJS(action.order));
     case 'order/FETCH_ORDER_LISTS_ERROR':
     case 'order/FETCH_ORDER_DETAIL_ERROR':
       return errorOnFetching(state, action);
-    case 'order/FETCH_ORDER_DETAIL_SUCCESS':
-      return state.set('detail', fromJS(action.order));
     default:
       return state;
   }

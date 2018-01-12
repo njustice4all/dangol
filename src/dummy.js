@@ -70,18 +70,23 @@ export const orderLists = [
   },
 ];
 
+// FIXME: Use Google Maps Distance Matrix API...
 export const orderDetail = {
   status: {},
   order: {
     no: 'OERG30903',
     type: 'delivery',
-    date: '09:30',
-    paymentMethod: '만나서결제/카드',
-    totalPay: 22000,
+    date: '2018-01-10 09:30',
+    paymentMethod: '만나서결제 / 카드',
+    totalPay: 21000,
   },
   customer: {
     phone: '010-1234-5678',
     address: '서울특별시 삼성로 81길 31, 4층',
+    coords: {
+      lat: 37.503854,
+      lng: 127.055077,
+    },
     request: '카드로 계산하겠습니다.',
   },
   products: [

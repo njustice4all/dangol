@@ -9,6 +9,7 @@ type Props = {
   loggin?: boolean,
   detail?: boolean,
   title: string,
+  date: string,
   routes: {
     hash: string,
     pathname: string,
@@ -52,7 +53,7 @@ const TabMenu = ({ path, handleRoutes }) => (
   </div>
 );
 
-const OrderType = ({ type }) => {
+const OrderType = ({ type, date }) => {
   let title: string = '매장';
   if (type === 'delivery') {
     title = '배달';
@@ -63,7 +64,7 @@ const OrderType = ({ type }) => {
   return (
     <div className={cx('order-title', type)}>
       <span className="title">{title}</span>
-      <span className="date">09:30</span>
+      <span className="date">{date.split(' ')[1]}</span>
     </div>
   );
 };
@@ -78,14 +79,14 @@ class Header extends Component<Props> {
   };
 
   render() {
-    const { loggin, detail, title, routes } = this.props;
+    const { loggin, detail, title, routes, date } = this.props;
 
     return (
       <div className="header">
         {loggin && <ButtonOpenSideMenu />}
         {detail && <ButtonBack goBack={this._goBack} />}
         <div className="title">{title}</div>
-        {detail && <OrderType type={'delivery'} />}
+        {detail && <OrderType type={'delivery'} date={date} />}
         {loggin && <TabMenu handleRoutes={this.handleRoutes} path={routes.pathname} />}
       </div>
     );
@@ -95,5 +96,6 @@ class Header extends Component<Props> {
 export default withRouter(
   connect(state => ({
     routes: state.get('routes'),
+    date: state.getIn(['order', 'detail', 'order', 'date']),
   }))(Header)
 );

@@ -9,6 +9,8 @@ import Customer from './Customer';
 import Order from './Order';
 import ButtonFooter from './ButtonFooter';
 
+import getCoords from '../../utils/getCoords';
+
 class OrderDetail extends Component {
   componentDidMount = () => {
     const { initFetchOrderDetail, match } = this.props;
@@ -20,8 +22,8 @@ class OrderDetail extends Component {
 
     return (
       <div className="body">
-        <Order />
-        <Customer />
+        <Order detail={detail} />
+        <Customer detail={detail} />
         <Products detail={detail} />
         <ButtonFooter />
       </div>

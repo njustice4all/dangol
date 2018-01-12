@@ -38,11 +38,11 @@
 }
 
 .popup-pannel.order-time {
-    height: 356px;
+    height: 316px;
     .header {
         height: 100px;
         .title {line-height: 68px;}
-        .date {width: 100%;background: #f3f3f3;color: #ff0f0f;text-align: center;line-height: 29px;}
+        .date {width: 100%;background: #f3f3f3;color: #ff0f0f;text-align: center;line-height: 29px;padding-top:2px;}
     }
     .body {
         .list-items {
@@ -50,14 +50,15 @@
             border-left: 1px solid #d7d7d7;
             .list-item {
                 float: left;width: 50%;border-right: 1px solid #d7d7d7;
-                .title {transform: translate(0);text-align: center;left: 0;}
-                .icon {transform: translateX(-40px);}
+                .title {transform: translate(12px);text-align: center;left: 0;}
+                .icon {transform: translateX(-28px);}
             }
         }
     }
 }
 
 .popup-pannel.user-del {
+    height: 270px;
     .header {
         .title {
             .alert {color: #fe931f;}

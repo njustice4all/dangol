@@ -1,31 +1,72 @@
 import React from 'react';
 
-const Customer = () => (
+import getCoords from '../../utils/getCoords';
+
+const CustomerInfo = ({ customerInfo }) => (
+  <li className="list-item">
+    <div className="title">주문자</div>
+    <div className="content">
+      <div className="text">{customerInfo.get('phone')}</div>
+      <div className="btn call">전화하기</div>
+    </div>
+  </li>
+);
+
+const Payment = ({ request }) => (
+  <li className="list-item">
+    <div className="title">요청사항</div>
+    <div className="content">{request}</div>
+  </li>
+);
+
+// FIXME: distance matrix api
+const Delivery = ({ detail, coords }) => (
   <div className="content-wrapper">
     <div className="content-title">주문자 정보</div>
     <ul className="list-items">
-      <li className="list-item">
-        <div className="title">주문자</div>
-        <div className="content">
-          <div className="text">010-1207-7896</div>
-          <div className="btn call">전화하기</div>
-        </div>
-      </li>
+      <CustomerInfo customerInfo={detail.get('customer')} />
       <li className="list-item">
         <div className="title">배달지</div>
         <div className="content">
-          서울특별시 삼성로 81길 31, 4층 41 추가주소
+          {detail.getIn(['customer', 'address'])}
           <div className="info">
-            1.5km | <span className="alert">20분</span> 소요
+            {coords.distance}km | <span className="alert">{coords.duration}분</span> 소요
           </div>
         </div>
       </li>
-      <li className="list-item">
-        <div className="title">요청사항</div>
-        <div className="content">카드로 계산하겠습니다.</div>
-      </li>
+      <Payment request={detail.getIn(['customer', 'request'])} />
     </ul>
   </div>
 );
+
+// FIXME: 수령시간
+const Package = ({ detail }) => (
+  <div className="content-wrapper">
+    <div className="content-title">주문자 정보</div>
+    <ul className="list-items">
+      <CustomerInfo customerInfo={detail.get('customer')} />
+      <li className="list-item">
+        <div className="title">수령시간</div>
+        <div className="content">
+          <span className="text">18:30</span>
+        </div>
+      </li>
+      <Payment request={detail.getIn(['customer', 'request'])} />
+    </ul>
+  </div>
+);
+
+const Customer = ({ detail }) => {
+  const type = detail.getIn(['order', 'type']);
+
+  if (type === 'delivery') {
+    const coords = getCoords(37.503854, 127.055077, 37.511474, 127.053677);
+    return <Delivery detail={detail} coords={coords} />;
+  } else if (type === 'package') {
+    return <Package detail={detail} />;
+  } else {
+    return null;
+  }
+};
 
 export default Customer;

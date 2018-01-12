@@ -1,5 +1,14 @@
 import React from 'react';
 
+// const total = products => {
+//   let result = 0;
+//   products.forEach(v => {
+//     result += v.get('quantity') * v.get('price');
+//   });
+
+//   return result;
+// };
+
 const Header = () => (
   <div className="table head">
     <div className="subject">상품명</div>
@@ -33,7 +42,7 @@ const Products = ({ detail }) => (
       <li className="list-item">
         <div className="table total">
           <div className="subject">총 주문금액</div>
-          <div className="price">18,000원</div>
+          <div className="price">{detail.getIn(['order', 'totalPay'])}원</div>
         </div>
       </li>
     </ul>
