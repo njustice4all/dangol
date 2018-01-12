@@ -17,7 +17,7 @@ class OrderReception extends Component {
   };
 
   render() {
-    const { order } = this.props;
+    const { order, coords } = this.props;
 
     return (
       <div className="body">
@@ -25,7 +25,14 @@ class OrderReception extends Component {
         <ul className="list-items">
           {order.lists.map((order, index) => {
             if (order.get('type') === 'delivery') {
-              return <ItemDelivery goDetail={this.goDetail} order={order} key={`order-${index}`} />;
+              return (
+                <ItemDelivery
+                  goDetail={this.goDetail}
+                  order={order}
+                  key={`order-${index}`}
+                  shopCoords={coords}
+                />
+              );
             } else if (order.get('type') === 'order') {
               return <ItemTable goDetail={this.goDetail} order={order} key={`order-${index}`} />;
             } else {
@@ -41,6 +48,7 @@ class OrderReception extends Component {
 export default connect(
   state => ({
     order: state.get('order'),
+    coords: state.getIn(['auth', 'coords']),
   }),
   dispatch => ({
     initFetchOrderLists: () => dispatch(initFetchOrderLists()),

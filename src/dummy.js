@@ -6,6 +6,10 @@ export const orderLists = [
     address: '서울특별시 강남구 삼성로 81길 31, 4층 402호',
     distance: '1.5km',
     takeTime: '20분',
+    coords: {
+      lat: 37.511474,
+      lng: 127.053677,
+    },
     request: '빨리 와 주세요~',
   },
   {
@@ -29,6 +33,10 @@ export const orderLists = [
     address: '서울특별시 강남구 삼성로 81길 31, 4층 402호',
     distance: '1.5km',
     takeTime: '20분',
+    coords: {
+      lat: 37.511474,
+      lng: 127.053677,
+    },
     request: '빨리 와 주세요~',
   },
   {
@@ -52,6 +60,10 @@ export const orderLists = [
     address: '서울특별시 강남구 삼성로 81길 31, 4층 402호',
     distance: '1.5km',
     takeTime: '20분',
+    coords: {
+      lat: 37.511474,
+      lng: 127.053677,
+    },
     request: '빨리 와 주세요~',
   },
   {

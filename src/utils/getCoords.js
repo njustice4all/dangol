@@ -1,6 +1,6 @@
 // @flow
 
-type Coords = {
+export type Coords = {
   distance: number,
   duration: number,
 };
