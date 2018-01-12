@@ -1,8 +1,17 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+
+import { initSignin } from '../../actions/auth';
 
 class Signin extends Component {
-  onLogginButtonPress = () => {
-    this.props.history.push('/order/reception');
+  componentWillReceiveProps = nextProps => {
+    if (nextProps.login) {
+      this.props.history.push('/order/reception');
+    }
+  };
+
+  onLoginButtonPress = () => {
+    this.props.initSignin({ id: 'hey', pw: 'man' });
   };
 
   render() {
@@ -13,7 +22,7 @@ class Signin extends Component {
           <input type="password" placeholder="비밀번호" />
         </div>
         <div className="btn-wrapper">
-          <div className="btn big" onClick={this.onLogginButtonPress}>
+          <div className="btn big" onClick={this.onLoginButtonPress}>
             로그인
           </div>
         </div>
@@ -22,4 +31,11 @@ class Signin extends Component {
   }
 }
 
-export default Signin;
+export default connect(
+  state => ({
+    login: state.getIn(['auth', 'status', 'login']),
+  }),
+  dispatch => ({
+    initSignin: user => dispatch(initSignin(user)),
+  })
+)(Signin);

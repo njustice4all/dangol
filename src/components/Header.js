@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 import cx from 'classnames';
 
 type Props = {
-  loggin?: boolean,
+  login?: boolean,
   detail?: boolean,
   title: string,
   date: string,
@@ -79,15 +79,15 @@ class Header extends Component<Props> {
   };
 
   render() {
-    const { loggin, detail, title, routes, date } = this.props;
+    const { login, detail, title, routes, date } = this.props;
 
     return (
       <div className="header">
-        {loggin && <ButtonOpenSideMenu />}
+        {login && <ButtonOpenSideMenu />}
         {detail && <ButtonBack goBack={this._goBack} />}
         <div className="title">{title}</div>
         {detail && <OrderType type={'delivery'} date={date} />}
-        {loggin && <TabMenu handleRoutes={this.handleRoutes} path={routes.pathname} />}
+        {login && <TabMenu handleRoutes={this.handleRoutes} path={routes.pathname} />}
       </div>
     );
   }

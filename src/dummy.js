@@ -107,3 +107,9 @@ export const orderDetail = {
     },
   ],
 };
+
+// shop이 될 수 있음
+export const info = {
+  name: '김아티',
+  address: '서울특별시 강남구 삼성로81길 31',
+};

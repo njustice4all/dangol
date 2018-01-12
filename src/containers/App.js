@@ -24,7 +24,7 @@ class App extends Component {
 
     return (
       <div className={routes.classname}>
-        <Header title={routes.title} loggin={routes.buttonOpenSideMenu} detail={routes.detail} />
+        <Header title={routes.title} login={routes.buttonOpenSideMenu} detail={routes.detail} />
         <SideMenu />
         <Route exact path="/" component={Signin} />
         <Route exact path="/order/reception" component={OrderReception} />
