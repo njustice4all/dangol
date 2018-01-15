@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
-import { OrderReject } from '../components/Popups';
+import { OrderReject, OrderAccept } from '../components/Popups';
 
 class PopupController extends Component {
   // prevent scroll when pop up
@@ -16,6 +16,8 @@ class PopupController extends Component {
   _renderPopup = type => {
     if (type.reject) {
       return <OrderReject />;
+    } else if (type.order) {
+      return <OrderAccept />;
     }
   };
 
