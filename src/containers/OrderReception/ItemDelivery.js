@@ -12,12 +12,12 @@ type Props = {
 };
 
 const ItemDelivery = ({ goDetail, order, shopCoords }: Props) => {
-  const coords: Coords = getCoords(
-    shopCoords.get('lat'),
-    shopCoords.get('lng'),
-    order.getIn(['coords', 'lat']),
-    order.getIn(['coords', 'lng'])
-  );
+  const coords: Coords = getCoords({
+    lat1: shopCoords.get('lat'),
+    lng1: shopCoords.get('lng'),
+    lat2: order.getIn(['coords', 'lat']),
+    lng2: order.getIn(['coords', 'lng']),
+  });
 
   return (
     <li className="list-item" onClick={goDetail(order.get('no'))}>

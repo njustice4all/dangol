@@ -37,6 +37,5 @@ export default connect(
   }),
   dispatch => ({
     initSignin: user => dispatch(initSignin(user)),
-    // coordsBatchActions: (a, b) => dispatch(coordsBatchActions(a, b)),
   })
 )(Signin);

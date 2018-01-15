@@ -1,10 +1,23 @@
-import React from 'react';
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
 
-const ButtonFooter = () => (
-  <div className="btn-wrapper">
-    <div className="btn small">거부</div>
-    <div className="btn big">주문접수</div>
-  </div>
-);
+import { openPopup } from '../../actions/ui';
 
-export default ButtonFooter;
+class ButtonFooter extends Component {
+  render() {
+    return (
+      <div className="btn-wrapper">
+        <div className="btn small" onClick={() => this.props.openPopup('reject')}>
+          거부
+        </div>
+        <div className="btn big" onClick={() => this.props.openPopup('order')}>
+          주문접수
+        </div>
+      </div>
+    );
+  }
+}
+
+export default connect(null, dispatch => ({
+  openPopup: ui => dispatch(openPopup(ui)),
+}))(ButtonFooter);

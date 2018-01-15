@@ -9,13 +9,12 @@ type Props = {
   login?: boolean,
   detail?: boolean,
   title: string,
-  date: string,
+  order: Object,
   routes: {
     hash: string,
     pathname: string,
     search: string,
   },
-  // TODO: implement...
   history: Object,
 };
 
@@ -79,14 +78,14 @@ class Header extends Component<Props> {
   };
 
   render() {
-    const { login, detail, title, routes, date } = this.props;
+    const { login, detail, title, routes, order } = this.props;
 
     return (
       <div className="header">
         {login && <ButtonOpenSideMenu />}
         {detail && <ButtonBack goBack={this._goBack} />}
         <div className="title">{title}</div>
-        {detail && <OrderType type={'delivery'} date={date} />}
+        {detail && <OrderType type={order.get('type')} date={order.get('date')} />}
         {login && <TabMenu handleRoutes={this.handleRoutes} path={routes.pathname} />}
       </div>
     );
@@ -96,6 +95,6 @@ class Header extends Component<Props> {
 export default withRouter(
   connect(state => ({
     routes: state.get('routes'),
-    date: state.getIn(['order', 'detail', 'order', 'date']),
+    order: state.getIn(['order', 'detail', 'order']),
   }))(Header)
 );

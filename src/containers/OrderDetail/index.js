@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 
 import { initFetchOrderDetail } from '../../actions/order';
 
-// import PopupController from '../../components/PopupController';
 import Products from './Products';
 import Customer from './Customer';
 import Order from './Order';
@@ -18,12 +17,12 @@ class OrderDetail extends Component {
   };
 
   render() {
-    const { detail } = this.props;
+    const { detail, shopCoords } = this.props;
 
     return (
       <div className="body">
         <Order detail={detail} />
-        <Customer detail={detail} />
+        <Customer detail={detail} shopCoords={shopCoords} />
         <Products detail={detail} />
         <ButtonFooter />
       </div>
@@ -34,6 +33,7 @@ class OrderDetail extends Component {
 export default connect(
   state => ({
     detail: state.getIn(['order', 'detail']),
+    shopCoords: state.getIn(['auth', 'coords']),
   }),
   dispatch => ({
     initFetchOrderDetail: no => dispatch(initFetchOrderDetail(no)),

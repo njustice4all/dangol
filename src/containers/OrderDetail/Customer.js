@@ -56,11 +56,17 @@ const Package = ({ detail }) => (
   </div>
 );
 
-const Customer = ({ detail }) => {
+const Customer = ({ detail, shopCoords }) => {
   const type = detail.getIn(['order', 'type']);
 
   if (type === 'delivery') {
-    const coords = getCoords(37.503854, 127.055077, 37.511474, 127.053677);
+    const coords = getCoords({
+      lat1: shopCoords.get('lat'),
+      lng1: shopCoords.get('lng'),
+      lat2: detail.getIn(['customer', 'coords', 'lat']),
+      lng2: detail.getIn(['customer', 'coords', 'lng']),
+    });
+
     return <Delivery detail={detail} coords={coords} />;
   } else if (type === 'package') {
     return <Package detail={detail} />;

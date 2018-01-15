@@ -3,13 +3,14 @@ import { Record, List, Map, fromJS } from 'immutable';
 const StateRecord = Record({
   lists: new List(),
   detail: new Map({
-    status: new Map(),
     order: new Map({
       no: '',
       type: '',
       date: '',
       paymentMethod: '',
       totalPay: 0,
+      status: 'pending',
+      options: '',
     }),
     customer: new Map({
       phone: '',

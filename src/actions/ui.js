@@ -1,15 +1,19 @@
 // @flow
 
-type PopupType = {
-  popupType: string,
+type UI = {
+  ui: string,
 };
 
-export const openPopup = (popupType: PopupType) => ({
+export const openPopup = (ui: UI) => ({
   type: 'ui/OPEN_POPUP',
-  popupType: popupType,
+  ui: ui,
 });
 
-export const closePopup = (popupType: PopupType) => ({
+export const closePopup = (ui: UI) => ({
   type: 'ui/CLOSE_POPUP',
-  popupType: popupType,
+  ui: ui,
+});
+
+export const toggleSideMenu = () => ({
+  type: 'ui/TOGGLE_SIDEMENU',
 });

@@ -3,6 +3,7 @@ import { Route, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 
 import { Header, SideMenu } from '../components';
+import PopupController from './PopupController';
 import Signin from './Signin/Signin';
 import OrderReception from './OrderReception';
 import OrderProgress from './OrderProgress';
@@ -23,15 +24,17 @@ class App extends Component {
     const routes = getClassNameByRoutes(this.props.routes);
 
     return (
-      <div className={routes.classname}>
-        <Header title={routes.title} login={routes.buttonOpenSideMenu} detail={routes.detail} />
-        <SideMenu />
-        <Route exact path="/" component={Signin} />
-        <Route exact path="/order/reception" component={OrderReception} />
-        <Route exact path="/order/progress" component={OrderProgress} />
-        <Route exact path="/order/complete" component={OrderComplete} />
-        <Route exact path="/order/detail/:no" component={OrderDetail} />
-      </div>
+      <PopupController>
+        <div className={routes.classname}>
+          <Header title={routes.title} login={routes.buttonOpenSideMenu} detail={routes.detail} />
+          <SideMenu />
+          <Route exact path="/" component={Signin} />
+          <Route exact path="/order/reception" component={OrderReception} />
+          <Route exact path="/order/progress" component={OrderProgress} />
+          <Route exact path="/order/complete" component={OrderComplete} />
+          <Route exact path="/order/detail/:no" component={OrderDetail} />
+        </div>
+      </PopupController>
     );
   }
 }

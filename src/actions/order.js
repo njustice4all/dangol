@@ -2,6 +2,11 @@ import { orderLists, orderDetail } from '../dummy';
 
 const error = { error: true, msg: '망함' };
 
+export const setStatus = status => ({
+  type: 'order/SET_STATUS',
+  status,
+});
+
 /**
  * 주문접수 목록 가져옴
  */

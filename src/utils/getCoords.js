@@ -5,12 +5,19 @@ export type Coords = {
   duration: number,
 };
 
+type Location = {
+  lat1: number,
+  lng1: number,
+  lat2: number,
+  lng2: number,
+};
+
 const SHOP = {
   lat: 37.503854,
   lng: 127.055077,
 };
 
-export default (lat1: number, lng1: number, lat2: number, lng2: number): Coords => {
+export default (location: Location): Coords => {
   const toRad = (rad: number): number => {
     return rad * Math.PI / 180;
   };
@@ -18,12 +25,15 @@ export default (lat1: number, lng1: number, lat2: number, lng2: number): Coords 
   const R = 6371; // km
   const SPEED = 30; // 배달오토바이의 평균속도 30km로 계산
 
-  const dLat = toRad(lat2 - lat1);
-  const dLon = toRad(lng2 - lng1);
+  const dLat = toRad(location.lat2 - location.lat1);
+  const dLon = toRad(location.lng2 - location.lng1);
 
   const a =
     Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-    Math.cos(toRad(lat1)) * Math.cos(toRad(lat2)) * Math.sin(dLon / 2) * Math.sin(dLon / 2);
+    Math.cos(toRad(location.lat1)) *
+      Math.cos(toRad(location.lat2)) *
+      Math.sin(dLon / 2) *
+      Math.sin(dLon / 2);
   const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
   const d = R * c;
 

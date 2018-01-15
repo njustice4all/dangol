@@ -1,0 +1,36 @@
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+
+import { OrderReject } from '../components/Popups';
+
+class PopupController extends Component {
+  // prevent scroll when pop up
+  componentWillReceiveProps = nextProps => {
+    if (nextProps.ui.get('isPop')) {
+      document.getElementsByTagName('body')[0].style.overflow = 'hidden';
+    } else {
+      document.getElementsByTagName('body')[0].style.overflow = 'auto';
+    }
+  };
+
+  _renderPopup = type => {
+    if (type.reject) {
+      return <OrderReject />;
+    }
+  };
+
+  render() {
+    const ui = this.props.ui.toJS();
+
+    return (
+      <div>
+        {this._renderPopup(ui)}
+        {this.props.children}
+      </div>
+    );
+  }
+}
+
+export default connect(state => ({
+  ui: state.get('ui'),
+}))(PopupController);
