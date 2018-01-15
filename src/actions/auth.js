@@ -43,11 +43,6 @@ const reqSigninError = errors => ({
   errors,
 });
 
-const batchActions = (...actions) => ({
-  type: 'BATCH_ACTIONS',
-  actions,
-});
-
 export const initSignin = user => async dispatch => {
   dispatch(reqSignin());
 

@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
 import cx from 'classnames';
 
 import { closePopup } from '../../actions/ui';
-import { setStatus } from '../../actions/order';
+import { setStatus, batchActions } from '../../actions/order';
 
 class OrderReject extends Component {
   state = {
@@ -13,7 +14,18 @@ class OrderReject extends Component {
       { id: 'tooFar', selected: false, name: '배달불가지역', classNames: 'mark' },
       { id: 'busy', selected: false, name: '주문량폭주', classNames: 'alarm' },
     ],
+    error: false,
   };
+
+  componentDidUpdate = (prevProps, prevState) => {
+    if (prevState.error !== this.state.error) {
+      this.time = setTimeout(() => {
+        this.setState(prevState => ({ error: false }));
+      }, 500);
+    }
+  };
+
+  componentWillUnmount = () => clearTimeout(this.time);
 
   setOptionById = id => () => {
     this.setState(prevState => ({
@@ -29,21 +41,27 @@ class OrderReject extends Component {
 
   onCancelButtonPress = () => this.props.closePopup('reject');
 
-  onAcceptButtonPress = () => {
-    const result = this.state.options.filter(option => option.selected);
+  onRejectAcceptButtonPress = () => {
+    const { options } = this.state;
+    const { batchActions, setStatus, closePopup, history } = this.props;
+
+    const result = options.filter(option => option.selected);
+
     if (result.length > 0) {
-      console.log(result[0]);
+      const payloads = { status: 'reject', option: result[0].id };
+      batchActions(setStatus(payloads), closePopup('reject'));
+      history.push('/order/complete');
     } else {
-      console.log('하나라도 선택해야함');
+      this.setState(prevState => ({ error: true }));
     }
   };
 
   render() {
-    const { options } = this.state;
+    const { options, error } = this.state;
 
     return (
       <div className="popup-container">
-        <div className="popup-pannel order-cancel">
+        <div className={cx('popup-pannel order-cancel', { 'error-shake': error })}>
           <div className="header">
             <div className="title">취소사유</div>
           </div>
@@ -64,7 +82,7 @@ class OrderReject extends Component {
             <div className="btn small" onClick={this.onCancelButtonPress}>
               취소
             </div>
-            <div className="btn big" onClick={this.onAcceptButtonPress}>
+            <div className="btn big" onClick={this.onRejectAcceptButtonPress}>
               확인
             </div>
           </div>
@@ -74,7 +92,10 @@ class OrderReject extends Component {
   }
 }
 
-export default connect(null, dispatch => ({
-  closePopup: ui => dispatch(closePopup(ui)),
-  setStatus: status => dispatch(setStatus(status)),
-}))(OrderReject);
+export default withRouter(
+  connect(null, dispatch => ({
+    closePopup: ui => dispatch(closePopup(ui)),
+    setStatus: status => dispatch(setStatus(status)),
+    batchActions: (first, second) => dispatch(batchActions(first, second)),
+  }))(OrderReject)
+);

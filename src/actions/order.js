@@ -2,9 +2,14 @@ import { orderLists, orderDetail } from '../dummy';
 
 const error = { error: true, msg: '망함' };
 
-export const setStatus = status => ({
+export const batchActions = (...actions) => ({
+  type: 'BATCH_ACTIONS',
+  actions: actions,
+});
+
+export const setStatus = payloads => ({
   type: 'order/SET_STATUS',
-  status,
+  payloads,
 });
 
 /**

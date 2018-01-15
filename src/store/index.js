@@ -5,13 +5,13 @@ import { composeWithDevTools } from 'redux-devtools-extension';
 
 import reducers from '../reducers';
 
-function enableBatching(reducer) {
+function enableBatching(reducers) {
   return function batchingReducer(state, action) {
     switch (action.type) {
       case 'BATCH_ACTIONS':
         return action.actions.reduce(batchingReducer, state);
       default:
-        return reducer(state, action);
+        return reducers(state, action);
     }
   };
 }

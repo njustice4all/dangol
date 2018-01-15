@@ -10,7 +10,7 @@ const StateRecord = Record({
       paymentMethod: '',
       totalPay: 0,
       status: 'pending',
-      options: '',
+      option: '',
     }),
     customer: new Map({
       phone: '',
@@ -35,6 +35,11 @@ const errorOnFetching = (state, action) => {
   return state.withMutations(s => s.set('isFetching', false).set('status', errors));
 };
 
+const _setStatus = (state, action) => {
+  const payloads = new Map({ status: action.payloads.status, option: action.payloads.option });
+  return state.mergeIn(['detail', 'order'], payloads);
+};
+
 export const order = (state = new StateRecord(), action) => {
   switch (action.type) {
     case 'order/FETCH_ORDER_LISTS':
@@ -47,6 +52,8 @@ export const order = (state = new StateRecord(), action) => {
     case 'order/FETCH_ORDER_LISTS_ERROR':
     case 'order/FETCH_ORDER_DETAIL_ERROR':
       return errorOnFetching(state, action);
+    case 'order/SET_STATUS':
+      return _setStatus(state, action);
     default:
       return state;
   }
