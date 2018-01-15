@@ -2,16 +2,28 @@
 
 import React from 'react';
 import type { Map } from 'immutable';
+import cx from 'classnames';
 
-import getCoords, { type Coords } from '../../utils/getCoords';
+import getCoords, { type Coords } from '../utils/getCoords';
 
 type Props = {
   goDetail: (no: string) => void,
   order: Object,
   shopCoords: Map<string, number>,
+  status?: string,
 };
 
-const ItemDelivery = ({ goDetail, order, shopCoords }: Props) => {
+const SideButton = ({ status }) => {
+  if (status === 'accept') {
+    return <div className="right-btn">주 문 완 료</div>;
+  } else if (status === 'reject') {
+    return <div className="right-btn">주 문 취 소</div>;
+  } else {
+    return null;
+  }
+};
+
+const ItemDelivery = ({ goDetail, order, shopCoords, status }: Props) => {
   const coords: Coords = getCoords({
     lat1: shopCoords.get('lat'),
     lng1: shopCoords.get('lng'),
@@ -21,7 +33,7 @@ const ItemDelivery = ({ goDetail, order, shopCoords }: Props) => {
 
   return (
     <li className="list-item" onClick={goDetail(order.get('no'))}>
-      <div className="content-wrapper">
+      <div className={cx('content-wrapper', status === 'accept' ? 'done' : 'done cancel')}>
         <div className="left-wrapper">
           <div className="orderno">{order.get('no')}</div>
           <div className="date">{order.get('date')}</div>
@@ -39,6 +51,7 @@ const ItemDelivery = ({ goDetail, order, shopCoords }: Props) => {
           </div>
           <div className="comment">{order.get('request')}</div>
         </div>
+        <SideButton status={status} />
       </div>
     </li>
   );

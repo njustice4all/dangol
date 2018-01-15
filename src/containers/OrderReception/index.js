@@ -3,9 +3,7 @@ import { connect } from 'react-redux';
 
 import { initFetchOrderLists } from '../../actions/order';
 
-import ItemDelivery from './ItemDelivery';
-import ItemTable from './ItemTable';
-import ItemPackage from './ItemPackage';
+import { ItemDelivery, ItemTable, ItemPackage } from '../../components';
 
 class OrderReception extends Component {
   componentDidMount = () => {

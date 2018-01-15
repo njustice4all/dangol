@@ -1,4 +1,4 @@
-import { orderLists, orderDetail } from '../dummy';
+import { orderLists, orderDetail, orderDoneLists } from '../dummy';
 
 const error = { error: true, msg: '망함' };
 
@@ -65,5 +65,30 @@ export const initFetchOrderDetail = no => async dispatch => {
     dispatch(fetchOrderDetailSuccess(orderDetail));
   } else {
     dispatch(fetchOrderDetailError(error));
+  }
+};
+
+const fetchProcessDone = () => ({
+  type: 'order/FETCH_PROCESS_DONE',
+});
+
+const fetchProcessDoneSuccess = lists => ({
+  type: 'order/FETCH_PROCESS_DONE_SUCCESS',
+  lists,
+});
+
+const fetchProcessDoneError = errors => ({
+  type: 'order/FETCH_PROCESS_DONE_ERROR',
+  errors,
+});
+
+export const initFetchProcessDone = () => async dispatch => {
+  dispatch(fetchProcessDone());
+
+  // TODO:
+  if (true) {
+    dispatch(fetchProcessDoneSuccess(orderDoneLists));
+  } else {
+    dispatch(fetchProcessDoneError(error));
   }
 };

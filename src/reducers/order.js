@@ -2,6 +2,7 @@ import { Record, List, Map, fromJS } from 'immutable';
 
 const StateRecord = Record({
   lists: new List(),
+  doneLists: new List(),
   detail: new Map({
     order: new Map({
       no: '',
@@ -40,17 +41,27 @@ const _setStatus = (state, action) => {
   return state.mergeIn(['detail', 'order'], payloads);
 };
 
+const getDoneLists = (state, action) => {
+  return state.withMutations(s =>
+    s.set('isFetching', false).set('doneLists', fromJS(action.lists))
+  );
+};
+
 export const order = (state = new StateRecord(), action) => {
   switch (action.type) {
     case 'order/FETCH_ORDER_LISTS':
     case 'order/FETCH_ORDER_DETAIL':
+    case 'order/FETCH_PROCESS_DONE':
       return state.set('isFetching', true);
     case 'order/FETCH_ORDER_LISTS_SUCCESS':
       return getNewLists(state, action);
     case 'order/FETCH_ORDER_DETAIL_SUCCESS':
       return state.set('detail', fromJS(action.order));
+    case 'order/FETCH_PROCESS_DONE_SUCCESS':
+      return getDoneLists(state, action);
     case 'order/FETCH_ORDER_LISTS_ERROR':
     case 'order/FETCH_ORDER_DETAIL_ERROR':
+    case 'order/FETCH_PROCESS_DONE_ERROR':
       return errorOnFetching(state, action);
     case 'order/SET_STATUS':
       return _setStatus(state, action);
