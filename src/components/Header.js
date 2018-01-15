@@ -5,6 +5,8 @@ import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import cx from 'classnames';
 
+import { openPopup } from '../actions/ui';
+
 type Props = {
   login?: boolean,
   detail?: boolean,
@@ -16,11 +18,12 @@ type Props = {
     search: string,
   },
   history: Object,
+  openPopup: string => void,
 };
 
-const ButtonOpenSideMenu = () => {
+const ButtonOpenSideMenu = ({ openSideMenu }) => {
   return (
-    <div className="mainMenu">
+    <div className="mainMenu" onClick={openSideMenu}>
       <div className="line l1" />
       <div className="line l2" />
       <div className="line l3" />
@@ -77,12 +80,16 @@ class Header extends Component<Props> {
     this.props.history.goBack();
   };
 
+  openSideMenu = () => {
+    this.props.openPopup('sideMenu');
+  };
+
   render() {
     const { login, detail, title, routes, order } = this.props;
 
     return (
       <div className="header">
-        {login && <ButtonOpenSideMenu />}
+        {login && <ButtonOpenSideMenu openSideMenu={this.openSideMenu} />}
         {detail && <ButtonBack goBack={this._goBack} />}
         <div className="title">{title}</div>
         {detail && <OrderType type={order.get('type')} date={order.get('date')} />}
@@ -93,8 +100,13 @@ class Header extends Component<Props> {
 }
 
 export default withRouter(
-  connect(state => ({
-    routes: state.get('routes'),
-    order: state.getIn(['order', 'detail', 'order']),
-  }))(Header)
+  connect(
+    state => ({
+      routes: state.get('routes'),
+      order: state.getIn(['order', 'detail', 'order']),
+    }),
+    dispatch => ({
+      openPopup: ui => dispatch(openPopup(ui)),
+    })
+  )(Header)
 );

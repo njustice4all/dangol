@@ -18,16 +18,29 @@ html,body {font-size: $font-big;}
         &.l3 {bottom: 0;}
     }
 }
-#menu {
+.sidemenu {
     height: 100vh;
-    width: 150px;
+    width: 265px;
     background: #fff;
     position: fixed;
     top: 0;
-    left: -150px;
+    left: -265px;
     z-index: 9999;
     transition: all 0.3s linear;
     border-right: 1px solid #ddd;
+}
+
+.sidemenu.active {
+    left: 0;
+}
+
+#sidemenu-overlay {
+    position: fixed;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.2);
 }
 
 .tabmenu {
@@ -110,7 +123,7 @@ html,body {font-size: $font-big;}
         width: 25px;
         height: 25px;
     }
-    
+
 }
 
 .btn-wrapper {

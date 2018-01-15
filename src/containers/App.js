@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import { Route, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 
+import { closePopup } from '../actions/ui';
+
 import { Header, SideMenu } from '../components';
 import PopupController from './PopupController';
 import Signin from './Signin/Signin';
@@ -21,13 +23,17 @@ class App extends Component {
   };
 
   render() {
+    const { sideMenu } = this.props;
     const routes = getClassNameByRoutes(this.props.routes);
 
     return (
       <PopupController>
         <div className={routes.classname}>
           <Header title={routes.title} login={routes.buttonOpenSideMenu} detail={routes.detail} />
-          <SideMenu />
+          {sideMenu ? (
+            <div id="sidemenu-overlay" onClick={() => this.props.closePopup('sideMenu')} />
+          ) : null}
+          <SideMenu open={sideMenu} />
           <Route exact path="/" component={Signin} />
           <Route exact path="/order/reception" component={OrderReception} />
           <Route exact path="/order/progress" component={OrderProgress} />
@@ -43,9 +49,11 @@ export default withRouter(
   connect(
     state => ({
       routes: state.get('routes'),
+      sideMenu: state.getIn(['ui', 'sideMenu']),
     }),
     dispatch => ({
       changeRoute: location => dispatch({ type: 'CHANGE_ROUTES', location }),
+      closePopup: ui => dispatch(closePopup(ui)),
     })
   )(App)
 );
