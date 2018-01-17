@@ -10,8 +10,13 @@ class OrderComplete extends Component {
     this.props.initFetchProcessDone();
   };
 
+  goDetail = no => () => {
+    this.props.history.push(`/order/complete/${no}`);
+  };
+
   render() {
-    const { doneLists, coords } = this.props;
+    const { doneLists, coords, routes } = this.props;
+    const pathname = routes.pathname.split('/order/')[1];
 
     return (
       <div className="body">
@@ -25,7 +30,8 @@ class OrderComplete extends Component {
                   key={`done-${index}`}
                   shopCoords={coords}
                   status={order.get('status')}
-                  goDetail={hey => null}
+                  goDetail={this.goDetail}
+                  pathname={pathname}
                 />
               );
             } else if (order.get('type') === 'order') {
@@ -34,7 +40,8 @@ class OrderComplete extends Component {
                   order={order}
                   key={`done-${index}`}
                   status={order.get('status')}
-                  goDetail={hey => null}
+                  goDetail={this.goDetail}
+                  pathname={pathname}
                 />
               );
             } else {
@@ -43,7 +50,8 @@ class OrderComplete extends Component {
                   order={order}
                   key={`done-${index}`}
                   status={order.get('status')}
-                  goDetail={hey => null}
+                  goDetail={this.goDetail}
+                  pathname={pathname}
                 />
               );
             }
@@ -58,6 +66,7 @@ export default connect(
   state => ({
     doneLists: state.getIn(['order', 'doneLists']),
     coords: state.getIn(['auth', 'coords']),
+    routes: state.get('routes'),
   }),
   dispatch => ({
     initFetchProcessDone: () => dispatch(initFetchProcessDone()),

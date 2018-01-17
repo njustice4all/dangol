@@ -90,7 +90,7 @@ export const orderDetail = {
     paymentMethod: '만나서결제 / 카드',
     totalPay: 21000,
     // 주문상태 reject or accept
-    status: 'pending',
+    status: 'reject',
     /**
      * 주문상태에따른 옵션
      * reject - noResources private tooFar busy

@@ -11,11 +11,12 @@ class OrderReception extends Component {
   };
 
   goDetail = no => () => {
-    this.props.history.push(`/order/detail/${no}`);
+    this.props.history.push(`/order/reception/${no}`);
   };
 
   render() {
-    const { order, coords } = this.props;
+    const { order, coords, routes } = this.props;
+    const pathname = routes.pathname.split('/order/')[1];
 
     return (
       <div className="body">
@@ -29,12 +30,27 @@ class OrderReception extends Component {
                   order={order}
                   key={`order-${index}`}
                   shopCoords={coords}
+                  pathname={pathname}
                 />
               );
             } else if (order.get('type') === 'order') {
-              return <ItemTable goDetail={this.goDetail} order={order} key={`order-${index}`} />;
+              return (
+                <ItemTable
+                  goDetail={this.goDetail}
+                  order={order}
+                  key={`order-${index}`}
+                  pathname={pathname}
+                />
+              );
             } else {
-              return <ItemPackage goDetail={this.goDetail} order={order} key={`order-${index}`} />;
+              return (
+                <ItemPackage
+                  goDetail={this.goDetail}
+                  order={order}
+                  key={`order-${index}`}
+                  pathname={pathname}
+                />
+              );
             }
           })}
         </ul>
@@ -47,6 +63,7 @@ export default connect(
   state => ({
     order: state.get('order'),
     coords: state.getIn(['auth', 'coords']),
+    routes: state.get('routes'),
   }),
   dispatch => ({
     initFetchOrderLists: () => dispatch(initFetchOrderLists()),

@@ -1,12 +1,14 @@
 // @flow
 
 import React from 'react';
-import cx from 'classnames';
+
+import getWrapperClassName from '../utils/getWrapperClassName';
 
 type Props = {
   goDetail: (no: string) => void,
   order: Object,
   status?: string,
+  pathname: string,
 };
 
 const SideButton = ({ status }) => {
@@ -19,9 +21,9 @@ const SideButton = ({ status }) => {
   }
 };
 
-const ItemPackage = ({ goDetail, order, status }: Props) => (
+const ItemPackage = ({ goDetail, order, status, pathname }: Props) => (
   <li className="list-item" onClick={goDetail(order.get('no'))}>
-    <div className={cx('content-wrapper', status === 'accept' ? 'done' : 'done cancel')}>
+    <div className={getWrapperClassName(pathname, status)}>
       <div className="left-wrapper">
         <div className="orderno">{order.get('no')}</div>
         <div className="date">{order.get('date')}</div>

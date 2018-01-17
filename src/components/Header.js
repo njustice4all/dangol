@@ -8,15 +8,14 @@ import cx from 'classnames';
 import { openPopup } from '../actions/ui';
 
 type Props = {
-  login?: boolean,
-  detail?: boolean,
-  title: string,
+  customProps: Object,
   order: Object,
   routes: {
     hash: string,
     pathname: string,
     search: string,
   },
+  status: string,
   history: Object,
   openPopup: string => void,
 };
@@ -71,6 +70,18 @@ const OrderType = ({ type, date }) => {
   );
 };
 
+const OrderComplete = ({ isComplete, status }) => {
+  if (isComplete) {
+    return (
+      <div className="comment">
+        {status === 'accept' ? '완료된 주문입니다.' : '취소된 주문입니다.'}
+      </div>
+    );
+  }
+
+  return null;
+};
+
 class Header extends Component<Props> {
   handleRoutes = (go: string) => () => {
     this.props.history.push(go);
@@ -85,15 +96,25 @@ class Header extends Component<Props> {
   };
 
   render() {
-    const { login, detail, title, routes, order } = this.props;
+    const { customProps, routes, order, status } = this.props;
+    let isComplete = false;
+    if (
+      customProps.classname === 'orderDetail done' ||
+      customProps.classname === 'orderDetail done cancel'
+    ) {
+      isComplete = true;
+    }
 
     return (
       <div className="header">
-        {login && <ButtonOpenSideMenu openSideMenu={this.openSideMenu} />}
-        {detail && <ButtonBack goBack={this._goBack} />}
-        <div className="title">{title}</div>
-        {detail && <OrderType type={order.get('type')} date={order.get('date')} />}
-        {login && <TabMenu handleRoutes={this.handleRoutes} path={routes.pathname} />}
+        {customProps.buttonOpenSideMenu && <ButtonOpenSideMenu openSideMenu={this.openSideMenu} />}
+        {customProps.detail && <ButtonBack goBack={this._goBack} />}
+        <div className="title">{customProps.title}</div>
+        {customProps.detail && <OrderType type={order.get('type')} date={order.get('date')} />}
+        <OrderComplete isComplete={isComplete} status={status} />
+        {customProps.buttonOpenSideMenu && (
+          <TabMenu handleRoutes={this.handleRoutes} path={routes.pathname} />
+        )}
       </div>
     );
   }
@@ -104,6 +125,7 @@ export default withRouter(
     state => ({
       routes: state.get('routes'),
       order: state.getIn(['order', 'detail', 'order']),
+      status: state.getIn(['order', 'detail', 'order', 'status']),
     }),
     dispatch => ({
       openPopup: ui => dispatch(openPopup(ui)),

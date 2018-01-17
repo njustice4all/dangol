@@ -2,15 +2,16 @@
 
 import React from 'react';
 import type { Map } from 'immutable';
-import cx from 'classnames';
 
 import getCoords, { type Coords } from '../utils/getCoords';
+import getWrapperClassName from '../utils/getWrapperClassName';
 
 type Props = {
   goDetail: (no: string) => void,
   order: Object,
   shopCoords: Map<string, number>,
   status?: string,
+  pathname: string,
 };
 
 const SideButton = ({ status }) => {
@@ -23,7 +24,7 @@ const SideButton = ({ status }) => {
   }
 };
 
-const ItemDelivery = ({ goDetail, order, shopCoords, status }: Props) => {
+const ItemDelivery = ({ goDetail, order, shopCoords, status, pathname }: Props) => {
   const coords: Coords = getCoords({
     lat1: shopCoords.get('lat'),
     lng1: shopCoords.get('lng'),
@@ -33,7 +34,7 @@ const ItemDelivery = ({ goDetail, order, shopCoords, status }: Props) => {
 
   return (
     <li className="list-item" onClick={goDetail(order.get('no'))}>
-      <div className={cx('content-wrapper', status === 'accept' ? 'done' : 'done cancel')}>
+      <div className={getWrapperClassName(pathname, status)}>
         <div className="left-wrapper">
           <div className="orderno">{order.get('no')}</div>
           <div className="date">{order.get('date')}</div>

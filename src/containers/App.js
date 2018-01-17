@@ -23,22 +23,24 @@ class App extends Component {
   };
 
   render() {
-    const { sideMenu } = this.props;
-    const routes = getClassNameByRoutes(this.props.routes);
+    const { sideMenu, status } = this.props;
+    const routes = getClassNameByRoutes(this.props.routes, status);
 
     return (
       <PopupController>
         <div className={routes.classname}>
-          <Header title={routes.title} login={routes.buttonOpenSideMenu} detail={routes.detail} />
+          <Header customProps={routes} />
           {sideMenu ? (
             <div id="sidemenu-overlay" onClick={() => this.props.closePopup('sideMenu')} />
           ) : null}
           <SideMenu open={sideMenu} />
           <Route exact path="/" component={Signin} />
           <Route exact path="/order/reception" component={OrderReception} />
+          <Route exact path="/order/reception/:no" component={OrderDetail} />
           <Route exact path="/order/progress" component={OrderProgress} />
+          <Route exact path="/order/progress/:no" component={OrderProgress} />
           <Route exact path="/order/complete" component={OrderComplete} />
-          <Route exact path="/order/detail/:no" component={OrderDetail} />
+          <Route exact path="/order/complete/:no" component={OrderDetail} />
         </div>
       </PopupController>
     );
@@ -50,6 +52,7 @@ export default withRouter(
     state => ({
       routes: state.get('routes'),
       sideMenu: state.getIn(['ui', 'sideMenu']),
+      status: state.getIn(['order', 'detail', 'order', 'status']),
     }),
     dispatch => ({
       changeRoute: location => dispatch({ type: 'CHANGE_ROUTES', location }),

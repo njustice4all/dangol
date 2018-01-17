@@ -12,7 +12,7 @@ type route = {
   buttonOpenSideMenu: boolean,
 };
 
-export default (routeObject: routeObject): route => {
+export default (routeObject: routeObject, status: string): route => {
   switch (routeObject.pathname) {
     case '/':
       return {
@@ -38,6 +38,14 @@ export default (routeObject: routeObject): route => {
     case '/order/complete':
       return { classname: 'orderList', title: '주문목록', buttonOpenSideMenu: true, detail: false };
     default:
+      if (routeObject.pathname.split('/order/')[1].split('/')[0] === 'complete') {
+        return {
+          classname: `orderDetail ${status === 'accept' ? 'done' : 'done cancel'}`,
+          title: '주문상세',
+          buttonOpenSideMenu: false,
+          detail: true,
+        };
+      }
       return {
         classname: 'orderDetail',
         title: '주문상세',
