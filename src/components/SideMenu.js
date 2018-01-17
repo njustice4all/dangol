@@ -6,9 +6,9 @@ import cx from 'classnames';
 import { closePopup } from '../actions/ui';
 
 class SideMenu extends Component {
-  stopOrderButtonPress = () => {
+  _onPress = pathname => () => {
     this.props.closePopup('sideMenu');
-    this.props.history.push('/menus/management');
+    this.props.history.push(pathname);
   };
 
   render() {
@@ -50,8 +50,10 @@ class SideMenu extends Component {
                 <li className="list-item sub">
                   <div className="content-wrapper">
                     <div className="title">업소 정보 수정</div>
-                    <div className="title">업소 부관리자 관리</div>
-                    <div className="title" onClick={this.stopOrderButtonPress}>
+                    <div className="title" onClick={this._onPress('/menus/management')}>
+                      업소 부관리자 관리
+                    </div>
+                    <div className="title" onClick={this._onPress('/menus/delivery')}>
                       배달 주문 임시 중단
                     </div>
                     <div className="title">업소 통계</div>
@@ -60,7 +62,9 @@ class SideMenu extends Component {
                 <li className="list-item selected">
                   <div className="content-wrapper">
                     <div className="icon setup" />
-                    <div className="title">설정</div>
+                    <div className="title" onClick={this._onPress('/menus/setting')}>
+                      설정
+                    </div>
                   </div>
                 </li>
                 <li className="list-item">

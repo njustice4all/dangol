@@ -11,7 +11,7 @@ import OrderReception from './OrderReception';
 import OrderProgress from './OrderProgress';
 import OrderComplete from './OrderComplete';
 import OrderDetail from './OrderDetail';
-import { Management } from './Menus';
+import { StopDelivery, Setting, Management, ManagementAdd } from './Menus';
 
 import getClassNameByRoutes from '../utils/getClassNameByRoutes';
 
@@ -46,7 +46,10 @@ class App extends Component {
             path="/order/complete/:no"
             render={props => <OrderDetail {...props} isComplete />}
           />
+          <Route exact path="/menus/delivery" component={StopDelivery} />
+          <Route exact path="/menus/setting" component={Setting} />
           <Route exact path="/menus/management" component={Management} />
+          <Route exact path="/menus/management/add" component={ManagementAdd} />
         </div>
       </PopupController>
     );

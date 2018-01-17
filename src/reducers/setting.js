@@ -13,7 +13,7 @@ const StateRecord = Record({
     }),
   }),
   statistics: Map(),
-  version: '1.0',
+  version: '0.00001',
   alarm: 'default',
 });
 
