@@ -97,6 +97,7 @@ class Header extends Component<Props> {
 
   render() {
     const { customProps, routes, order, status } = this.props;
+
     let isComplete = false;
     if (
       customProps.classname === 'orderDetail done' ||
@@ -111,6 +112,7 @@ class Header extends Component<Props> {
         {customProps.detail && <ButtonBack goBack={this._goBack} />}
         <div className="title">{customProps.title}</div>
         {customProps.detail && <OrderType type={order.get('type')} date={order.get('date')} />}
+        {customProps.buttonClose ? <div className="btn-close" onClick={this._goBack} /> : null}
         <OrderComplete isComplete={isComplete} status={status} />
         {customProps.buttonOpenSideMenu && (
           <TabMenu handleRoutes={this.handleRoutes} path={routes.pathname} />

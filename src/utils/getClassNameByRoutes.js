@@ -37,6 +37,14 @@ export default (routeObject: routeObject, status: string): route => {
       };
     case '/order/complete':
       return { classname: 'orderList', title: '주문목록', buttonOpenSideMenu: true, detail: false };
+    case '/menus/management':
+      return {
+        classname: 'order-manage-wrapper',
+        title: '배달 주문 임시 중단',
+        buttonOpenSideMenu: false,
+        detail: false,
+        buttonClose: true,
+      };
     default:
       if (routeObject.pathname.split('/order/')[1].split('/')[0] === 'complete') {
         return {

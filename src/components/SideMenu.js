@@ -1,7 +1,16 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
 import cx from 'classnames';
 
+import { closePopup } from '../actions/ui';
+
 class SideMenu extends Component {
+  stopOrderButtonPress = () => {
+    this.props.closePopup('sideMenu');
+    this.props.history.push('/menus/management');
+  };
+
   render() {
     const { open } = this.props;
 
@@ -42,7 +51,9 @@ class SideMenu extends Component {
                   <div className="content-wrapper">
                     <div className="title">업소 정보 수정</div>
                     <div className="title">업소 부관리자 관리</div>
-                    <div className="title">배달 주문 임시 중단</div>
+                    <div className="title" onClick={this.stopOrderButtonPress}>
+                      배달 주문 임시 중단
+                    </div>
                     <div className="title">업소 통계</div>
                   </div>
                 </li>
@@ -74,4 +85,8 @@ class SideMenu extends Component {
   }
 }
 
-export default SideMenu;
+export default withRouter(
+  connect(null, dispatch => ({
+    closePopup: ui => dispatch(closePopup(ui)),
+  }))(SideMenu)
+);
