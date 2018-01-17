@@ -17,14 +17,14 @@ class OrderDetail extends Component {
   };
 
   render() {
-    const { detail, shopCoords } = this.props;
+    const { detail, shopCoords, isComplete } = this.props;
 
     return (
       <div className="body">
         <Order detail={detail} />
         <Customer detail={detail} shopCoords={shopCoords} />
         <Products detail={detail} />
-        <ButtonFooter />
+        <ButtonFooter isComplete={isComplete} />
       </div>
     );
   }

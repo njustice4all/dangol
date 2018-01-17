@@ -40,7 +40,11 @@ class App extends Component {
           <Route exact path="/order/progress" component={OrderProgress} />
           <Route exact path="/order/progress/:no" component={OrderProgress} />
           <Route exact path="/order/complete" component={OrderComplete} />
-          <Route exact path="/order/complete/:no" component={OrderDetail} />
+          <Route
+            exact
+            path="/order/complete/:no"
+            render={props => <OrderDetail {...props} isComplete />}
+          />
         </div>
       </PopupController>
     );
