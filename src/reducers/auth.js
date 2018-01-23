@@ -3,6 +3,7 @@ import { Record, Map, fromJS } from 'immutable';
 const StateRecord = Record({
   name: '',
   address: '',
+  token: '',
   coords: new Map({
     lat: '',
     lng: '',
