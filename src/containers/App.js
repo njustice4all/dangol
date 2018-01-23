@@ -11,7 +11,7 @@ import OrderReception from './OrderReception';
 import OrderProgress from './OrderProgress';
 import OrderComplete from './OrderComplete';
 import OrderDetail from './OrderDetail';
-import { StopDelivery, Setting, Management, ManagementAdd } from './Menus';
+import { StopDelivery, Setting, Management, ManagementAdd, EditAdmin } from './Menus';
 
 import getClassNameByRoutes from '../utils/getClassNameByRoutes';
 
@@ -50,6 +50,7 @@ class App extends Component {
           <Route exact path="/menus/setting" component={Setting} />
           <Route exact path="/menus/management" component={Management} />
           <Route exact path="/menus/management/add" component={ManagementAdd} />
+          <Route exact path="/menus/admin" component={EditAdmin} />
         </div>
       </PopupController>
     );

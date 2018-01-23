@@ -11,6 +11,18 @@ class SideMenu extends Component {
     this.props.history.push(pathname);
   };
 
+  onFranchiseModify = () => {
+    window.postMessage(
+      JSON.stringify({
+        type: 'link/OPEN_EXTERNAL_LINK',
+        payload: {
+          uri: 'http://192.168.10.53:3001/franchise/setShop/1',
+        },
+      }),
+      '*'
+    );
+  };
+
   render() {
     const { open } = this.props;
 
@@ -49,7 +61,9 @@ class SideMenu extends Component {
                 </li>
                 <li className="list-item sub">
                   <div className="content-wrapper">
-                    <div className="title">업소 정보 수정</div>
+                    <div className="title" onClick={this.onFranchiseModify}>
+                      업소 정보 수정
+                    </div>
                     <div className="title" onClick={this._onPress('/menus/management')}>
                       업소 부관리자 관리
                     </div>

@@ -109,7 +109,7 @@ class Header extends Component<Props> {
     return (
       <div className="header">
         {customProps.buttonOpenSideMenu && <ButtonOpenSideMenu openSideMenu={this.openSideMenu} />}
-        {customProps.detail && <ButtonBack goBack={this._goBack} />}
+        {(customProps.detail || customProps.goBack) && <ButtonBack goBack={this._goBack} />}
         <div className="title">{customProps.title}</div>
         {customProps.detail && <OrderType type={order.get('type')} date={order.get('date')} />}
         {customProps.buttonClose ? <div className="btn-close" onClick={this._goBack} /> : null}
