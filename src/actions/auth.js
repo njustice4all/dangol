@@ -33,9 +33,10 @@ const reqSignin = () => ({
   type: 'auth/REQ_SIGNIN',
 });
 
-const reqSigninSuccess = info => ({
+const reqSigninSuccess = (info, user) => ({
   type: 'auth/REQ_SIGNIN_SUCCESS',
   info,
+  user,
 });
 
 const reqSigninError = errors => ({
@@ -48,7 +49,7 @@ export const initSignin = user => async dispatch => {
 
   // TODO: const response = await apiSignin(user)
   if (true) {
-    dispatch(reqSigninSuccess(info));
+    dispatch(reqSigninSuccess(info, user));
     dispatch(initGetCoords(info));
   } else {
     dispatch(reqSigninError(errors));

@@ -16,11 +16,24 @@ import { StopDelivery, Setting, Management, ManagementAdd, EditAdmin } from './M
 import getClassNameByRoutes from '../utils/getClassNameByRoutes';
 
 class App extends Component {
+  componentDidMount = () => {
+    document.addEventListener('message', this.onMessage);
+  };
+
   componentWillReceiveProps = nextProps => {
     const { changeRoute, history, location } = this.props;
     if (location.pathname !== nextProps.location.pathname) {
       changeRoute(history.location);
     }
+  };
+
+  componentWillUnmount = () => {
+    document.removeEventListener('message', this.onMessage);
+  };
+
+  onMessage = event => {
+    const msg = JSON.parse(event.data);
+    this.props.history.push(msg.payload.route);
   };
 
   render() {
@@ -31,10 +44,10 @@ class App extends Component {
       <PopupController>
         <div className={routes.classname}>
           <Header customProps={routes} />
-          {sideMenu ? (
+          {/*{sideMenu ? (
             <div id="sidemenu-overlay" onClick={() => this.props.closePopup('sideMenu')} />
           ) : null}
-          <SideMenu open={sideMenu} />
+        <SideMenu open={sideMenu} />*/}
           <Route exact path="/" component={Signin} />
           <Route exact path="/order/reception" component={OrderReception} />
           <Route exact path="/order/reception/:no" component={OrderDetail} />

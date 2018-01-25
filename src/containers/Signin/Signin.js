@@ -11,35 +11,20 @@ class Signin extends Component {
   };
 
   onLoginButtonPress = () => {
-    this.props.initSignin({ id: 'hey', pw: 'man' });
+    this.props.initSignin({ id: this.id.value, pw: this.pw.value, autoLogin: true });
   };
 
   render() {
     return (
       <div className="body">
         <div className="input-wrapper">
-          <input type="text" placeholder="아이디" />
-          <input type="password" placeholder="비밀번호" />
+          <input type="text" placeholder="아이디" ref={id => (this.id = id)} />
+          <input type="password" placeholder="비밀번호" ref={pw => (this.pw = pw)} />
         </div>
         <div className="btn-wrapper">
           <div className="btn big" onClick={this.onLoginButtonPress}>
             로그인
           </div>
-          {/*<div
-            className="btn big"
-            onClick={() =>
-              window.postMessage(
-                JSON.stringify({
-                  type: 'link/OPEN_EXTERNAL_LINK',
-                  payload: {
-                    uri: 'https://m.naver.com',
-                  },
-                }),
-                '*'
-              )
-            }>
-            링크
-          </div>*/}
         </div>
       </div>
     );
