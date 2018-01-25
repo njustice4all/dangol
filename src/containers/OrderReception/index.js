@@ -12,10 +12,7 @@ class OrderReception extends Component {
   };
 
   goDetail = no => () => {
-    this.props.logout();
-    // this.props.history.push('/');
-    // this.props.history.push(`/order/reception/${no}`);
-    this.props.locationChange(`/`);
+    this.props.locationChange(`/order/reception/${no}`);
   };
 
   render() {
@@ -71,7 +68,6 @@ export default connect(
   }),
   dispatch => ({
     initFetchOrderLists: () => dispatch(initFetchOrderLists()),
-    logout: () => dispatch({ type: 'auth/LOGOUT' }),
     locationChange: pathname => dispatch(push(pathname)),
   })
 )(OrderReception);

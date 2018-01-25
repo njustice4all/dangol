@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Route, withRouter, Switch } from 'react-router-dom';
 import { connect } from 'react-redux';
+import { push } from 'react-router-redux';
 
 import { closePopup } from '../actions/ui';
 
@@ -25,12 +26,18 @@ class App extends Component {
   };
 
   onMessage = event => {
+    const { locationChange, fromMobile } = this.props;
     const msg = JSON.parse(event.data);
-    this.props.history.push(msg.payload.route);
+
+    if (msg.type === '@@router/LOCATION_CHANGE') {
+      locationChange(msg.payload.route);
+    } else {
+      fromMobile(msg.payload);
+    }
   };
 
   render() {
-    const { sideMenu, status, router, login } = this.props;
+    const { sideMenu, status, router } = this.props;
     const routes = getClassNameByRoutes(router.location, status);
 
     return (
@@ -74,6 +81,8 @@ export default withRouter(
     }),
     dispatch => ({
       closePopup: ui => dispatch(closePopup(ui)),
+      locationChange: pathname => dispatch(push(pathname)),
+      fromMobile: action => dispatch(action),
     })
   )(App)
 );

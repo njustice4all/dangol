@@ -3,6 +3,7 @@
 import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
+import { push } from 'react-router-redux';
 import cx from 'classnames';
 
 import { openPopup } from '../actions/ui';
@@ -12,6 +13,7 @@ type Props = {
   order: Object,
   router: Object,
   status: string,
+  locationChange: string => void,
   history: Object,
   openPopup: string => void,
 };
@@ -80,7 +82,7 @@ const OrderComplete = ({ isComplete, status }) => {
 
 class Header extends Component<Props> {
   handleRoutes = (go: string) => () => {
-    this.props.history.push(go);
+    this.props.locationChange(go);
   };
 
   _goBack = () => {
@@ -127,6 +129,7 @@ export default withRouter(
     }),
     dispatch => ({
       openPopup: ui => dispatch(openPopup(ui)),
+      locationChange: pathname => dispatch(push(pathname)),
     })
   )(Header)
 );
