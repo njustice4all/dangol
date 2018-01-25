@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Redirect } from 'react-router-dom';
+import { push } from 'react-router-redux';
 
 import { initSignin } from '../../actions/auth';
 
@@ -8,17 +8,20 @@ class Signin extends Component {
   componentWillReceiveProps = nextProps => {
     if (nextProps.login) {
       // this.props.history.push('/order/reception');
+      this.props.locationChange('/order/reception');
     }
   };
 
   onLoginButtonPress = () => {
     this.props.initSignin({ id: this.id.value, pw: this.pw.value, autoLogin: true });
+    // this.props.test();
   };
 
   render() {
-    if (this.props.login) {
-      return <Redirect to="/order/reception" />;
-    }
+    // if (this.props.login) {
+    //   return <Redirect to="/order/reception" />;
+    // }
+
     return (
       <div className="body">
         <div className="input-wrapper">
@@ -41,5 +44,6 @@ export default connect(
   }),
   dispatch => ({
     initSignin: user => dispatch(initSignin(user)),
+    locationChange: pathname => dispatch(push(pathname)),
   })
 )(Signin);

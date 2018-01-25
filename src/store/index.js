@@ -23,7 +23,7 @@ function enableBatching(reducers) {
 const logger = createLogger({ collapsed: true });
 
 // for redux-router history
-const history = createHistory();
+export const history = createHistory();
 const reduxRouterMiddleware = routerMiddleware(history);
 
 // action to mobile app

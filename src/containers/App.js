@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Route, withRouter } from 'react-router-dom';
+import { Route, withRouter, Switch } from 'react-router-dom';
 import { connect } from 'react-redux';
 
 import { closePopup } from '../actions/ui';
@@ -41,22 +41,24 @@ class App extends Component {
             <div id="sidemenu-overlay" onClick={() => this.props.closePopup('sideMenu')} />
           ) : null}
         <SideMenu open={sideMenu} />*/}
-          <Route exact path="/" component={Signin} />
-          <Route exact path="/order/reception" component={OrderReception} />
-          <Route exact path="/order/reception/:no" component={OrderDetail} />
-          <Route exact path="/order/progress" component={OrderProgress} />
-          <Route exact path="/order/progress/:no" component={OrderProgress} />
-          <Route exact path="/order/complete" component={OrderComplete} />
-          <Route
-            exact
-            path="/order/complete/:no"
-            render={props => <OrderDetail {...props} isComplete />}
-          />
-          <Route exact path="/menus/delivery" component={StopDelivery} />
-          <Route exact path="/menus/setting" component={Setting} />
-          <Route exact path="/menus/management" component={Management} />
-          <Route exact path="/menus/management/add" component={ManagementAdd} />
-          <Route exact path="/menus/admin" component={EditAdmin} />
+          <Switch>
+            <Route exact path="/" component={Signin} />
+            <Route exact path="/order/reception" component={OrderReception} />
+            <Route exact path="/order/reception/:no" component={OrderDetail} />
+            <Route exact path="/order/progress" component={OrderProgress} />
+            <Route exact path="/order/progress/:no" component={OrderProgress} />
+            <Route exact path="/order/complete" component={OrderComplete} />
+            <Route
+              exact
+              path="/order/complete/:no"
+              render={props => <OrderDetail {...props} isComplete />}
+            />
+            <Route exact path="/menus/delivery" component={StopDelivery} />
+            <Route exact path="/menus/setting" component={Setting} />
+            <Route exact path="/menus/management" component={Management} />
+            <Route exact path="/menus/management/add" component={ManagementAdd} />
+            <Route exact path="/menus/admin" component={EditAdmin} />
+          </Switch>
         </div>
       </PopupController>
     );

@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { push } from 'react-router-redux';
 
 import { initFetchOrderLists } from '../../actions/order';
 
@@ -12,8 +13,9 @@ class OrderReception extends Component {
 
   goDetail = no => () => {
     this.props.logout();
-    this.props.history.push('/');
+    // this.props.history.push('/');
     // this.props.history.push(`/order/reception/${no}`);
+    this.props.locationChange(`/`);
   };
 
   render() {
@@ -70,5 +72,6 @@ export default connect(
   dispatch => ({
     initFetchOrderLists: () => dispatch(initFetchOrderLists()),
     logout: () => dispatch({ type: 'auth/LOGOUT' }),
+    locationChange: pathname => dispatch(push(pathname)),
   })
 )(OrderReception);
