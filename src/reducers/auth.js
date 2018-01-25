@@ -49,6 +49,8 @@ export const auth = (state = new StateRecord(), action) => {
     case 'auth/REQ_SIGNIN_ERROR':
     case 'geo/GET_COORDS_ERROR':
       return errorOnFetching(state, action);
+    case 'auth/LOGOUT':
+      return state.setIn(['status', 'login'], false);
     default:
       return state;
   }

@@ -10,11 +10,7 @@ import { openPopup } from '../actions/ui';
 type Props = {
   customProps: Object,
   order: Object,
-  routes: {
-    hash: string,
-    pathname: string,
-    search: string,
-  },
+  router: Object,
   status: string,
   history: Object,
   openPopup: string => void,
@@ -96,7 +92,7 @@ class Header extends Component<Props> {
   };
 
   render() {
-    const { customProps, routes, order, status } = this.props;
+    const { customProps, router, order, status } = this.props;
 
     let isComplete = false;
     if (
@@ -115,7 +111,7 @@ class Header extends Component<Props> {
         {customProps.buttonClose ? <div className="btn-close" onClick={this._goBack} /> : null}
         <OrderComplete isComplete={isComplete} status={status} />
         {customProps.buttonOpenSideMenu && (
-          <TabMenu handleRoutes={this.handleRoutes} path={routes.pathname} />
+          <TabMenu handleRoutes={this.handleRoutes} path={router.location.pathname} />
         )}
       </div>
     );
@@ -125,7 +121,7 @@ class Header extends Component<Props> {
 export default withRouter(
   connect(
     state => ({
-      routes: state.get('routes'),
+      router: state.get('router'),
       order: state.getIn(['order', 'detail', 'order']),
       status: state.getIn(['order', 'detail', 'order', 'status']),
     }),

@@ -2,6 +2,8 @@ import { createStore, applyMiddleware } from 'redux';
 import { createLogger } from 'redux-logger';
 import thunk from 'redux-thunk';
 import { composeWithDevTools } from 'redux-devtools-extension';
+import { routerMiddleware } from 'react-router-redux';
+import createHistory from 'history/createBrowserHistory';
 
 import reducers from '../reducers';
 
@@ -20,6 +22,11 @@ function enableBatching(reducers) {
 // logger option
 const logger = createLogger({ collapsed: true });
 
+// for redux-router history
+const history = createHistory();
+const reduxRouterMiddleware = routerMiddleware(history);
+
+// action to mobile app
 const watchWebActions = store => next => action => {
   window.postMessage(
     JSON.stringify({
@@ -31,7 +38,7 @@ const watchWebActions = store => next => action => {
   return next(action);
 };
 
-const middlewares = [thunk, watchWebActions];
+const middlewares = [thunk, watchWebActions, reduxRouterMiddleware];
 
 if (window.__REDUX_DEVTOOLS_EXTENSION__) {
   middlewares.push(logger);

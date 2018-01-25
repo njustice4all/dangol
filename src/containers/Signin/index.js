@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { Redirect } from 'react-router-dom';
 
 import { initSignin } from '../../actions/auth';
 
 class Signin extends Component {
   componentWillReceiveProps = nextProps => {
     if (nextProps.login) {
-      this.props.history.push('/order/reception');
+      // this.props.history.push('/order/reception');
     }
   };
 
@@ -15,6 +16,9 @@ class Signin extends Component {
   };
 
   render() {
+    if (this.props.login) {
+      return <Redirect to="/order/reception" />;
+    }
     return (
       <div className="body">
         <div className="input-wrapper">

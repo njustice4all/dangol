@@ -1,13 +1,13 @@
 import { combineReducers } from 'redux-immutable';
+import { routerReducer } from 'react-router-redux';
 
-import routes from './routes';
 import { order } from './order';
 import { auth } from './auth';
 import { ui } from './ui';
 import { setting } from './setting';
 
 export default combineReducers({
-  routes,
+  router: routerReducer,
   order,
   auth,
   ui,

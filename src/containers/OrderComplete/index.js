@@ -15,8 +15,8 @@ class OrderComplete extends Component {
   };
 
   render() {
-    const { doneLists, coords, routes } = this.props;
-    const pathname = routes.pathname.split('/order/')[1];
+    const { doneLists, coords, router } = this.props;
+    const pathname = router.location.pathname.split('/order/')[1];
 
     return (
       <div className="body">
@@ -66,7 +66,7 @@ export default connect(
   state => ({
     doneLists: state.getIn(['order', 'doneLists']),
     coords: state.getIn(['auth', 'coords']),
-    routes: state.get('routes'),
+    router: state.get('router'),
   }),
   dispatch => ({
     initFetchProcessDone: () => dispatch(initFetchProcessDone()),

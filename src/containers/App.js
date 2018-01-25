@@ -6,7 +6,7 @@ import { closePopup } from '../actions/ui';
 
 import { Header, SideMenu } from '../components';
 import PopupController from './PopupController';
-import Signin from './Signin/Signin';
+import Signin from './Signin';
 import OrderReception from './OrderReception';
 import OrderProgress from './OrderProgress';
 import OrderComplete from './OrderComplete';
@@ -20,13 +20,6 @@ class App extends Component {
     document.addEventListener('message', this.onMessage);
   };
 
-  componentWillReceiveProps = nextProps => {
-    const { changeRoute, history, location } = this.props;
-    if (location.pathname !== nextProps.location.pathname) {
-      changeRoute(history.location);
-    }
-  };
-
   componentWillUnmount = () => {
     document.removeEventListener('message', this.onMessage);
   };
@@ -37,8 +30,8 @@ class App extends Component {
   };
 
   render() {
-    const { sideMenu, status } = this.props;
-    const routes = getClassNameByRoutes(this.props.routes, status);
+    const { sideMenu, status, router, login } = this.props;
+    const routes = getClassNameByRoutes(router.location, status);
 
     return (
       <PopupController>
@@ -73,12 +66,11 @@ class App extends Component {
 export default withRouter(
   connect(
     state => ({
-      routes: state.get('routes'),
+      router: state.get('router'),
       sideMenu: state.getIn(['ui', 'sideMenu']),
       status: state.getIn(['order', 'detail', 'order', 'status']),
     }),
     dispatch => ({
-      changeRoute: location => dispatch({ type: 'CHANGE_ROUTES', location }),
       closePopup: ui => dispatch(closePopup(ui)),
     })
   )(App)

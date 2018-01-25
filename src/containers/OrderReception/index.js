@@ -11,12 +11,14 @@ class OrderReception extends Component {
   };
 
   goDetail = no => () => {
-    this.props.history.push(`/order/reception/${no}`);
+    this.props.logout();
+    this.props.history.push('/');
+    // this.props.history.push(`/order/reception/${no}`);
   };
 
   render() {
-    const { order, coords, routes } = this.props;
-    const pathname = routes.pathname.split('/order/')[1];
+    const { order, coords, router } = this.props;
+    const pathname = router.location.pathname.split('/order/')[1];
 
     return (
       <div className="body">
@@ -63,9 +65,10 @@ export default connect(
   state => ({
     order: state.get('order'),
     coords: state.getIn(['auth', 'coords']),
-    routes: state.get('routes'),
+    router: state.get('router'),
   }),
   dispatch => ({
     initFetchOrderLists: () => dispatch(initFetchOrderLists()),
+    logout: () => dispatch({ type: 'auth/LOGOUT' }),
   })
 )(OrderReception);
