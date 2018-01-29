@@ -35,6 +35,8 @@ export default (routeObject: routeObject, status: string): route => {
         title: '사장님 계정 정보 수정',
         goBack: true,
       };
+    case '/ceo/shop':
+      return { classname: 'order-manage-wrapper add', title: '업소 정보 수정', goBack: true };
     default:
       try {
         if (routeObject.pathname.split('/order/')[1].split('/')[0] === 'complete') {

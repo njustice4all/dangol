@@ -51,6 +51,8 @@ export const auth = (state = new StateRecord(), action) => {
       return errorOnFetching(state, action);
     case 'auth/LOGOUT':
       return state.setIn(['status', 'login'], false);
+    case 'auth/AUTO_LOGIN':
+      return state;
     default:
       return state;
   }

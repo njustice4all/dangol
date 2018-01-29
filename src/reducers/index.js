@@ -5,6 +5,7 @@ import { order } from './order';
 import { auth } from './auth';
 import { ui } from './ui';
 import { setting } from './setting';
+import { ceo } from './ceo';
 
 export default combineReducers({
   router: routerReducer,
@@ -12,4 +13,5 @@ export default combineReducers({
   auth,
   ui,
   setting,
+  ceo,
 });
