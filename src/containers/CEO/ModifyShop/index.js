@@ -8,10 +8,10 @@ import Images from './Images';
 import Address from './Address';
 import Loading from './Loading';
 import Buttons from './Buttons';
-import Navigator from './Navigator';
+import Navigator from '../Navigator';
 
-import { validateState, createUniqueId, convertUrlToBase64 } from '../../utils';
-import { initSetShop } from '../../actions/ceo';
+import { validateState, createUniqueId, convertUrlToBase64 } from '../../../utils';
+import { initSetShop } from '../../../actions/ceo';
 
 class ModifyShop extends Component {
   state = {
@@ -147,10 +147,11 @@ class ModifyShop extends Component {
       closeDays,
     };
 
-    initSetShop(result).then(() => {
-      initGetShopLists(authentication.get('seq'));
-      history.push(`/franchise/setProducts/${franchise.get('seq')}`);
-    });
+    // initSetShop(result).then(() => {
+    //   initGetShopLists(authentication.get('seq'));
+    //   history.push(`/franchise/setProducts/${franchise.get('seq')}`);
+    // });
+    console.log(result);
   };
 
   handleCancel = () => this.props.history.push('/');
@@ -194,7 +195,7 @@ class ModifyShop extends Component {
 
     return (
       <div className="ceo">
-        <div className="container" style={{ paddingTop: 0 }}>
+        <div className="container" style={{ paddingTop: 0, color: '#5f5f5f' }}>
           <Navigator />
           {/*franchise.getIn(['status', 'isFetching']) ? <Loading /> : null*/}
           <div

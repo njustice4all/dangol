@@ -62,14 +62,25 @@ const loadMore = (state, action) => {
 
 export const ceo = (state = initialState, action) => {
   switch (action.type) {
+    case 'ceo/GET_SHOP':
+    case 'ceo/GET_PRODUCTS':
     case 'ceo/SET_SHOP':
     case 'ceo/SET_PRODUCTS':
     case 'ceo/REQ_ADDRESS':
     case 'ceo/REQ_LOAD_MORE':
       return state.setIn(['status', 'isFetching'], true);
     case 'ceo/SET_SHOP_SUCCESS':
+      console.log('set shop...');
       return state;
     case 'ceo/SET_PRODUCTS_SUCCESS':
+      console.log('set products');
+      return state;
+    case 'ceo/GET_SHOP_SUCCESS':
+      console.log('get shop');
+      return state;
+    case 'ceo/GET_PRODUCTS_SUCCESS':
+      console.log('get products');
+      return state;
     case 'ceo/REQ_ADDRESS_SUCCESS':
       return addressLists(state, action);
     case 'ceo/REQ_LOAD_MORE_SUCCESS':
@@ -78,9 +89,11 @@ export const ceo = (state = initialState, action) => {
     case 'ceo/REQ_ADDRESS_FAILURE':
     case 'ceo/SET_PRODUCTS_FAILURE':
     case 'ceo/REQ_LOAD_MORE_FAILURE':
+    case 'ceo/GET_SHOP_ERROR':
+    case 'ceo/GET_PRODUCTS_ERROR':
       return withError(state, action);
     case 'ceo/RESET_ADDRESS':
-      return state;
+      return initialState;
     default:
       return state;
   }

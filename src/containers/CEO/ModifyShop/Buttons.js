@@ -13,9 +13,6 @@ type Props = {
 const Buttons = ({ handleConfirm, handleCancel, errors, editMode }: Props) => {
   return (
     <div>
-      <div className="divider">
-        <div />
-      </div>
       <div className="survay__btn__confirm__wrapper">
         <div className="buttons" onClick={handleCancel}>
           취소하기

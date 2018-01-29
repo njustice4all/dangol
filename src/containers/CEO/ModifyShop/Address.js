@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import cx from 'classnames';
 import debounce from 'lodash/debounce';
 
-import { initRequestAddress, initRequestLoadMore, resetAddress } from '../../actions/ceo';
+import { initRequestAddress, initRequestLoadMore, resetAddress } from '../../../actions/ceo';
 
 const Item = ({ address, setAddress }) => {
   return (

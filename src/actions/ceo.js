@@ -1,5 +1,23 @@
 import { apiSetShop, apiSetProducts, apiAddress, apiLoadMoreAddress } from '../api/ceo';
 
+const getShop = () => ({ type: 'ceo/GET_SHOP' });
+const getShopSuccess = shop => ({ type: 'ceo/GET_SHOP_SUCCESS', shop });
+const getShopError = error => ({ type: 'ceo/GET_SHOP_ERROR', error });
+
+export const initGetShop = payload => async dispatch => {
+  dispatch(getShop());
+
+  try {
+    if (true) {
+      dispatch(getShopSuccess({ shop: {} }));
+    } else {
+      dispatch(getShopError({ error: true }));
+    }
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 const setShop = () => ({ type: 'ceo/SET_SHOP' });
 const setShopSuccess = (result, shop) => ({ type: 'ceo/SET_SHOP_SUCCESS', result, shop });
 const setShopFailure = error => ({ type: 'ceo/SET_SHOP_FAILURE', error });
@@ -15,6 +33,24 @@ export const initSetShop = shop => async dispatch => {
       dispatch(setShopFailure({ error: true }));
     } else {
       dispatch(setShopSuccess(result, shop));
+    }
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+const getProducts = () => ({ type: 'ceo/GET_PRODUCTS' });
+const getProductsSuccess = products => ({ type: 'ceo/GET_PRODUCTS_SUCCESS', products });
+const getProductsError = error => ({ type: 'ceo/GET_PRODUCTS_ERROR', error });
+
+export const initGetProducts = payload => async dispatch => {
+  dispatch(getProducts());
+
+  try {
+    if (tru) {
+      dispatch(getProductsSuccess({ products: [] }));
+    } else {
+      dispatch(getProductsError({ error: true }));
     }
   } catch (error) {
     console.error(error);
