@@ -24,7 +24,7 @@ class Images extends Component {
     );
 
     return (
-      <div className="items" style={{ marginBottom: '0px', padding: '5px 8px' }}>
+      <div className="items" style={{ marginBottom: '0px', marginTop: '3px', padding: '5px 8px' }}>
         <h5 className={classNames('title__big', { wrong: validateClass('images') })}>
           가맹점 이미지
         </h5>
