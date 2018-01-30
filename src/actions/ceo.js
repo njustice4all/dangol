@@ -1,5 +1,8 @@
 import { apiSetShop, apiSetProducts, apiAddress, apiLoadMoreAddress } from '../api/ceo';
 
+/**
+ * 상점정보 가져옴
+ */
 const getShop = () => ({ type: 'ceo/GET_SHOP' });
 const getShopSuccess = shop => ({ type: 'ceo/GET_SHOP_SUCCESS', shop });
 const getShopError = error => ({ type: 'ceo/GET_SHOP_ERROR', error });
@@ -7,6 +10,7 @@ const getShopError = error => ({ type: 'ceo/GET_SHOP_ERROR', error });
 export const initGetShop = payload => async dispatch => {
   dispatch(getShop());
 
+  // TODO:
   try {
     if (true) {
       dispatch(getShopSuccess({ shop: {} }));
@@ -18,6 +22,9 @@ export const initGetShop = payload => async dispatch => {
   }
 };
 
+/**
+ * 상점정보 수정
+ */
 const setShop = () => ({ type: 'ceo/SET_SHOP' });
 const setShopSuccess = (result, shop) => ({ type: 'ceo/SET_SHOP_SUCCESS', result, shop });
 const setShopFailure = error => ({ type: 'ceo/SET_SHOP_FAILURE', error });
@@ -25,6 +32,7 @@ const setShopFailure = error => ({ type: 'ceo/SET_SHOP_FAILURE', error });
 export const initSetShop = shop => async dispatch => {
   dispatch(setShop());
 
+  // TODO:
   try {
     const response = await apiSetShop(shop);
     const result = await response.json();
@@ -39,6 +47,9 @@ export const initSetShop = shop => async dispatch => {
   }
 };
 
+/**
+ * 상품정보 가져옴
+ */
 const getProducts = () => ({ type: 'ceo/GET_PRODUCTS' });
 const getProductsSuccess = products => ({ type: 'ceo/GET_PRODUCTS_SUCCESS', products });
 const getProductsError = error => ({ type: 'ceo/GET_PRODUCTS_ERROR', error });
@@ -46,6 +57,7 @@ const getProductsError = error => ({ type: 'ceo/GET_PRODUCTS_ERROR', error });
 export const initGetProducts = payload => async dispatch => {
   dispatch(getProducts());
 
+  // TODO:
   try {
     if (tru) {
       dispatch(getProductsSuccess({ products: [] }));
@@ -57,6 +69,9 @@ export const initGetProducts = payload => async dispatch => {
   }
 };
 
+/**
+ * 상품정보 수정
+ */
 const setProducts = () => ({ type: 'ceo/SET_PRODUCTS' });
 const setProductsSuccess = result => ({ type: 'ceo/SET_PRODUCTS_SUCCESS', result });
 const setProductsFailure = error => ({ type: 'ceo/SET_PRODUCTS_FAILURE', error });
@@ -64,6 +79,7 @@ const setProductsFailure = error => ({ type: 'ceo/SET_PRODUCTS_FAILURE', error }
 export const initSetProducts = products => async dispatch => {
   dispatch(setProducts());
 
+  // TODO:
   try {
     const response = await apiSetProducts(products);
     const result = await response.json();
@@ -78,6 +94,9 @@ export const initSetProducts = products => async dispatch => {
   }
 };
 
+/**
+ * 상점정보 수정할때 상점주소검색, 다음 api 사용
+ */
 const reqAddress = query => ({ type: 'ceo/REQ_ADDRESS', query });
 const reqAddressSuccess = payload => ({ type: 'ceo/REQ_ADDRESS_SUCCESS', payload });
 const reqAddressFailure = error => ({ type: 'ceo/REQ_ADDRESS_FAILURE', error });
@@ -94,6 +113,9 @@ export const initRequestAddress = query => async dispatch => {
   }
 };
 
+/**
+ * 주소검색 더보기, 다음 api 사용
+ */
 const reqLoadMore = () => ({ type: 'ceo/REQ_LOAD_MORE' });
 const reqLoadMoreSuccess = payload => ({ type: 'ceo/REQ_LOAD_MORE_SUCCESS', payload });
 const reqLoadMoreFailure = error => ({ type: 'ceo/REQ_LOAD_MORE_FAILURE', error });

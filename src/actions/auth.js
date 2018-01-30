@@ -3,19 +3,12 @@ import apiGetCoords from '../api/coords';
 
 const errors = { error: true, msg: '망함' };
 
-const getCoords = () => ({
-  type: 'geo/GET_COORDS',
-});
-
-const getCoordsSuccess = coords => ({
-  type: 'geo/GET_COORDS_SUCCESS',
-  coords,
-});
-
-const getCoordsError = erros => ({
-  type: 'geo/GET_COORDS_ERROR',
-  errors,
-});
+/**
+ * gps좌표로 주소가져옴, 구글 api사용
+ */
+const getCoords = () => ({ type: 'geo/GET_COORDS' });
+const getCoordsSuccess = coords => ({ type: 'geo/GET_COORDS_SUCCESS', coords });
+const getCoordsError = erros => ({ type: 'geo/GET_COORDS_ERROR', errors });
 
 const initGetCoords = info => async dispatch => {
   dispatch(getCoords());
@@ -29,20 +22,12 @@ const initGetCoords = info => async dispatch => {
   }
 };
 
-const reqSignin = () => ({
-  type: 'auth/REQ_SIGNIN',
-});
-
-const reqSigninSuccess = (info, user) => ({
-  type: 'auth/REQ_SIGNIN_SUCCESS',
-  info,
-  user,
-});
-
-const reqSigninError = errors => ({
-  type: 'auth/REQ_SIGNIN_ERROR',
-  errors,
-});
+/**
+ * 로그인
+ */
+const reqSignin = () => ({ type: 'auth/REQ_SIGNIN' });
+const reqSigninSuccess = (info, user) => ({ type: 'auth/REQ_SIGNIN_SUCCESS', info, user });
+const reqSigninError = errors => ({ type: 'auth/REQ_SIGNIN_ERROR', errors });
 
 export const initSignin = user => async dispatch => {
   dispatch(reqSignin());

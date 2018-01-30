@@ -15,19 +15,9 @@ export const setStatus = payloads => ({
 /**
  * 주문접수 목록 가져옴
  */
-const fetchOrderLists = () => ({
-  type: 'order/FETCH_ORDER_LISTS',
-});
-
-const fetchOrderListsSuccess = lists => ({
-  type: 'order/FETCH_ORDER_LISTS_SUCCESS',
-  lists,
-});
-
-const fetchOrderListsError = errors => ({
-  type: 'order/FETCH_ORDER_LISTS_ERROR',
-  errors,
-});
+const fetchOrderLists = () => ({ type: 'order/FETCH_ORDER_LISTS' });
+const fetchOrderListsSuccess = lists => ({ type: 'order/FETCH_ORDER_LISTS_SUCCESS', lists });
+const fetchOrderListsError = errors => ({ type: 'order/FETCH_ORDER_LISTS_ERROR', errors });
 
 export const initFetchOrderLists = () => async dispatch => {
   dispatch(fetchOrderLists());
@@ -41,24 +31,15 @@ export const initFetchOrderLists = () => async dispatch => {
 };
 
 /**
- * 단일주문 상세
+ * 단일주문 상세페이지
  */
-const fetchOrderDetail = () => ({
-  type: 'order/FETCH_ORDER_DETAIL',
-});
-
-const fetchOrderDetailSuccess = order => ({
-  type: 'order/FETCH_ORDER_DETAIL_SUCCESS',
-  order,
-});
-
-const fetchOrderDetailError = errors => ({
-  type: 'order/FETCH_ORDER_DETAIL_ERROR',
-  errors,
-});
+const fetchOrderDetail = () => ({ type: 'order/FETCH_ORDER_DETAIL' });
+const fetchOrderDetailSuccess = order => ({ type: 'order/FETCH_ORDER_DETAIL_SUCCESS', order });
+const fetchOrderDetailError = errors => ({ type: 'order/FETCH_ORDER_DETAIL_ERROR', errors });
 
 export const initFetchOrderDetail = no => async dispatch => {
   dispatch(fetchOrderDetail());
+
   // TODO: implements request api by no
   // ex) const response = await apiOrderDetail(no);
   if (true) {
@@ -68,19 +49,12 @@ export const initFetchOrderDetail = no => async dispatch => {
   }
 };
 
-const fetchProcessDone = () => ({
-  type: 'order/FETCH_PROCESS_DONE',
-});
-
-const fetchProcessDoneSuccess = lists => ({
-  type: 'order/FETCH_PROCESS_DONE_SUCCESS',
-  lists,
-});
-
-const fetchProcessDoneError = errors => ({
-  type: 'order/FETCH_PROCESS_DONE_ERROR',
-  errors,
-});
+/**
+ * 처리중 목록 가져옴
+ */
+const fetchProcessDone = () => ({ type: 'order/FETCH_PROCESS_DONE' });
+const fetchProcessDoneSuccess = lists => ({ type: 'order/FETCH_PROCESS_DONE_SUCCESS', lists });
+const fetchProcessDoneError = errors => ({ type: 'order/FETCH_PROCESS_DONE_ERROR', errors });
 
 export const initFetchProcessDone = () => async dispatch => {
   dispatch(fetchProcessDone());
