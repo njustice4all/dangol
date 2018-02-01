@@ -1,5 +1,9 @@
 import { orderLists, orderDetail, orderDoneLists } from '../dummy';
 
+// real api
+import { apiGetOrderLists } from '../api/order';
+import Converter from '../utils/Converter';
+
 const error = { error: true, msg: '망함' };
 
 export const batchActions = (...actions) => ({
@@ -22,11 +26,18 @@ const fetchOrderListsError = errors => ({ type: 'order/FETCH_ORDER_LISTS_ERROR',
 export const initFetchOrderLists = () => async dispatch => {
   dispatch(fetchOrderLists());
 
-  // TODO:
-  if (true) {
-    dispatch(fetchOrderListsSuccess(orderLists));
-  } else {
-    dispatch(fetchOrderListsError(error));
+  try {
+    const response = await apiGetOrderLists();
+    console.log(response.list);
+
+    if (response) {
+      // dispatch(fetchOrderListsSuccess(orderLists));
+      dispatch(fetchOrderListsSuccess(Converter.listsToState(response.list)));
+    } else {
+      dispatch(fetchOrderListsError(error));
+    }
+  } catch (error) {
+    console.error(error);
   }
 };
 

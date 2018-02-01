@@ -1,29 +1,7 @@
 import { fromJS, List } from 'immutable';
 
 const initialState = fromJS({
-  address: {
-    lists: [],
-    page: {},
-    query: '',
-  },
-  shop: {
-    seq: '',
-    shop: {
-      images: [],
-      category: '',
-      name: '',
-      description: '',
-      address: {
-        zipCode: '',
-        firstAddress: '',
-        detailAddress: '',
-      },
-      contact: '',
-      openingHours: '',
-      closedDays: '',
-      possible: [],
-    },
-  },
+  shop: {},
   products: [],
   status: {
     isFetching: false,
@@ -60,6 +38,18 @@ const loadMore = (state, action) => {
   );
 };
 
+const getShopSuccess = (state, action) => {
+  return state.withMutations(mutator =>
+    mutator.set('shop', action.shop).setIn(['status', 'isFetching'], false)
+  );
+};
+
+const getProductsSuccess = (state, action) => {
+  return state.withMutations(mutator =>
+    mutator.set('products', fromJS(action.products.list)).setIn(['status', 'isFetching'], false)
+  );
+};
+
 export const ceo = (state = initialState, action) => {
   switch (action.type) {
     case 'ceo/GET_SHOP':
@@ -76,11 +66,9 @@ export const ceo = (state = initialState, action) => {
       console.log('set products');
       return state;
     case 'ceo/GET_SHOP_SUCCESS':
-      console.log('get shop');
-      return state;
+      return getShopSuccess(state, action);
     case 'ceo/GET_PRODUCTS_SUCCESS':
-      console.log('get products');
-      return state;
+      return getProductsSuccess(state, action);
     case 'ceo/REQ_ADDRESS_SUCCESS':
       return addressLists(state, action);
     case 'ceo/REQ_LOAD_MORE_SUCCESS':
@@ -92,6 +80,8 @@ export const ceo = (state = initialState, action) => {
     case 'ceo/GET_SHOP_ERROR':
     case 'ceo/GET_PRODUCTS_ERROR':
       return withError(state, action);
+    case 'ceo/DEL_PRODUCT_SUCCESS':
+      return state;
     case 'ceo/RESET_ADDRESS':
       return initialState;
     default:

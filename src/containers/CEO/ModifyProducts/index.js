@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Map, List } from 'immutable';
 
-// import { initAddProducts, initGetProducts, initSetProducts } from '../../actions';
+import { initGetProducts, initDelProduct } from '../../../actions/ceo';
 import {
   convertDataToState,
   createUniqueId,
@@ -19,19 +19,13 @@ class ModifyProducts extends Component {
     products: List([]),
     deletedProducts: List([]),
     productStack: null,
-    showInputModal: false,
     updateFromNewProduct: false,
+    showInputModal: false,
+    product: List([]),
   };
 
   componentDidMount = () => {
-    // const { initGetProducts, franchise } = this.props;
-    // if (!franchise.get('seq')) return;
-    // initGetProducts(franchise.get('seq')).then(result => {
-    //   this.setState({
-    //     products: convertDataToState(result.data).reverse(),
-    //     shopSequence: franchise.get('seq'),
-    //   });
-    // });
+    this.props.initGetProducts();
   };
 
   addProduct = () => {
@@ -208,21 +202,15 @@ class ModifyProducts extends Component {
     // initSetProducts(result).then(() => this.onEditMode());
   };
 
-  togglePopup = (productIndex, type) => e => {
-    console.log(productIndex, type);
+  togglePopup = (idx, type) => e => {
     if (type === 'close') {
-      this.setState({
-        productStack: null,
-        showInputModal: false,
-        updateFromNewProduct: false,
-      });
-    } else {
-      this.setState({
-        productStack: this.state.products.get(productIndex).merge({ productIndex }),
-        showInputModal: true,
-        updateFromNewProduct: true,
-      });
+      this.setState(prevState => ({ showInputModal: false }));
     }
+
+    this.setState(prevState => ({
+      showInputModal: !prevState.showInputModal,
+      product: this.props.products.filter(product => product.get('idx') === idx),
+    }));
   };
 
   handleCancel = () => this.props.history.push('/');
@@ -232,8 +220,7 @@ class ModifyProducts extends Component {
   };
 
   renderProducts = () => {
-    const { products } = this.state;
-    const { editMode, franchise } = this.props;
+    const { products } = this.props;
     if (products.size === 0) {
       return null;
     }
@@ -243,7 +230,8 @@ class ModifyProducts extends Component {
         product={product}
         productIndex={i}
         key={`product-${i}`}
-        editMode={editMode ? true : false}
+        editMode
+        removeProduct={this.removeProduct}
         setStateByKey={this.setStateByKey}
         removeProductByIndex={this.removeProductByIndex}
         deleteImageByIndex={this.deleteImageByIndex}
@@ -255,6 +243,11 @@ class ModifyProducts extends Component {
         togglePopup={this.togglePopup}
       />
     ));
+  };
+
+  removeProduct = idx => e => {
+    e.stopPropagation();
+    this.props.initDelProduct({ idx });
   };
 
   onOptionChange = (productIndex, optionIndex, type) => e => {
@@ -284,7 +277,7 @@ class ModifyProducts extends Component {
 
   render() {
     const { authentication, franchise, editMode } = this.props;
-    const { showInputModal, productStack } = this.state;
+    const { showInputModal, productStack, product } = this.state;
 
     return (
       <div
@@ -308,18 +301,9 @@ class ModifyProducts extends Component {
         </div>
         {showInputModal ? (
           <ProductInputModal
-            product={productStack}
-            productIndex={productStack.get('productIndex')}
-            setStateByKey={this.setStateByKey}
-            removeProductByIndex={this.removeProductByIndex}
-            deleteImageByIndex={this.deleteImageByIndex}
-            onImageChange={this.onImageChange}
-            shopSequence="14"
-            onAddOptionButtonPress={this.onAddOptionButtonPress}
-            deleteOptionByIndex={this.deleteOptionByIndex}
-            onOptionChange={this.onOptionChange}
+            product={product.get(0)}
             togglePopup={this.togglePopup}
-            testConfirm={this.testConfirm}
+            onImageChange={this.onImageChange}
           />
         ) : null}
       </div>
@@ -330,12 +314,14 @@ class ModifyProducts extends Component {
 const mapStateToProps = state => ({
   authentication: state.get('authentication'),
   franchise: state.get('franchise'),
+  products: state.getIn(['ceo', 'products']),
 });
 
 const mapDispatchToProps = dispatch => ({
-  initAddProducts: products => dispatch(initAddProducts(products)),
-  initGetProducts: shopSequence => dispatch(initGetProducts(shopSequence)),
-  initSetProducts: products => dispatch(initSetProducts(products)),
+  // initAddProducts: products => dispatch(initAddProducts(products)),
+  initGetProducts: payload => dispatch(initGetProducts(payload)),
+  initDelProduct: payload => dispatch(initDelProduct(payload)),
+  // initSetProducts: products => dispatch(initSetProducts(products)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(ModifyProducts);

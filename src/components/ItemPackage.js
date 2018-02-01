@@ -3,6 +3,7 @@
 import React from 'react';
 
 import getWrapperClassName from '../utils/getWrapperClassName';
+import { getTime } from '../utils/time';
 
 type Props = {
   goDetail: (no: string) => void,
@@ -22,11 +23,11 @@ const SideButton = ({ status }) => {
 };
 
 const ItemPackage = ({ goDetail, order, status, pathname }: Props) => (
-  <li className="list-item" onClick={goDetail(order.get('no'))}>
+  <li className="list-item" onClick={goDetail(order.getIn(['data', 'idx']))}>
     <div className={getWrapperClassName(pathname, status)}>
       <div className="left-wrapper">
         <div className="orderno">{order.get('no')}</div>
-        <div className="date">{order.get('date')}</div>
+        <div className="date">{getTime(order.get('date'))}</div>
         <div className="label package">
           <span className="title">포장</span>
         </div>

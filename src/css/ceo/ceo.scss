@@ -901,6 +901,7 @@ input {
       .option-input-price {
         flex: 0.6;
         display: flex;
+        position: relative;
         input {
           font-size: 13px;
           font-weight: normal;
@@ -911,8 +912,8 @@ input {
           position: absolute;
           margin: 0;
           width: 15px;
-          top: 15px;
-          right: 30px;
+          top: 9px;
+          right: 5px;
           font-size: 12px;
         }
       }

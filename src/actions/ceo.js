@@ -1,4 +1,11 @@
-import { apiSetShop, apiSetProducts, apiAddress, apiLoadMoreAddress } from '../api/ceo';
+import {
+  apiGetShopInfo,
+  apiGetProducts,
+  apiDelProduct,
+  apiAddress,
+  apiLoadMoreAddress,
+} from '../api/ceo';
+import apiUploadImage from '../api/image';
 
 /**
  * 상점정보 가져옴
@@ -7,15 +14,16 @@ const getShop = () => ({ type: 'ceo/GET_SHOP' });
 const getShopSuccess = shop => ({ type: 'ceo/GET_SHOP_SUCCESS', shop });
 const getShopError = error => ({ type: 'ceo/GET_SHOP_ERROR', error });
 
-export const initGetShop = payload => async dispatch => {
+export const initGetShopInfo = payload => async dispatch => {
   dispatch(getShop());
 
-  // TODO:
+  const response = await apiGetShopInfo();
+
   try {
-    if (true) {
-      dispatch(getShopSuccess({ shop: {} }));
-    } else {
+    if (!response) {
       dispatch(getShopError({ error: true }));
+    } else {
+      dispatch(getShopSuccess(response));
     }
   } catch (error) {
     console.log(error);
@@ -34,8 +42,8 @@ export const initSetShop = shop => async dispatch => {
 
   // TODO:
   try {
-    const response = await apiSetShop(shop);
-    const result = await response.json();
+    // const response = await apiSetShop(shop);
+    // const result = await response.json();
 
     if (!result.msg) {
       dispatch(setShopFailure({ error: true }));
@@ -57,12 +65,13 @@ const getProductsError = error => ({ type: 'ceo/GET_PRODUCTS_ERROR', error });
 export const initGetProducts = payload => async dispatch => {
   dispatch(getProducts());
 
-  // TODO:
+  const response = await apiGetProducts();
+
   try {
-    if (tru) {
-      dispatch(getProductsSuccess({ products: [] }));
-    } else {
+    if (!response) {
       dispatch(getProductsError({ error: true }));
+    } else {
+      dispatch(getProductsSuccess(response));
     }
   } catch (error) {
     console.error(error);
@@ -81,8 +90,8 @@ export const initSetProducts = products => async dispatch => {
 
   // TODO:
   try {
-    const response = await apiSetProducts(products);
-    const result = await response.json();
+    // const response = await apiSetProducts(products);
+    // const result = await response.json();
 
     if (!result.msg) {
       dispatch(setProductsFailure({ error: true }));
@@ -92,6 +101,30 @@ export const initSetProducts = products => async dispatch => {
   } catch (error) {
     console.error(error);
   }
+};
+
+/**
+ * 상품 삭제
+ */
+export const initDelProduct = payload => async dispatch => {
+  const response = await apiDelProduct(payload);
+
+  if (!response.success) {
+    dispatch({ type: 'ceo/DEL_PRODUCT_ERROR' });
+  } else {
+    dispatch({ type: 'ceo/DEL_PRODUCT_SUCCESS' });
+    dispatch(initGetProducts(payload));
+  }
+};
+
+/**
+ * 이미지 업로드
+ */
+export const initUploadImage = payload => async dispatch => {
+  dispatch({ type: 'ceo/UPLOAD_IMAGE' });
+
+  const response = await apiUploadImage(payload);
+  console.log(response);
 };
 
 /**

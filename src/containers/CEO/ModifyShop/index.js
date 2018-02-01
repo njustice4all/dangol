@@ -11,7 +11,7 @@ import Buttons from './Buttons';
 import Navigator from '../Navigator';
 
 import { validateState, createUniqueId, convertUrlToBase64 } from '../../../utils';
-import { initSetShop } from '../../../actions/ceo';
+import { initGetShopInfo } from '../../../actions/ceo';
 
 class ModifyShop extends Component {
   state = {
@@ -43,7 +43,9 @@ class ModifyShop extends Component {
     addImages: List([]),
   };
 
-  componentDidMount = () => {};
+  componentDidMount = () => {
+    this.props.initGetShopInfo(1);
+  };
 
   setStateByKey = (key, value) => this.setState(prevState => ({ [key]: value }));
 
@@ -249,4 +251,6 @@ class ModifyShop extends Component {
   }
 }
 
-export default connect()(ModifyShop);
+export default connect(null, dispatch => ({
+  initGetShopInfo: shopNo => dispatch(initGetShopInfo(shopNo)),
+}))(ModifyShop);
