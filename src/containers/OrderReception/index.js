@@ -23,7 +23,7 @@ class OrderReception extends Component {
       <div className="body">
         <div className="bodyHeader">2017-12-22</div>
         <ul className="list-items">
-          {order.lists.map((order, index) => {
+          {order.get('lists').map((order, index) => {
             if (order.get('type') === 'delivery') {
               return (
                 <ItemDelivery

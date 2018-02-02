@@ -77,3 +77,26 @@ export const apiGetOrderDetail = payload => {
     });
   });
 };
+
+/**
+ * 처리중 주문
+ */
+export const apiGetOrderProcess = () => {
+  data.search.orderState = 'deliveryPrepare';
+  return new Promise((resolve, reject) => {
+    $.ajax({
+      type: 'POST',
+      xhrFields: {
+        withCredentials: false,
+      },
+      url: ATY_URI + '/aty_convert_order.php',
+      data: data,
+      success: result => {
+        resolve(result);
+      },
+      error: () => {
+        reject(new Error());
+      },
+    });
+  });
+};

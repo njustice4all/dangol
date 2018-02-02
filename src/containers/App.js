@@ -49,13 +49,13 @@ class App extends Component {
           {/*{sideMenu ? (
             <div id="sidemenu-overlay" onClick={() => this.props.closePopup('sideMenu')} />
           ) : null}
-        <SideMenu open={sideMenu} />*/}
+          <SideMenu open={sideMenu} />*/}
           <Switch>
             <Route exact path="/" component={Signin} />
             <Route exact path="/order/reception" component={OrderReception} />
             <Route exact path="/order/reception/:no" component={OrderDetail} />
             <Route exact path="/order/progress" component={OrderProgress} />
-            <Route exact path="/order/progress/:no" component={OrderProgress} />
+            <Route exact path="/order/progress/:no" component={OrderDetail} />
             <Route exact path="/order/complete" component={OrderComplete} />
             <Route
               exact

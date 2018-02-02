@@ -65,7 +65,7 @@ class OrderAccept extends Component {
     if (result.length > 0) {
       const payloads = { status: 'accept', option: result[0].id };
       batchActions(setStatus(payloads), closePopup('order'));
-      history.push('/order/complete');
+      history.push('/order/progress');
     } else {
       this.setState(prevState => ({ error: true }));
     }

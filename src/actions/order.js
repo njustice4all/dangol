@@ -1,7 +1,7 @@
-import { orderLists, orderDetail, orderDoneLists } from '../dummy';
+import { orderDoneLists } from '../dummy';
 
 // real api
-import { apiGetOrderLists, apiGetOrderDetail } from '../api/order';
+import { apiGetOrderLists, apiGetOrderDetail, apiGetOrderProcess } from '../api/order';
 import Converter from '../utils/Converter';
 
 const error = { error: true, msg: '망함' };
@@ -63,7 +63,33 @@ export const initFetchOrderDetail = payload => async dispatch => {
 };
 
 /**
- * 처리중 목록 가져옴
+ * 주문 처리중 목록
+ */
+const fetchOrderProcess = () => ({ type: 'order/FETCH_ORDER_PROCESS' });
+const fetchOrderProcessSuccess = payload => ({
+  type: 'order/FETCH_ORDER_PROCESS_SUCCESS',
+  payload,
+});
+const fetchOrderProcessError = error => ({ type: 'order/FETCH_ORDER_PROCESS_ERROR', error });
+
+export const initFetchOrderProcess = () => async dispatch => {
+  dispatch(fetchOrderProcess());
+
+  const response = await apiGetOrderProcess();
+
+  try {
+    if (!response) {
+      dispatch(fetchOrderProcessError(error));
+    } else {
+      dispatch(fetchOrderProcessSuccess([]));
+    }
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+/**
+ * 주문 처리 완료 목록
  */
 const fetchProcessDone = () => ({ type: 'order/FETCH_PROCESS_DONE' });
 const fetchProcessDoneSuccess = lists => ({ type: 'order/FETCH_PROCESS_DONE_SUCCESS', lists });

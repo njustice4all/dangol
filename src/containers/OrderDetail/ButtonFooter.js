@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
 
 import { openPopup } from '../../actions/ui';
 
@@ -18,7 +19,7 @@ class ButtonFooter extends Component {
     if (this.props.isComplete) {
       return (
         <div className="btn-wrapper">
-          <div className="btn big" onClick={() => console.log('hey')}>
+          <div className="btn big" onClick={() => this.props.history.goBack()}>
             확인
           </div>
         </div>
@@ -38,11 +39,13 @@ class ButtonFooter extends Component {
   }
 }
 
-export default connect(
-  state => ({
-    type: state.getIn(['order', 'detail', 'order', 'order_state']),
-  }),
-  dispatch => ({
-    openPopup: ui => dispatch(openPopup(ui)),
-  })
-)(ButtonFooter);
+export default withRouter(
+  connect(
+    state => ({
+      type: state.getIn(['order', 'detail', 'order', 'order_state']),
+    }),
+    dispatch => ({
+      openPopup: ui => dispatch(openPopup(ui)),
+    })
+  )(ButtonFooter)
+);
