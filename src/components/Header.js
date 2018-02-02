@@ -13,6 +13,7 @@ type Props = {
   order: Object,
   router: Object,
   status: string,
+  detail: Object,
   locationChange: string => void,
   history: Object,
   openPopup: string => void,
@@ -53,17 +54,23 @@ const TabMenu = ({ path, handleRoutes }) => (
 );
 
 const OrderType = ({ type, date }) => {
-  let title: string = '매장';
-  if (type === 'delivery') {
-    title = '배달';
-  } else if (type === 'package') {
+  let title: string = '배달';
+  let customType = 'delivery';
+
+  if (type === '포장주문') {
     title = '포장';
+    customType = 'package';
+  } else if (type === '매장주문') {
+    title = '매장';
+    customType = 'order';
   }
 
+  const customDate = date && date.split(' ')[1].split(':');
+
   return (
-    <div className={cx('order-title', type)}>
+    <div className={cx('order-title', customType)}>
       <span className="title">{title}</span>
-      <span className="date">{date.split(' ')[1]}</span>
+      {<span className="date">{customDate && `${customDate[0]}:${customDate[1]}`}</span>}
     </div>
   );
 };
@@ -94,7 +101,7 @@ class Header extends Component<Props> {
   };
 
   render() {
-    const { customProps, router, order, status } = this.props;
+    const { customProps, router, order, status, detail } = this.props;
 
     let isComplete = false;
     if (
@@ -109,7 +116,12 @@ class Header extends Component<Props> {
         {customProps.buttonOpenSideMenu && <ButtonOpenSideMenu openSideMenu={this.openSideMenu} />}
         {(customProps.detail || customProps.goBack) && <ButtonBack goBack={this._goBack} />}
         <div className="title">{customProps.title}</div>
-        {customProps.detail && <OrderType type={order.get('type')} date={order.get('date')} />}
+        {customProps.detail && (
+          <OrderType
+            type={detail.getIn(['order', 'order_state'])}
+            date={detail.getIn(['order', 'order_date'])}
+          />
+        )}
         {customProps.buttonClose ? <div className="btn-close" onClick={this._goBack} /> : null}
         <OrderComplete isComplete={isComplete} status={status} />
         {customProps.buttonOpenSideMenu && (
@@ -126,6 +138,7 @@ export default withRouter(
       router: state.get('router'),
       order: state.getIn(['order', 'detail', 'order']),
       status: state.getIn(['order', 'detail', 'order', 'status']),
+      detail: state.getIn(['order', 'detail']),
     }),
     dispatch => ({
       openPopup: ui => dispatch(openPopup(ui)),

@@ -120,3 +120,27 @@ export const apiDelProduct = payload => {
     });
   });
 };
+
+/**
+ * 상품 추가/수정
+ */
+export const apiSetShop = payload => {
+  return new Promise((resolve, reject) => {
+    $.ajax({
+      type: 'POST',
+      url: ATY_URI + '/aty_convert_product.php',
+      data: {
+        siteId: SITE_ID,
+        keyWord: 'AddProductItem',
+        shop: shop,
+        insert: insert,
+      },
+      success: result => {
+        resolve(result);
+      },
+      error: () => {
+        reject(new Error());
+      },
+    });
+  });
+};

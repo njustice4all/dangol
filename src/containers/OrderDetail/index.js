@@ -9,15 +9,12 @@ import Order from './Order';
 import ButtonFooter from './ButtonFooter';
 
 import getCoords from '../../utils/getCoords';
-import Converter from '../../utils/Converter';
 
 class OrderDetail extends Component {
   componentDidMount = () => {
     const { initFetchOrderDetail, lists, match } = this.props;
     const no = match.params.no;
     initFetchOrderDetail(no);
-
-    Converter.getDetail(lists, no);
   };
 
   render() {

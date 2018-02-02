@@ -22,24 +22,24 @@ const Info = ({ title, content, total }) => {
 };
 
 const Order = ({ detail }) => {
-  const type = detail.getIn(['order', 'type']);
+  const type = detail.getIn(['order', 'order_state']);
 
   return (
     <div className="content-wrapper">
       <div className="content-title">주문정보</div>
       <ul className="list-items">
-        <Info title={'주문번호'} content={detail.getIn(['order', 'no'])} />
-        <Info title={'주문시간'} content={detail.getIn(['order', 'date'])} />
-        {type === 'order' ? <Info title={'테이블번호'} content={'5'} /> : null}
-        {type === 'order' ? (
-          <Info title={'요청사항'} content={detail.getIn(['customer', 'request'])} />
+        <Info title={'주문번호'} content={detail.getIn(['order', 'order_no'])} />
+        <Info title={'주문시간'} content={detail.getIn(['order', 'order_date'])} />
+        {type === '매장주문' ? <Info title={'테이블번호'} content={'임의값 5'} /> : null}
+        {type === '매장주문' ? (
+          <Info title={'요청사항'} content={'배달주문만 요청사항있음'} />
         ) : null}
         <Info
           total
           title={'총 결제 예정 금액'}
           content={{
-            price: detail.getIn(['order', 'totalPay']),
-            paymentMethod: detail.getIn(['order', 'paymentMethod']),
+            price: detail.getIn(['order', 'totalprice']),
+            paymentMethod: detail.getIn(['order', 'app_btn']),
           }}
         />
       </ul>

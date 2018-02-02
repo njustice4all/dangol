@@ -85,7 +85,10 @@ export const orderLists = [
 export const orderDetail = {
   order: {
     no: 'OERG30903',
-    type: 'delivery',
+    /**
+     * delivery / order / package
+     */
+    type: 'order',
     date: '2018-01-10 09:30',
     paymentMethod: '만나서결제 / 카드',
     totalPay: 21000,

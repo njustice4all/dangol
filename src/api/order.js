@@ -1,6 +1,6 @@
 import $ from 'jquery';
 
-import { SITE_ID, ATY_URI } from '../constants';
+import { SITE_ID, ATY_URI, SESSION_ID, RSAPI } from '../constants';
 
 const data = {
   siteId: SITE_ID,
@@ -42,8 +42,32 @@ export const apiGetOrderLists = (shop, search, order, limit, page) => {
       xhrFields: {
         withCredentials: false,
       },
-      url: ATY_URI + '/aty_convert_basic.php',
+      url: ATY_URI + '/aty_convert_order.php',
       data: data,
+      success: result => {
+        resolve(result);
+      },
+      error: () => {
+        reject(new Error());
+      },
+    });
+  });
+};
+
+/**
+ * 주문 상세
+ */
+export const apiGetOrderDetail = payload => {
+  return new Promise(function(resolve, reject) {
+    $.ajax({
+      type: 'POST',
+      url: RSAPI + '/rsapi',
+      data: {
+        siteId: SITE_ID,
+        sessId: SESSION_ID,
+        keyWord: 'admin.order.getOrderDetail',
+        order_idx: payload,
+      },
       success: result => {
         resolve(result);
       },

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Map, List } from 'immutable';
+import { Map, List, fromJS } from 'immutable';
 
 import { initGetProducts, initDelProduct } from '../../../actions/ceo';
 import {
@@ -16,12 +16,12 @@ import Navigator from '../Navigator';
 
 class ModifyProducts extends Component {
   state = {
-    products: List([]),
-    deletedProducts: List([]),
+    products: List(),
+    deletedProducts: List(),
     productStack: null,
     updateFromNewProduct: false,
     showInputModal: false,
-    product: List([]),
+    product: List(),
   };
 
   componentDidMount = () => {
@@ -31,18 +31,15 @@ class ModifyProducts extends Component {
   addProduct = () => {
     this.setState(prevState => ({
       showInputModal: true,
-      productStack: Map({
-        images: List([]),
-        deleteImages: List([]),
-        addImages: List([]),
-        title: '',
-        price: 0,
-        options: List([]),
-        contents: '',
-        uniqueId: createUniqueId(),
-        detailMode: true,
-        productSequence: 'add',
-      }),
+      product: fromJS([
+        {
+          option_list: [[]],
+          image: [],
+          contents: '',
+          price: '',
+          name: '',
+        },
+      ]),
     }));
   };
 

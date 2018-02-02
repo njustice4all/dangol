@@ -53,24 +53,31 @@ class Convert {
     return results;
   };
 
-  getDetail = (lists, no) => {
-    let selected;
-    lists.forEach(list => {
-      if (list.getIn(['data', 'idx']) === no) {
-        selected = list;
-      }
-    });
-
-    // console.log(selected.toJS());
-
-    // return {
-    //   order: {
-    //     no: selected.get('no'),
-    //     type: selected.get('type'),
-    //     date: selected.get('date'),
-    //     paymentMethod:
-    //   },
-    // }
+  getDetail = payload => {
+    return {
+      // order: {
+      //   no: payload.order.order_no,
+      //   type: 'delivery',
+      //   // type: payload.order.order_state,
+      //   date: payload.order.order_date,
+      //   paymentMethod: payload.order.app_btn,
+      //   totalPay: payload.order.totalprice,
+      //   status: 'accept',
+      //   option: '',
+      // },
+      // customer: {
+      //   phone: `${payload.order.od_b_hp1}-${payload.order.od_b_hp2}-${payload.order.od_b_hp3}`,
+      //   address: payload.order.od_b_addr1 + payload.order.od_b_addr2,
+      //   coords: {
+      //     lat: null,
+      //     lng: null,
+      //   },
+      //   request: payload.order.od_b_message,
+      // },
+      // products: [],
+      order: payload.order,
+      orderDetail: payload.orderDetail[0],
+    };
   };
 }
 

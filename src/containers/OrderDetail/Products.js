@@ -17,36 +17,42 @@ const Header = () => (
   </div>
 );
 
-const Product = ({ product, head }) => (
-  <li className="list-item">
-    {head ? (
-      <Header />
-    ) : (
-      <div className="table">
-        <div className="subject">{product.get('name')}</div>
-        <div className="qnt">{product.get('quantity')}</div>
-        <div className="price">{product.get('quantity') * product.get('price')}원</div>
-      </div>
-    )}
-  </li>
-);
-
-const Products = ({ detail }) => (
-  <div className="content-wrapper">
-    <div className="content-title">주문상품정보</div>
-    <ul className="list-items">
-      <Product head />
-      {detail
-        .get('products')
-        .map((product, index) => <Product key={`product-${index}`} product={product} />)}
-      <li className="list-item">
-        <div className="table total">
-          <div className="subject">총 주문금액</div>
-          <div className="price">{detail.getIn(['order', 'totalPay'])}원</div>
+const Product = ({ detail, head }) => {
+  return (
+    <li className="list-item">
+      {head ? (
+        <Header />
+      ) : (
+        <div className="table">
+          <div className="subject">
+            {detail && detail.getIn(['orderDetail', 'product', 'name'])}
+          </div>
+          <div className="qnt">
+            {detail && detail.getIn(['orderDetail', 'product', 'quantity'])}
+          </div>
+          <div className="price">{detail && detail.getIn(['order', 'totalprice'])}원</div>
         </div>
-      </li>
-    </ul>
-  </div>
-);
+      )}
+    </li>
+  );
+};
+
+const Products = ({ detail }) => {
+  return (
+    <div className="content-wrapper">
+      <div className="content-title">주문상품정보</div>
+      <ul className="list-items">
+        <Product head />
+        <Product detail={detail} />
+        <li className="list-item">
+          <div className="table total">
+            <div className="subject">총 주문금액</div>
+            <div className="price">{detail.getIn(['order', 'totalprice'])}원</div>
+          </div>
+        </li>
+      </ul>
+    </div>
+  );
+};
 
 export default Products;

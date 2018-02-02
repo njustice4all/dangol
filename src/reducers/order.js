@@ -3,22 +3,9 @@ import { Record, List, Map, fromJS } from 'immutable';
 const StateRecord = Record({
   lists: new List(),
   doneLists: new List(),
-  detail: new Map({
-    order: new Map({
-      no: '',
-      type: '',
-      date: '',
-      paymentMethod: '',
-      totalPay: 0,
-      status: 'pending',
-      option: '',
-    }),
-    customer: new Map({
-      phone: '',
-      address: '',
-      request: '',
-    }),
-    products: new List(),
+  detail: fromJS({
+    order: {},
+    orderDetail: {},
   }),
   isFetching: false,
   status: new Map({
@@ -37,13 +24,19 @@ const errorOnFetching = (state, action) => {
 };
 
 const _setStatus = (state, action) => {
-  const payloads = new Map({ status: action.payloads.status, option: action.payloads.option });
-  return state.mergeIn(['detail', 'order'], payloads);
+  const payload = new Map({ status: action.payload.status, option: action.payload.option });
+  return state.mergeIn(['detail', 'order'], payload);
 };
 
 const getDoneLists = (state, action) => {
   return state.withMutations(s =>
     s.set('isFetching', false).set('doneLists', fromJS(action.lists))
+  );
+};
+
+const getOrderDetailSuccess = (state, action) => {
+  return state.withMutations(mutator =>
+    mutator.set('detail', fromJS(action.order)).set('isFetching', false)
   );
 };
 
@@ -56,7 +49,7 @@ export const order = (state = new StateRecord(), action) => {
     case 'order/FETCH_ORDER_LISTS_SUCCESS':
       return getNewLists(state, action);
     case 'order/FETCH_ORDER_DETAIL_SUCCESS':
-      return state.set('detail', fromJS(action.order));
+      return getOrderDetailSuccess(state, action);
     case 'order/FETCH_PROCESS_DONE_SUCCESS':
       return getDoneLists(state, action);
     case 'order/FETCH_ORDER_LISTS_ERROR':

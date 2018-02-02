@@ -1,7 +1,9 @@
 import {
   apiGetShopInfo,
+  apiGetShopDetail,
   apiGetProducts,
   apiDelProduct,
+  apiSetShop,
   apiAddress,
   apiLoadMoreAddress,
 } from '../api/ceo';
@@ -34,21 +36,20 @@ export const initGetShopInfo = payload => async dispatch => {
  * 상점정보 수정
  */
 const setShop = () => ({ type: 'ceo/SET_SHOP' });
-const setShopSuccess = (result, shop) => ({ type: 'ceo/SET_SHOP_SUCCESS', result, shop });
+const setShopSuccess = payload => ({ type: 'ceo/SET_SHOP_SUCCESS', payload });
 const setShopFailure = error => ({ type: 'ceo/SET_SHOP_FAILURE', error });
 
-export const initSetShop = shop => async dispatch => {
+export const initSetShop = payload => async dispatch => {
   dispatch(setShop());
 
   // TODO:
   try {
-    // const response = await apiSetShop(shop);
-    // const result = await response.json();
+    const response = await apiSetShop(payload);
 
-    if (!result.msg) {
+    if (!response) {
       dispatch(setShopFailure({ error: true }));
     } else {
-      dispatch(setShopSuccess(result, shop));
+      dispatch(setShopSuccess(response));
     }
   } catch (error) {
     console.error(error);

@@ -1,7 +1,7 @@
 import { orderLists, orderDetail, orderDoneLists } from '../dummy';
 
 // real api
-import { apiGetOrderLists } from '../api/order';
+import { apiGetOrderLists, apiGetOrderDetail } from '../api/order';
 import Converter from '../utils/Converter';
 
 const error = { error: true, msg: '망함' };
@@ -48,15 +48,20 @@ const fetchOrderDetail = () => ({ type: 'order/FETCH_ORDER_DETAIL' });
 const fetchOrderDetailSuccess = order => ({ type: 'order/FETCH_ORDER_DETAIL_SUCCESS', order });
 const fetchOrderDetailError = errors => ({ type: 'order/FETCH_ORDER_DETAIL_ERROR', errors });
 
-export const initFetchOrderDetail = no => async dispatch => {
+export const initFetchOrderDetail = payload => async dispatch => {
   dispatch(fetchOrderDetail());
 
-  // TODO: implements request api by no
-  // ex) const response = await apiOrderDetail(no);
-  if (true) {
-    dispatch(fetchOrderDetailSuccess(orderDetail));
-  } else {
-    dispatch(fetchOrderDetailError(error));
+  const response = await apiGetOrderDetail(payload);
+
+  try {
+    if (!response) {
+      dispatch(fetchOrderDetailError(error));
+    } else {
+      // dispatch(fetchOrderDetailSuccess(orderDetail));
+      dispatch(fetchOrderDetailSuccess(Converter.getDetail(response)));
+    }
+  } catch (error) {
+    console.log(error);
   }
 };
 
