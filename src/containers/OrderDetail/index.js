@@ -18,14 +18,14 @@ class OrderDetail extends Component {
   };
 
   render() {
-    const { detail, shopCoords, isComplete } = this.props;
+    const { detail, shopCoords, isComplete, isProgress } = this.props;
 
     return (
       <div className="body">
         <Order detail={detail} />
         <Customer detail={detail} shopCoords={shopCoords} />
         <Products detail={detail} />
-        <ButtonFooter isComplete={isComplete} />
+        <ButtonFooter isComplete={isComplete} isProgress={isProgress} />
       </div>
     );
   }

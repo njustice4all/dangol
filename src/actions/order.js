@@ -29,10 +29,10 @@ export const initFetchOrderLists = () => async dispatch => {
   try {
     const response = await apiGetOrderLists();
 
-    if (response) {
-      dispatch(fetchOrderListsSuccess(Converter.listsToState(response.list)));
-    } else {
+    if (!response) {
       dispatch(fetchOrderListsError(error));
+    } else {
+      dispatch(fetchOrderListsSuccess(Converter.listsToState(response.list)));
     }
   } catch (error) {
     console.error(error);

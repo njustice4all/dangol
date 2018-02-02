@@ -1,6 +1,7 @@
 import $ from 'jquery';
 
 import { SITE_ID, ATY_URI, SESSION_ID, RSAPI } from '../constants';
+import Converter from '../utils/Converter';
 
 const data = {
   siteId: SITE_ID,
@@ -32,16 +33,21 @@ const data = {
   page: 1,
 };
 
+const headers = new Headers({ 'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8' });
+
 /**
  * 주문목록 가져오기
  */
-export const apiGetOrderLists = (shop, search, order, limit, page) => {
+export const apiGetOrderLists = payload => {
+  // return fetch(ATY_URI + '/aty_convert_order.php', {
+  //   method: 'post',
+  //   headers,
+  //   body: Converter.getFormData(data),
+  // });
+
   return new Promise((resolve, reject) => {
     $.ajax({
       type: 'POST',
-      xhrFields: {
-        withCredentials: false,
-      },
       url: ATY_URI + '/aty_convert_order.php',
       data: data,
       success: result => {
@@ -83,6 +89,28 @@ export const apiGetOrderDetail = payload => {
  */
 export const apiGetOrderProcess = () => {
   data.search.orderState = 'deliveryPrepare';
+  return new Promise((resolve, reject) => {
+    $.ajax({
+      type: 'POST',
+      xhrFields: {
+        withCredentials: false,
+      },
+      url: ATY_URI + '/aty_convert_order.php',
+      data: data,
+      success: result => {
+        resolve(result);
+      },
+      error: () => {
+        reject(new Error());
+      },
+    });
+  });
+};
+
+/**
+ * 처리완료 목록
+ */
+export const apiGetOrderComplete = () => {
   return new Promise((resolve, reject) => {
     $.ajax({
       type: 'POST',

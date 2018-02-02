@@ -18,7 +18,7 @@ const initGetCoords = info => async dispatch => {
     const result = await response.json();
     dispatch(getCoordsSuccess(result.results[0].geometry.location));
   } else {
-    dispatch(getCoordsError(erros));
+    dispatch(getCoordsError(errors));
   }
 };
 

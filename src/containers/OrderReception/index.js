@@ -43,7 +43,7 @@ class OrderReception extends Component {
                   pathname={pathname}
                 />
               );
-            } else {
+            } else if (order.get('type') === 'package') {
               return (
                 <ItemPackage
                   goDetail={this.goDetail}

@@ -7,8 +7,8 @@ import { initFetchProcessDone, initFetchOrderLists } from '../../actions/order';
 
 class OrderComplete extends Component {
   componentDidMount = () => {
-    // this.props.initFetchProcessDone();
-    this.props.initFetchOrderLists();
+    this.props.initFetchProcessDone();
+    // this.props.initFetchOrderLists();
   };
 
   goDetail = no => () => {
@@ -23,7 +23,7 @@ class OrderComplete extends Component {
       <div className="body">
         <div className="bodyHeader">2017-12-22</div>
         <ul className="list-items">
-          {order.get('lists').map((order, index) => {
+          {doneLists.map((order, index) => {
             if (order.get('type') === 'delivery') {
               return (
                 <ItemDelivery

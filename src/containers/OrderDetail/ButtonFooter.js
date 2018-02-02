@@ -1,18 +1,24 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import {push} from 'react-router-redux';
 import { withRouter } from 'react-router-dom';
 
 import { openPopup } from '../../actions/ui';
 
 class ButtonFooter extends Component {
   _onPress = () => {
-    const { type, openPopup } = this.props;
-    // if (type === '매장주문' || '포장주문') {
-    //   console.log('hi');
-    // } else {
-    //   openPopup('order');
-    // }
-    openPopup('order');
+    const { type, openPopup, isProgress, locationChange } = this.props;
+    if (type === '매장주문' || type === '포장주문') {
+      if (isProgress) {
+        console.log('고생했어 팝업');
+      } else {
+        console.log('접수처리됐다 팝업');
+        locationChange('/order/progress');
+      }
+    } else {
+      openPopup('order');
+    }
+    // openPopup('order');
   };
 
   render() {
@@ -46,6 +52,7 @@ export default withRouter(
     }),
     dispatch => ({
       openPopup: ui => dispatch(openPopup(ui)),
+      locationChange: pathname => dispatch(push(pathname)),
     })
   )(ButtonFooter)
 );
