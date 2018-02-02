@@ -28,10 +28,8 @@ export const initFetchOrderLists = () => async dispatch => {
 
   try {
     const response = await apiGetOrderLists();
-    console.log(response.list);
 
     if (response) {
-      // dispatch(fetchOrderListsSuccess(orderLists));
       dispatch(fetchOrderListsSuccess(Converter.listsToState(response.list)));
     } else {
       dispatch(fetchOrderListsError(error));
@@ -57,11 +55,10 @@ export const initFetchOrderDetail = payload => async dispatch => {
     if (!response) {
       dispatch(fetchOrderDetailError(error));
     } else {
-      // dispatch(fetchOrderDetailSuccess(orderDetail));
       dispatch(fetchOrderDetailSuccess(Converter.getDetail(response)));
     }
   } catch (error) {
-    console.log(error);
+    console.error(error);
   }
 };
 

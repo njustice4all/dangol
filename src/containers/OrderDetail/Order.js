@@ -30,9 +30,9 @@ const Order = ({ detail }) => {
       <ul className="list-items">
         <Info title={'주문번호'} content={detail.getIn(['order', 'order_no'])} />
         <Info title={'주문시간'} content={detail.getIn(['order', 'order_date'])} />
-        {type === '매장주문' ? <Info title={'테이블번호'} content={'임의값 5'} /> : null}
+        {type === '매장주문' ? <Info title={'테이블번호'} content={'없음'} /> : null}
         {type === '매장주문' ? (
-          <Info title={'요청사항'} content={'배달주문만 요청사항있음'} />
+          <Info title={'요청사항'} content={detail.getIn(['order', 'od_b_message'])} />
         ) : null}
         <Info
           total
