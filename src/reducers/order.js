@@ -6,6 +6,8 @@ const StateRecord = Record({
   detail: fromJS({
     order: {},
     orderDetail: {},
+    process: 'pending',
+    option: '',
   }),
   isFetching: false,
   status: new Map({
@@ -24,8 +26,11 @@ const errorOnFetching = (state, action) => {
 };
 
 const _setStatus = (state, action) => {
-  const payload = new Map({ status: action.payload.status, option: action.payload.option });
-  return state.mergeIn(['detail', 'order'], payload);
+  return state.withMutations(mutator =>
+    mutator
+      .setIn(['detail', 'process'], fromJS(action.payloads.status))
+      .setIn(['detail', 'option'], fromJS(action.payloads.option))
+  );
 };
 
 const getDoneLists = (state, action) => {
@@ -36,7 +41,11 @@ const getDoneLists = (state, action) => {
 
 const getOrderDetailSuccess = (state, action) => {
   return state.withMutations(mutator =>
-    mutator.set('detail', fromJS(action.order)).set('isFetching', false)
+    // mutator.set('detail', fromJS(action.order)).set('isFetching', false)
+    mutator
+      .setIn(['detail', 'order'], fromJS(action.order.order))
+      .setIn(['detail', 'orderDetail'], fromJS(action.order.orderDetail))
+      .set('isFetching', false)
   );
 };
 

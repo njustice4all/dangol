@@ -34,7 +34,8 @@ const ItemPackage = ({ goDetail, order, status, pathname }: Props) => (
       </div>
       <div className="right-wrapper">
         <div className="orderinfo">
-          <span className="alert">{order.get('pickupAfter')}</span> 후 픽업
+          {/*<span className="alert">{order.get('pickupAfter')}</span> 후 픽업*/}
+          <span className="alert">배달주문 입니다</span>
         </div>
         <div className="comment">{order.get('request')}</div>
       </div>
