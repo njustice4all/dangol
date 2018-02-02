@@ -20,6 +20,7 @@ class OrderProgress extends Component {
     const { order, coords, router } = this.props;
     const pathname = router.location.pathname.split('/order/')[1];
 
+    // FIXME: 주문타입으로 분류
     return (
       <div className="body">
         <div className="bodyHeader">2017-12-22</div>

@@ -27,7 +27,6 @@ const Payment = ({ request }) => (
   </li>
 );
 
-// FIXME: distance matrix api
 const Delivery = ({ detail, coords }) => (
   <div className="content-wrapper">
     <div className="content-title">주문자 정보</div>
@@ -36,18 +35,18 @@ const Delivery = ({ detail, coords }) => (
       <li className="list-item">
         <div className="title">배달지</div>
         <div className="content">
-          {detail.getIn(['customer', 'address'])}
+          {`${detail.getIn(['order', 'od_b_addr1'])}, ${detail.getIn(['order', 'od_b_addr2'])}`}
           <div className="info">
             {coords.distance}km | <span className="alert">{coords.duration}분</span> 소요
           </div>
         </div>
       </li>
-      <Payment request={detail.getIn(['customer', 'request'])} />
+      <Payment request={detail.getIn(['order', 'od_b_message'])} />
     </ul>
   </div>
 );
 
-// FIXME: 수령시간
+// FIXME: 수령시간???
 const Package = ({ detail }) => (
   <div className="content-wrapper">
     <div className="content-title">주문자 정보</div>
@@ -56,7 +55,7 @@ const Package = ({ detail }) => (
       <li className="list-item">
         <div className="title">수령시간</div>
         <div className="content">
-          <span className="text">18:30</span>
+          <span className="text">빼야함</span>
         </div>
       </li>
       <Payment request={detail.getIn(['order', 'od_b_message'])} />

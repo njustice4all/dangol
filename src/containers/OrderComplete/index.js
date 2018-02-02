@@ -19,6 +19,7 @@ class OrderComplete extends Component {
     const { doneLists, coords, router, order } = this.props;
     const pathname = router.location.pathname.split('/order/')[1];
 
+    // FIXME: 주문타입으로 분류
     return (
       <div className="body">
         <div className="bodyHeader">2017-12-22</div>

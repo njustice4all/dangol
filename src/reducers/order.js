@@ -41,7 +41,6 @@ const getDoneLists = (state, action) => {
 
 const getOrderDetailSuccess = (state, action) => {
   return state.withMutations(mutator =>
-    // mutator.set('detail', fromJS(action.order)).set('isFetching', false)
     mutator
       .setIn(['detail', 'order'], fromJS(action.order.order))
       .setIn(['detail', 'orderDetail'], fromJS(action.order.orderDetail))
@@ -54,19 +53,30 @@ export const order = (state = new StateRecord(), action) => {
     case 'order/FETCH_ORDER_LISTS':
     case 'order/FETCH_ORDER_DETAIL':
     case 'order/FETCH_PROCESS_DONE':
+    case 'order/FETCH_ORDER_PROCESS':
       return state.set('isFetching', true);
+
     case 'order/FETCH_ORDER_LISTS_SUCCESS':
       return getNewLists(state, action);
+
     case 'order/FETCH_ORDER_DETAIL_SUCCESS':
       return getOrderDetailSuccess(state, action);
+
+    case 'order/FETCH_ORDER_PROCESS_SUCCESS':
+      return state;
+
     case 'order/FETCH_PROCESS_DONE_SUCCESS':
       return getDoneLists(state, action);
+
     case 'order/FETCH_ORDER_LISTS_ERROR':
     case 'order/FETCH_ORDER_DETAIL_ERROR':
     case 'order/FETCH_PROCESS_DONE_ERROR':
+    case 'order/FETCH_ORDER_PROCESS_ERROR':
       return errorOnFetching(state, action);
+
     case 'order/SET_STATUS':
       return _setStatus(state, action);
+
     default:
       return state;
   }
