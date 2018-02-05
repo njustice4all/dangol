@@ -10,8 +10,8 @@ const StateRecord = Record({
     option: '',
   }),
   coords: {
-    lat: '',
-    lng: '',
+    lat: null,
+    lng: null,
   },
   isFetching: false,
   status: new Map({

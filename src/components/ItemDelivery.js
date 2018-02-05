@@ -26,12 +26,14 @@ const SideButton = ({ status }) => {
 };
 
 const ItemDelivery = ({ goDetail, order, shopCoords, status, pathname }: Props) => {
-  const coords: Coords = getCoords({
-    lat1: shopCoords.get('lat'),
-    lng1: shopCoords.get('lng'),
-    lat2: order.getIn(['coords', 'lat']),
-    lng2: order.getIn(['coords', 'lng']),
-  });
+  // FIXME:
+  // const coords: Coords = getCoords({
+  //   lat1: shopCoords.get('lat'),
+  //   lng1: shopCoords.get('lng'),
+  //   lat2: order.getIn(['coords', 'lat']),
+  //   lng2: order.getIn(['coords', 'lng']),
+  // });
+  const coords = { distance: 5, duration: 10 };
 
   // FIXME: classname
   return (

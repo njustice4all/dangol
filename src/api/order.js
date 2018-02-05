@@ -98,14 +98,14 @@ export const apiGetOrderDetail = payload => {
       type: 'POST',
       url: RSAPI + '/rsapi',
       data: {
-        siteId: payload.siteId,
-        sessId: payload.session,
+        // siteId: payload.siteId,
+        // sessId: payload.session,
+        // keyWord: 'admin.order.getOrderDetail',
+        // order_idx: payload.no,
+        siteId: SITE_ID,
+        sessId: SESSION_ID,
         keyWord: 'admin.order.getOrderDetail',
         order_idx: payload.no,
-        // siteId: SITE_ID,
-        // sessId: SESSION_ID,
-        // keyWord: 'admin.order.getOrderDetail',
-        // order_idx: payload,
       },
       success: result => {
         resolve(result);

@@ -13,7 +13,9 @@ const CustomerInfo = ({ detail }) => {
     <li className="list-item">
       <div className="title">주문자</div>
       <div className="content">
-        <div className="text">{phone}</div>
+        <div className="text" style={{ paddingTop: '8px' }}>
+          {phone}
+        </div>
         <div className="btn call">전화하기</div>
       </div>
     </li>
@@ -71,13 +73,15 @@ const Customer = ({ detail, shopCoords }) => {
   } else if (type === '포장주문') {
     return <Package detail={detail} />;
   } else {
-    const coords = getCoords({
-      lat1: shopCoords.get('lat'),
-      lng1: shopCoords.get('lng'),
-      // FIXME: 사용자 주소로 위도경도 가져와야함 상위 detail container 에서 수행
-      lat2: detail.getIn(['customer', 'coords', 'lat']),
-      lng2: detail.getIn(['customer', 'coords', 'lng']),
-    });
+    // FIXME:
+    // const coords = getCoords({
+    //   lat1: shopCoords.get('lat'),
+    //   lng1: shopCoords.get('lng'),
+    //   // FIXME: 사용자 주소로 위도경도 가져와야함 상위 detail container 에서 수행
+    //   lat2: detail.getIn(['customer', 'coords', 'lat']),
+    //   lng2: detail.getIn(['customer', 'coords', 'lng']),
+    // });
+    const coords = { distance: 5, duration: 10 };
 
     return <Delivery detail={detail} coords={coords} />;
   }
