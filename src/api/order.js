@@ -49,7 +49,36 @@ export const apiGetOrderLists = payload => {
     $.ajax({
       type: 'POST',
       url: ATY_URI + '/aty_convert_order.php',
-      data: data,
+      data: {
+        siteId: SITE_ID,
+        // siteId: payload.siteId,
+        keyWord: 'GetOrderList',
+        shop: 1,
+        search: {
+          searchType: '0',
+          keyword: '',
+          periodType: '0',
+          period_msg: '',
+          period_start: '',
+          period_end: '',
+          memberBuy: '0',
+          payMothodCard: '1',
+          payMothodPhone: '1',
+          payMothodBank: '1',
+          payMothodMoney: '1',
+          totalPriceStart: '',
+          totalPriceEnd: '',
+          delivery: '0',
+          category: '',
+          brand: '',
+        },
+        order: {
+          name: 'order_date',
+          sort: '0',
+        },
+        limit: 20,
+        page: 1,
+      },
       success: result => {
         resolve(result);
       },
@@ -69,10 +98,14 @@ export const apiGetOrderDetail = payload => {
       type: 'POST',
       url: RSAPI + '/rsapi',
       data: {
-        siteId: SITE_ID,
-        sessId: SESSION_ID,
+        siteId: payload.siteId,
+        sessId: payload.session,
         keyWord: 'admin.order.getOrderDetail',
-        order_idx: payload,
+        order_idx: payload.no,
+        // siteId: SITE_ID,
+        // sessId: SESSION_ID,
+        // keyWord: 'admin.order.getOrderDetail',
+        // order_idx: payload,
       },
       success: result => {
         resolve(result);

@@ -33,6 +33,7 @@ const ItemDelivery = ({ goDetail, order, shopCoords, status, pathname }: Props) 
     lng2: order.getIn(['coords', 'lng']),
   });
 
+  // FIXME: classname
   return (
     <li className="list-item" onClick={goDetail(order.getIn(['data', 'idx']))}>
       <div className={getWrapperClassName(pathname, status)}>

@@ -46,7 +46,7 @@ const Delivery = ({ detail, coords }) => (
   </div>
 );
 
-// FIXME: 수령시간???
+// FIXME: 수령시간 현재 없음
 const Package = ({ detail }) => (
   <div className="content-wrapper">
     <div className="content-title">주문자 정보</div>
@@ -74,6 +74,7 @@ const Customer = ({ detail, shopCoords }) => {
     const coords = getCoords({
       lat1: shopCoords.get('lat'),
       lng1: shopCoords.get('lng'),
+      // FIXME: 사용자 주소로 위도경도 가져와야함 상위 detail container 에서 수행
       lat2: detail.getIn(['customer', 'coords', 'lat']),
       lng2: detail.getIn(['customer', 'coords', 'lng']),
     });

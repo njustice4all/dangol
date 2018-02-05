@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import isEmpty from 'lodash/isEmpty';
 
 import { initFetchOrderDetail } from '../../actions/order';
+import { initGetCoords } from '../../actions/order';
 
 import Products from './Products';
 import Customer from './Customer';
@@ -12,9 +14,21 @@ import getCoords from '../../utils/getCoords';
 
 class OrderDetail extends Component {
   componentDidMount = () => {
-    const { initFetchOrderDetail, lists, match } = this.props;
+    const { initFetchOrderDetail, lists, match, session, siteId } = this.props;
     const no = match.params.no;
-    initFetchOrderDetail(no);
+
+    initFetchOrderDetail({ session, siteId, no });
+  };
+
+  componentDidUpdate = prevProps => {
+    const address =
+      this.props.detail.getIn(['order', 'od_b_addr1']) +
+      ' ' +
+      this.props.detail.getIn(['order', 'od_b_addr2']);
+
+    if (prevProps.detail.get('order').size !== this.props.detail.get('order').size) {
+      this.props.initGetCoords({ address });
+    }
   };
 
   render() {
@@ -36,8 +50,11 @@ export default connect(
     lists: state.getIn(['order', 'lists']),
     detail: state.getIn(['order', 'detail']),
     shopCoords: state.getIn(['auth', 'coords']),
+    session: state.getIn(['auth', 'session']),
+    siteId: state.getIn(['auth', 'siteId']),
   }),
   dispatch => ({
-    initFetchOrderDetail: no => dispatch(initFetchOrderDetail(no)),
+    initFetchOrderDetail: payload => dispatch(initFetchOrderDetail(payload)),
+    initGetCoords: address => dispatch(initGetCoords(address)),
   })
 )(OrderDetail);

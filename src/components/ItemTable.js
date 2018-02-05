@@ -22,6 +22,7 @@ const SideButton = ({ status }) => {
   }
 };
 
+// FIXME: classname
 const ItemTable = ({ goDetail, order, status, pathname }: Props) => (
   <li className="list-item" onClick={goDetail(order.getIn(['data', 'idx']))}>
     <div className={getWrapperClassName(pathname, status)}>

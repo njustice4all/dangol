@@ -1,5 +1,5 @@
 export const info = {
-  name: '김아티',
+  id: 'kimaty',
   address: '서울특별시 강남구 삼성로81길 31',
 };
 

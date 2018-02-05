@@ -9,6 +9,10 @@ const StateRecord = Record({
     process: 'pending',
     option: '',
   }),
+  coords: {
+    lat: '',
+    lng: '',
+  },
   isFetching: false,
   status: new Map({
     error: false,
@@ -48,12 +52,18 @@ const getOrderDetailSuccess = (state, action) => {
   );
 };
 
+const setCoords = (state, action) => {
+  const coords = fromJS(action.coords);
+  return state.withMutations(mutator => mutator.set('coords', coords).set('isFetching', false));
+};
+
 export const order = (state = new StateRecord(), action) => {
   switch (action.type) {
     case 'order/FETCH_ORDER_LISTS':
     case 'order/FETCH_ORDER_DETAIL':
     case 'order/FETCH_PROCESS_DONE':
     case 'order/FETCH_ORDER_PROCESS':
+    case 'order/GET_COORDS':
       return state.set('isFetching', true);
 
     case 'order/FETCH_ORDER_LISTS_SUCCESS':
@@ -63,15 +73,19 @@ export const order = (state = new StateRecord(), action) => {
       return getOrderDetailSuccess(state, action);
 
     case 'order/FETCH_ORDER_PROCESS_SUCCESS':
-      return state;
+      return setCoords(state, action);
 
     case 'order/FETCH_PROCESS_DONE_SUCCESS':
       return getDoneLists(state, action);
+
+    case 'order/GET_COORDS_SUCCESS':
+      return setCoords(state, action);
 
     case 'order/FETCH_ORDER_LISTS_ERROR':
     case 'order/FETCH_ORDER_DETAIL_ERROR':
     case 'order/FETCH_PROCESS_DONE_ERROR':
     case 'order/FETCH_ORDER_PROCESS_ERROR':
+    case 'order/GET_COORDS_ERROR':
       return errorOnFetching(state, action);
 
     case 'order/SET_STATUS':

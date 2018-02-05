@@ -12,7 +12,7 @@ class Signin extends Component {
   };
 
   onLoginButtonPress = () => {
-    this.props.initSignin({ id: this.id.value, pw: this.pw.value, autoLogin: true });
+    this.props.initSignin({ id: this.id.value, pw: this.pw.value });
   };
 
   render() {

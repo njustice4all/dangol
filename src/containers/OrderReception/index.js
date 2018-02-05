@@ -8,7 +8,8 @@ import { ItemDelivery, ItemTable, ItemPackage } from '../../components';
 
 class OrderReception extends Component {
   componentDidMount = () => {
-    this.props.initFetchOrderLists();
+    const { initFetchOrderLists, session, siteId } = this.props;
+    initFetchOrderLists({ session, siteId });
   };
 
   goDetail = no => () => {
@@ -66,9 +67,11 @@ export default connect(
     order: state.get('order'),
     coords: state.getIn(['auth', 'coords']),
     router: state.get('router'),
+    session: state.getIn(['auth', 'session']),
+    siteId: state.getIn(['auth', 'siteId']),
   }),
   dispatch => ({
-    initFetchOrderLists: () => dispatch(initFetchOrderLists()),
+    initFetchOrderLists: payload => dispatch(initFetchOrderLists(payload)),
     locationChange: pathname => dispatch(push(pathname)),
   })
 )(OrderReception);

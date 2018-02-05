@@ -2,6 +2,7 @@ import { orderDoneLists } from '../dummy';
 
 // real api
 import { apiGetOrderLists, apiGetOrderDetail, apiGetOrderProcess } from '../api/order';
+import apiGetCoords from '../api/coords';
 import Converter from '../utils/Converter';
 
 const error = { error: true, msg: '망함' };
@@ -23,11 +24,11 @@ const fetchOrderLists = () => ({ type: 'order/FETCH_ORDER_LISTS' });
 const fetchOrderListsSuccess = lists => ({ type: 'order/FETCH_ORDER_LISTS_SUCCESS', lists });
 const fetchOrderListsError = errors => ({ type: 'order/FETCH_ORDER_LISTS_ERROR', errors });
 
-export const initFetchOrderLists = () => async dispatch => {
+export const initFetchOrderLists = payload => async dispatch => {
   dispatch(fetchOrderLists());
 
   try {
-    const response = await apiGetOrderLists();
+    const response = await apiGetOrderLists(payload);
 
     if (!response) {
       dispatch(fetchOrderListsError(error));
@@ -103,5 +104,33 @@ export const initFetchProcessDone = () => async dispatch => {
     dispatch(fetchProcessDoneSuccess(orderDoneLists));
   } else {
     dispatch(fetchProcessDoneError(error));
+  }
+};
+
+/**
+ * 주문자의 gps값 가져옴
+ */
+const getCoords = () => ({ type: 'order/GET_COORDS' });
+const getCoordsSuccess = coords => ({ type: 'order/GET_COORDS_SUCCESS', coords });
+const getCoordsError = errors => ({ type: 'order/GET_COORDS_ERROR', errors });
+
+export const initGetCoords = info => async dispatch => {
+  dispatch(getCoords());
+  const response = await apiGetCoords(info);
+
+  try {
+    if (response.status !== 200) {
+      dispatch(getCoordsError(error));
+    } else {
+      const result = await response.json();
+
+      if (result.results.length === 0) {
+        dispatch(getCoordsSuccess({ lat: '', lng: '' }));
+      }
+
+      dispatch(getCoordsSuccess(result.results[0].geometry.location));
+    }
+  } catch (error) {
+    dispatch(getCoordsError(error));
   }
 };

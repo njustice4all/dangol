@@ -1,5 +1,6 @@
 import { info } from '../dummy';
 import apiGetCoords from '../api/coords';
+import { apiReqLogin } from '../api/auth';
 
 const errors = { error: true, msg: '망함' };
 
@@ -10,7 +11,7 @@ const getCoords = () => ({ type: 'geo/GET_COORDS' });
 const getCoordsSuccess = coords => ({ type: 'geo/GET_COORDS_SUCCESS', coords });
 const getCoordsError = erros => ({ type: 'geo/GET_COORDS_ERROR', errors });
 
-const initGetCoords = info => async dispatch => {
+export const initGetCoords = info => async dispatch => {
   dispatch(getCoords());
   const response = await apiGetCoords(info);
 
@@ -32,11 +33,13 @@ const reqSigninError = errors => ({ type: 'auth/REQ_SIGNIN_ERROR', errors });
 export const initSignin = user => async dispatch => {
   dispatch(reqSignin());
 
-  // TODO: const response = await apiSignin(user)
-  if (true) {
-    dispatch(reqSigninSuccess(info, user));
-    dispatch(initGetCoords(info));
-  } else {
+  const response = await apiReqLogin(user);
+  const toJSON = JSON.parse(response);
+
+  if (toJSON.msg !== 'ok') {
     dispatch(reqSigninError(errors));
+  } else {
+    dispatch(reqSigninSuccess({ ...toJSON }, user));
+    dispatch(initGetCoords(info));
   }
 };
