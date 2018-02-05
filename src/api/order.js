@@ -45,13 +45,14 @@ export const apiGetOrderLists = payload => {
   //   body: Converter.getFormData(data),
   // });
 
+  // FIXME:
+  // data.siteId = payload.siteId;
   return new Promise((resolve, reject) => {
     $.ajax({
       type: 'POST',
       url: ATY_URI + '/aty_convert_order.php',
       data: {
-        siteId: SITE_ID,
-        // siteId: payload.siteId,
+        siteId: payload.siteId,
         keyWord: 'GetOrderList',
         shop: 1,
         search: {
@@ -94,6 +95,7 @@ export const apiGetOrderLists = payload => {
  */
 export const apiGetOrderDetail = payload => {
   return new Promise(function(resolve, reject) {
+    // FIXME:
     $.ajax({
       type: 'POST',
       url: RSAPI + '/rsapi',
@@ -120,16 +122,41 @@ export const apiGetOrderDetail = payload => {
 /**
  * 처리중 주문
  */
-export const apiGetOrderProcess = () => {
-  data.search.orderState = 'deliveryPrepare';
+export const apiGetOrderProcess = payload => {
   return new Promise((resolve, reject) => {
     $.ajax({
       type: 'POST',
-      xhrFields: {
-        withCredentials: false,
-      },
       url: ATY_URI + '/aty_convert_order.php',
-      data: data,
+      data: {
+        siteId: payload.siteId,
+        keyWord: 'GetOrderList',
+        shop: 1,
+        search: {
+          searchType: '0',
+          keyword: '',
+          periodType: '0',
+          period_msg: '',
+          period_start: '',
+          period_end: '',
+          memberBuy: '0',
+          payMothodCard: '1',
+          payMothodPhone: '1',
+          payMothodBank: '1',
+          payMothodMoney: '1',
+          totalPriceStart: '',
+          totalPriceEnd: '',
+          delivery: '0',
+          category: '',
+          brand: '',
+          orderState: 'deliveryPrepare',
+        },
+        order: {
+          name: 'order_date',
+          sort: '0',
+        },
+        limit: 20,
+        page: 1,
+      },
       success: result => {
         resolve(result);
       },
@@ -143,15 +170,42 @@ export const apiGetOrderProcess = () => {
 /**
  * 처리완료 목록
  */
-export const apiGetOrderComplete = () => {
+export const apiGetOrderComplete = payload => {
+  data.search.orderState = 'deliveryDone';
   return new Promise((resolve, reject) => {
     $.ajax({
       type: 'POST',
-      xhrFields: {
-        withCredentials: false,
-      },
       url: ATY_URI + '/aty_convert_order.php',
       data: data,
+      success: result => {
+        resolve(result);
+      },
+      error: () => {
+        reject(new Error());
+      },
+    });
+  });
+};
+
+/**
+ * 주문대기상태를 처리중으로...
+ */
+export const apiSetOrderProcess = payload => {
+  // FIXME:
+  return new Promise((resolve, reject) => {
+    $.ajax({
+      type: 'POST',
+      url: ATY_URI + '/aty_convert_order.php',
+      data: {
+        siteId: payload.siteId,
+        sessId: payload.sessionId,
+        keyWord: 'SetOrderListDetail',
+        idx: payload.results,
+        data: {
+          state: 'deliveryPrepare',
+          sub_state: '',
+        },
+      },
       success: result => {
         resolve(result);
       },

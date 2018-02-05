@@ -71,6 +71,14 @@ class OrderAccept extends Component {
     }
   };
 
+  _setProcess = () => {
+    console.log('처리중으로...');
+  };
+
+  _setComplete = () => {
+    console.log('처리완료...');
+  };
+
   render() {
     const { options, error, time } = this.state;
 
@@ -109,9 +117,15 @@ class OrderAccept extends Component {
 }
 
 export default withRouter(
-  connect(null, dispatch => ({
-    closePopup: ui => dispatch(closePopup(ui)),
-    setStatus: status => dispatch(setStatus(status)),
-    batchActions: (first, second) => dispatch(batchActions(first, second)),
-  }))(OrderAccept)
+  connect(
+    state => ({
+      lists: state.getIn(['order', 'lists']),
+      currentIdx: state.getIn(['order', 'detail', 'order', 'idx']),
+    }),
+    dispatch => ({
+      closePopup: ui => dispatch(closePopup(ui)),
+      setStatus: status => dispatch(setStatus(status)),
+      batchActions: (first, second) => dispatch(batchActions(first, second)),
+    })
+  )(OrderAccept)
 );

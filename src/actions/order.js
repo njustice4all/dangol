@@ -1,7 +1,12 @@
 import { orderDoneLists } from '../dummy';
 
 // real api
-import { apiGetOrderLists, apiGetOrderDetail, apiGetOrderProcess } from '../api/order';
+import {
+  apiGetOrderLists,
+  apiGetOrderDetail,
+  apiGetOrderProcess,
+  apiSetOrderProcess,
+} from '../api/order';
 import apiGetCoords from '../api/coords';
 import Converter from '../utils/Converter';
 
@@ -73,16 +78,39 @@ const fetchOrderProcessSuccess = payload => ({
 });
 const fetchOrderProcessError = error => ({ type: 'order/FETCH_ORDER_PROCESS_ERROR', error });
 
-export const initFetchOrderProcess = () => async dispatch => {
+export const initFetchOrderProcess = payload => async dispatch => {
   dispatch(fetchOrderProcess());
 
-  const response = await apiGetOrderProcess();
+  const response = await apiGetOrderProcess(payload);
 
   try {
     if (!response) {
       dispatch(fetchOrderProcessError(error));
     } else {
-      dispatch(fetchOrderProcessSuccess([]));
+      dispatch(fetchOrderProcessSuccess(Converter.listsToState(response.list)));
+    }
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+/**
+ * 주문 처리중으로 설정
+ */
+const setOrderProcess = () => ({ type: 'order/SET_ORDER_PROCESS' });
+const setOrderProcessSuccess = payload => ({ type: 'order/SET_ORDER_PROCESS_SUCCESS', payload });
+const setOrderProcessError = error => ({ type: 'order/SET_ORDER_PROCESS_ERROR', error });
+
+export const initSetOrderProcess = payload => async dispatch => {
+  dispatch(setOrderProcess());
+
+  const response = await apiSetOrderProcess(payload);
+
+  try {
+    if (!response) {
+      dispatch(setOrderProcessError(error));
+    } else {
+      dispatch(setOrderProcessSuccess({ success: true }));
     }
   } catch (error) {
     console.error(error);

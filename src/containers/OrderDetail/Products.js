@@ -51,10 +51,8 @@ const Option = ({ option }) => {
 
 const Products = ({ detail }) => {
   let options = detail.getIn(['orderDetail', 'product', 'option', 'list']);
-  if (options) {
-    if (!options.getIn([0, 'idx'])) {
-      options = [];
-    }
+  if (options && !options.getIn([0, 'idx'])) {
+    options = [];
   }
 
   return (

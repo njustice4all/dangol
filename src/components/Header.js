@@ -57,10 +57,10 @@ const OrderType = ({ type, date }) => {
   let title: string = '배달';
   let customType = 'delivery';
 
-  if (type === '포장주문') {
+  if (type === 'package') {
     title = '포장';
     customType = 'package';
-  } else if (type === '매장주문') {
+  } else if (type === 'order') {
     title = '매장';
     customType = 'order';
   }
@@ -118,7 +118,7 @@ class Header extends Component<Props> {
         <div className="title">{customProps.title}</div>
         {customProps.detail && (
           <OrderType
-            type={detail.getIn(['order', 'order_state'])}
+            type={detail.getIn(['orderDetail', 'sub_state'])}
             date={detail.getIn(['order', 'order_date'])}
           />
         )}

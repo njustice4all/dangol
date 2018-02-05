@@ -4,7 +4,7 @@ class Convert {
       .map(list => ({
         no: list.order_no,
         date: list.order_date,
-        type: list.order_state,
+        type: list.sub_state,
         address: `${list.od_b_addr1}, ${list.od_b_addr2}`,
         distance: '',
         takeTime: '',

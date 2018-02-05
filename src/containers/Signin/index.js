@@ -7,12 +7,15 @@ import { initSignin } from '../../actions/auth';
 class Signin extends Component {
   componentWillReceiveProps = nextProps => {
     if (nextProps.login) {
-      this.props.locationChange('/order/reception');
+      // FIXME: 주석풀어야함
+      // this.props.locationChange('/order/reception');
     }
   };
 
   onLoginButtonPress = () => {
     this.props.initSignin({ id: this.id.value, pw: this.pw.value });
+    // FIXME: 주석풀어야함
+    this.props.locationChange('/order/reception');
   };
 
   render() {

@@ -8,10 +8,12 @@ import { openPopup } from '../../actions/ui';
 class ButtonFooter extends Component {
   _onPress = () => {
     const { type, openPopup, isProgress, locationChange } = this.props;
-    if (type === '매장주문' || type === '포장주문') {
+    if (type === 'order' || type === 'package') {
       if (isProgress) {
+        // 처리완료
         openPopup('orderComplete');
       } else {
+        // 처리중
         openPopup('orderAccept');
       }
     } else {
@@ -46,7 +48,7 @@ class ButtonFooter extends Component {
 export default withRouter(
   connect(
     state => ({
-      type: state.getIn(['order', 'detail', 'order', 'order_state']),
+      type: state.getIn(['order', 'detail', 'orderDetail', 'sub_state']),
     }),
     dispatch => ({
       openPopup: ui => dispatch(openPopup(ui)),

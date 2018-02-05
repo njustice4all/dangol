@@ -27,7 +27,7 @@ class OrderDetail extends Component {
       this.props.detail.getIn(['order', 'od_b_addr2']).trim();
 
     if (prevProps.detail.get('order').size !== this.props.detail.get('order').size) {
-      this.props.initGetCoords({ address });
+      this.props.initGetCoords({ address: address.trim() });
     }
   };
 

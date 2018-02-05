@@ -66,11 +66,11 @@ const Package = ({ detail }) => (
 );
 
 const Customer = ({ detail, shopCoords }) => {
-  const type = detail.getIn(['order', 'order_state']);
+  const type = detail.getIn(['orderDetail', 'sub_state']);
 
-  if (type === '매장주문') {
+  if (type === 'order') {
     return null;
-  } else if (type === '포장주문') {
+  } else if (type === 'package') {
     return <Package detail={detail} />;
   } else {
     // FIXME:

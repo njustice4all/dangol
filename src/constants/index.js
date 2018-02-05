@@ -1,4 +1,4 @@
-export const SITE_ID = '392cefca5d9544c39d16a959ef6f888e';
+export const SITE_ID = '50bbf5fc945f40cbbc132f7072fe0cbe';
 export const SESSION_ID = 'nbil85pta77s1ma8r1iictgjbu';
 
 export const ATY_URI = 'https://editor.aty.kr/shop';

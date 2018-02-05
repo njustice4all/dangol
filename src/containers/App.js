@@ -3,6 +3,7 @@ import { Route, withRouter, Switch } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { push } from 'react-router-redux';
 
+import { initSignin } from '../actions/auth';
 import { closePopup } from '../actions/ui';
 
 import { Header, SideMenu } from '../components';
@@ -21,12 +22,19 @@ import getClassNameByRoutes from '../utils/getClassNameByRoutes';
 class App extends Component {
   componentDidMount = () => {
     document.addEventListener('message', this.onMessage);
+    // FIXME:
+    this.props.initSignin({ id: 'tiba', pw: 'test1234' });
   };
 
   componentWillUnmount = () => {
     document.removeEventListener('message', this.onMessage);
   };
 
+  /**
+   * TODO: 모바일앱에서 local message받으면 postmessage가 push/RECEIVE_MESSAGE 이런 형태로 구현해야함
+   * 그럼 fromMobile(msg.payload)로 액션 발생하고
+   * reducer에서 해당 메세지 받으면... 아마도 ui가 팝업 되어야 함
+   */
   onMessage = event => {
     const { locationChange, fromMobile } = this.props;
     const msg = JSON.parse(event.data);
@@ -91,6 +99,7 @@ export default withRouter(
       closePopup: ui => dispatch(closePopup(ui)),
       locationChange: pathname => dispatch(push(pathname)),
       fromMobile: action => dispatch(action),
+      initSignin: user => dispatch(initSignin(user)),
     })
   )(App)
 );

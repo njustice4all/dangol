@@ -3,6 +3,7 @@ import { Record, List, Map, fromJS } from 'immutable';
 const StateRecord = Record({
   lists: new List(),
   doneLists: new List(),
+  processLists: List(),
   detail: fromJS({
     order: {},
     orderDetail: {},
@@ -22,6 +23,12 @@ const StateRecord = Record({
 
 const getNewLists = (state, action) => {
   return state.withMutations(s => s.set('isFetching', false).set('lists', fromJS(action.lists)));
+};
+
+const getProcessLists = (state, action) => {
+  return state.withMutations(mutator =>
+    mutator.set('isFetching', false).set('processLists', fromJS(action.payload))
+  );
 };
 
 const errorOnFetching = (state, action) => {
@@ -63,6 +70,7 @@ export const order = (state = new StateRecord(), action) => {
     case 'order/FETCH_ORDER_DETAIL':
     case 'order/FETCH_PROCESS_DONE':
     case 'order/FETCH_ORDER_PROCESS':
+    case 'order/SET_ORDER_PROCESS':
     case 'order/GET_COORDS':
       return state.set('isFetching', true);
 
@@ -73,7 +81,7 @@ export const order = (state = new StateRecord(), action) => {
       return getOrderDetailSuccess(state, action);
 
     case 'order/FETCH_ORDER_PROCESS_SUCCESS':
-      return setCoords(state, action);
+      return getProcessLists(state, action);
 
     case 'order/FETCH_PROCESS_DONE_SUCCESS':
       return getDoneLists(state, action);
@@ -81,10 +89,14 @@ export const order = (state = new StateRecord(), action) => {
     case 'order/GET_COORDS_SUCCESS':
       return setCoords(state, action);
 
+    case 'order/SET_ORDER_PROCESS_SUCCESS':
+      return state;
+
     case 'order/FETCH_ORDER_LISTS_ERROR':
     case 'order/FETCH_ORDER_DETAIL_ERROR':
     case 'order/FETCH_PROCESS_DONE_ERROR':
     case 'order/FETCH_ORDER_PROCESS_ERROR':
+    case 'order/SET_ORDER_PROCESS_ERROR':
     case 'order/GET_COORDS_ERROR':
       return errorOnFetching(state, action);
 

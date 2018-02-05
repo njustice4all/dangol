@@ -22,7 +22,7 @@ const Info = ({ title, content, total }) => {
 };
 
 const Order = ({ detail }) => {
-  const type = detail.getIn(['order', 'order_state']);
+  const type = detail.getIn(['orderDetail', 'sub_state']);
 
   return (
     <div className="content-wrapper">
@@ -30,8 +30,8 @@ const Order = ({ detail }) => {
       <ul className="list-items">
         <Info title={'주문번호'} content={detail.getIn(['order', 'order_no'])} />
         <Info title={'주문시간'} content={detail.getIn(['order', 'order_date'])} />
-        {type === '매장주문' ? <Info title={'테이블번호'} content={'없음'} /> : null}
-        {type === '매장주문' ? (
+        {type === 'order' ? <Info title={'테이블번호'} content={'없음'} /> : null}
+        {type === 'order' ? (
           <Info title={'요청사항'} content={detail.getIn(['order', 'od_b_message'])} />
         ) : null}
         <Info
