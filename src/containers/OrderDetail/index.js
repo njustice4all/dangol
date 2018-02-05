@@ -22,9 +22,9 @@ class OrderDetail extends Component {
 
   componentDidUpdate = prevProps => {
     const address =
-      this.props.detail.getIn(['order', 'od_b_addr1']) +
+      this.props.detail.getIn(['order', 'od_b_addr1']).trim() +
       ' ' +
-      this.props.detail.getIn(['order', 'od_b_addr2']);
+      this.props.detail.getIn(['order', 'od_b_addr2']).trim();
 
     if (prevProps.detail.get('order').size !== this.props.detail.get('order').size) {
       this.props.initGetCoords({ address });

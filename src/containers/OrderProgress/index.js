@@ -67,10 +67,12 @@ export default connect(
     order: state.get('order'),
     coords: state.getIn(['auth', 'coords']),
     router: state.get('router'),
+    session: state.getIn(['auth', 'session']),
+    siteId: state.getIn(['auth', 'siteId']),
   }),
   dispatch => ({
-    initFetchOrderLists: () => dispatch(initFetchOrderLists()),
-    initFetchOrderProcess: () => dispatch(initFetchOrderProcess()),
+    initFetchOrderLists: payload => dispatch(initFetchOrderLists(payload)),
+    initFetchOrderProcess: payload => dispatch(initFetchOrderProcess(payload)),
     locationChange: pathname => dispatch(push(pathname)),
   })
 )(OrderProgress);

@@ -50,7 +50,12 @@ const Option = ({ option }) => {
 };
 
 const Products = ({ detail }) => {
-  const options = detail.getIn(['orderDetail', 'product', 'option', 'list']);
+  let options = detail.getIn(['orderDetail', 'product', 'option', 'list']);
+  if (options) {
+    if (!options.getIn([0, 'idx'])) {
+      options = [];
+    }
+  }
 
   return (
     <div className="content-wrapper">

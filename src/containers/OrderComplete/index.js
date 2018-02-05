@@ -70,9 +70,11 @@ export default connect(
     doneLists: state.getIn(['order', 'doneLists']),
     coords: state.getIn(['auth', 'coords']),
     router: state.get('router'),
+    session: state.getIn(['auth', 'session']),
+    siteId: state.getIn(['auth', 'siteId']),
   }),
   dispatch => ({
-    initFetchProcessDone: () => dispatch(initFetchProcessDone()),
-    initFetchOrderLists: () => dispatch(initFetchOrderLists()),
+    initFetchProcessDone: payload => dispatch(initFetchProcessDone(payload)),
+    initFetchOrderLists: paylaod => dispatch(initFetchOrderLists(payload)),
   })
 )(OrderComplete);
