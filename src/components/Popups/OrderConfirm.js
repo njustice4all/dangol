@@ -15,6 +15,7 @@ class OrderConfirm extends Component {
       initSetOrderProcess,
       sessionId,
       siteId,
+      orderNo,
     } = this.props;
     const results = [];
 
@@ -22,7 +23,7 @@ class OrderConfirm extends Component {
     lists.getIn([index, 'data', 'product']).forEach(product => results.push(product.get('idx')));
 
     closePopup('orderAccept');
-    initSetOrderProcess({ results, sessionId, siteId });
+    initSetOrderProcess({ results, sessionId, siteId, orderNo });
     locationChange('/order/progress');
   };
 
@@ -38,10 +39,12 @@ class OrderConfirm extends Component {
     return (
       <div className="popup-container">
         <div className="popup-pannel order-time">
-          <div className="header">
+          <div className="header" style={{ height: '75px' }}>
             <div className="title">주문접수</div>
           </div>
-          <div className="body">사장님 접수처리 되었습니다.</div>
+          <div className="body" style={{ padding: '10px' }}>
+            사장님 접수처리 되었습니다.
+          </div>
           <div className="btn-wrapper">
             <div className="btn big" onClick={this._onPress}>
               확인
@@ -57,6 +60,7 @@ export default connect(
   state => ({
     lists: state.getIn(['order', 'lists']),
     currentIdx: state.getIn(['order', 'detail', 'order', 'idx']),
+    orderNo: state.getIn(['order', 'detail', 'order', 'order_no']),
     sessionId: state.getIn(['auth', 'session']),
     siteId: state.getIn(['auth', 'siteId']),
   }),

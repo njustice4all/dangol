@@ -2,14 +2,13 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { push } from 'react-router-redux';
 
-import { initFetchOrderLists, initFetchOrderProcess } from '../../actions/order';
+import { initFetchOrderProcess } from '../../actions/order';
 
 import { ItemDelivery, ItemTable, ItemPackage } from '../../components';
 
 class OrderProgress extends Component {
   componentDidMount = () => {
     const { initFetchOrderProcess, session, siteId } = this.props;
-    // this.props.initFetchOrderLists();
     initFetchOrderProcess({ session, siteId });
   };
 
@@ -21,12 +20,10 @@ class OrderProgress extends Component {
     const { order, coords, router, lists } = this.props;
     const pathname = router.location.pathname.split('/order/')[1];
 
-    console.log(lists);
-
     // FIXME: 주문타입으로 분류
     return (
       <div className="body">
-        <div className="bodyHeader">2017-12-22</div>
+        <div className="bodyHeader">2018-02-07</div>
         <ul className="list-items">
           {lists.map((order, index) => {
             if (order.get('type') === 'delivery') {
@@ -75,7 +72,6 @@ export default connect(
     siteId: state.getIn(['auth', 'siteId']),
   }),
   dispatch => ({
-    initFetchOrderLists: payload => dispatch(initFetchOrderLists(payload)),
     initFetchOrderProcess: payload => dispatch(initFetchOrderProcess(payload)),
     locationChange: pathname => dispatch(push(pathname)),
   })

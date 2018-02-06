@@ -8,6 +8,7 @@ import { openPopup } from '../../actions/ui';
 class ButtonFooter extends Component {
   _onPress = () => {
     const { type, openPopup, isProgress, locationChange } = this.props;
+    console.log(type);
     if (type === 'order' || type === 'package') {
       if (isProgress) {
         // 처리완료

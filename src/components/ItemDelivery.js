@@ -11,14 +11,16 @@ type Props = {
   goDetail: (no: string) => void,
   order: Object,
   shopCoords: Map<string, number>,
-  status?: string,
+  status: Map<string, number>,
   pathname: string,
 };
 
 const SideButton = ({ status }) => {
-  if (status === 'accept') {
+  if (!status) return null;
+
+  if (status.get('deliveryDone') > 0) {
     return <div className="right-btn">주 문 완 료</div>;
-  } else if (status === 'reject') {
+  } else if (status.get('cancel') > 0) {
     return <div className="right-btn">주 문 취 소</div>;
   } else {
     return null;

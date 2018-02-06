@@ -6,6 +6,8 @@ import {
   apiGetOrderDetail,
   apiGetOrderProcess,
   apiSetOrderProcess,
+  apiGetOrderComplete,
+  apiSetOrderComplete,
 } from '../api/order';
 import apiGetCoords from '../api/coords';
 import Converter from '../utils/Converter';
@@ -121,17 +123,45 @@ export const initSetOrderProcess = payload => async dispatch => {
  * 주문 처리 완료 목록
  */
 const fetchProcessDone = () => ({ type: 'order/FETCH_PROCESS_DONE' });
-const fetchProcessDoneSuccess = lists => ({ type: 'order/FETCH_PROCESS_DONE_SUCCESS', lists });
+const fetchProcessDoneSuccess = payload => ({ type: 'order/FETCH_PROCESS_DONE_SUCCESS', payload });
 const fetchProcessDoneError = errors => ({ type: 'order/FETCH_PROCESS_DONE_ERROR', errors });
 
-export const initFetchProcessDone = () => async dispatch => {
+export const initFetchProcessDone = payload => async dispatch => {
   dispatch(fetchProcessDone());
 
-  // TODO:
-  if (true) {
-    dispatch(fetchProcessDoneSuccess(orderDoneLists));
-  } else {
-    dispatch(fetchProcessDoneError(error));
+  const response = await apiGetOrderComplete(payload);
+
+  try {
+    if (!response) {
+      dispatch(fetchProcessDoneError(error));
+    } else {
+      dispatch(fetchProcessDoneSuccess(Converter.listsToState(response.list)));
+    }
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+/**
+ * 주문완료로 설정
+ */
+const setOrderComplete = () => ({ type: 'order/SET_ORDER_COMPLETE' });
+const setOrderCompleteSuccess = payload => ({ type: 'order/SET_ORDER_COMPLETE_SUCCESS', payload });
+const setOrderCompleteError = error => ({ type: 'order/SET_ORDER_COMPLETE_ERROR', error });
+
+export const initSetOrderComplete = payload => async dispatch => {
+  dispatch(setOrderProcess());
+
+  const response = await apiSetOrderComplete(payload);
+
+  try {
+    if (!response) {
+      dispatch(setOrderProcessError(error));
+    } else {
+      dispatch(setOrderProcessSuccess({ success: true }));
+    }
+  } catch (error) {
+    console.error(error);
   }
 };
 

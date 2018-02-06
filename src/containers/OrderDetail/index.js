@@ -9,6 +9,7 @@ import Products from './Products';
 import Customer from './Customer';
 import Order from './Order';
 import ButtonFooter from './ButtonFooter';
+import { Loading } from '../../components';
 
 import getCoords from '../../utils/getCoords';
 
@@ -21,18 +22,28 @@ class OrderDetail extends Component {
   };
 
   componentDidUpdate = prevProps => {
-    const address =
-      this.props.detail.getIn(['order', 'od_b_addr1']).trim() +
-      ' ' +
-      this.props.detail.getIn(['order', 'od_b_addr2']).trim();
+    try {
+      const address =
+        this.props.detail.getIn(['order', 'od_b_addr1']) +
+        ' ' +
+        this.props.detail.getIn(['order', 'od_b_addr2']);
 
-    if (prevProps.detail.get('order').size !== this.props.detail.get('order').size) {
-      this.props.initGetCoords({ address: address.trim() });
+      // const address = this.props.detail.getIn(['order', 'od_b_addr1']);
+
+      if (prevProps.detail.get('order').size !== this.props.detail.get('order').size) {
+        this.props.initGetCoords({ address });
+      }
+    } catch (error) {
+      console.error(error);
     }
   };
 
   render() {
-    const { detail, shopCoords, isComplete, isProgress } = this.props;
+    const { detail, shopCoords, isComplete, isProgress, isFetching } = this.props;
+
+    if (isFetching) {
+      return <Loading />;
+    }
 
     return (
       <div className="body">
@@ -52,6 +63,7 @@ export default connect(
     shopCoords: state.getIn(['auth', 'coords']),
     session: state.getIn(['auth', 'session']),
     siteId: state.getIn(['auth', 'siteId']),
+    isFetching: state.getIn(['order', 'isFetching']),
   }),
   dispatch => ({
     initFetchOrderDetail: payload => dispatch(initFetchOrderDetail(payload)),

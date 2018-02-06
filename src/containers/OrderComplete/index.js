@@ -1,18 +1,19 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { push } from 'react-router-redux';
 
 import { ItemDelivery, ItemTable, ItemPackage } from '../../components';
 
-import { initFetchProcessDone, initFetchOrderLists } from '../../actions/order';
+import { initFetchProcessDone } from '../../actions/order';
 
 class OrderComplete extends Component {
   componentDidMount = () => {
-    this.props.initFetchProcessDone();
-    // this.props.initFetchOrderLists();
+    const { initFetchProcessDone, session, siteId } = this.props;
+    initFetchProcessDone({ session, siteId });
   };
 
   goDetail = no => () => {
-    this.props.history.push(`/order/complete/${no}`);
+    this.props.locationChange(`/order/complete/${no}`);
   };
 
   render() {
@@ -22,7 +23,7 @@ class OrderComplete extends Component {
     // FIXME: 주문타입으로 분류
     return (
       <div className="body">
-        <div className="bodyHeader">2017-12-22</div>
+        <div className="bodyHeader">2018-02-07</div>
         <ul className="list-items">
           {doneLists.map((order, index) => {
             if (order.get('type') === 'delivery') {
@@ -31,7 +32,7 @@ class OrderComplete extends Component {
                   order={order}
                   key={`done-${index}`}
                   shopCoords={coords}
-                  status={order.get('status')}
+                  status={order.getIn(['data', 'stateCount'])}
                   goDetail={this.goDetail}
                   pathname={pathname}
                 />
@@ -41,7 +42,7 @@ class OrderComplete extends Component {
                 <ItemTable
                   order={order}
                   key={`done-${index}`}
-                  status={order.get('status')}
+                  status={order.getIn(['data', 'stateCount'])}
                   goDetail={this.goDetail}
                   pathname={pathname}
                 />
@@ -51,7 +52,7 @@ class OrderComplete extends Component {
                 <ItemPackage
                   order={order}
                   key={`done-${index}`}
-                  status={order.get('status')}
+                  status={order.getIn(['data', 'stateCount'])}
                   goDetail={this.goDetail}
                   pathname={pathname}
                 />
@@ -75,6 +76,6 @@ export default connect(
   }),
   dispatch => ({
     initFetchProcessDone: payload => dispatch(initFetchProcessDone(payload)),
-    initFetchOrderLists: paylaod => dispatch(initFetchOrderLists(payload)),
+    locationChange: pathname => dispatch(push(pathname)),
   })
 )(OrderComplete);

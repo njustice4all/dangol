@@ -3,12 +3,27 @@ import { connect } from 'react-redux';
 import { push } from 'react-router-redux';
 
 import { closePopup } from '../../actions/ui';
+import { initSetOrderComplete } from '../../actions/order';
 
 class OrderComplete extends Component {
   _onPress = () => {
-    const { closePopup, locationChange } = this.props;
+    const {
+      closePopup,
+      locationChange,
+      lists,
+      currentIdx,
+      initSetOrderProcess,
+      sessionId,
+      siteId,
+      orderNo,
+    } = this.props;
+    const results = [];
+
+    const index = lists.findIndex(list => list.getIn(['data', 'idx']) === currentIdx + '');
+    lists.getIn([index, 'data', 'product']).forEach(product => results.push(product.get('idx')));
 
     closePopup('orderComplete');
+    initSetOrderComplete({ results, sessionId, siteId, orderNo });
     locationChange('/order/complete');
   };
 
@@ -31,7 +46,17 @@ class OrderComplete extends Component {
   }
 }
 
-export default connect(null, dispatch => ({
-  closePopup: ui => dispatch(closePopup(ui)),
-  locationChange: pathname => dispatch(push(pathname)),
-}))(OrderComplete);
+export default connect(
+  state => ({
+    lists: state.getIn(['order', 'lists']),
+    currentIdx: state.getIn(['order', 'detail', 'order', 'idx']),
+    sessionId: state.getIn(['auth', 'session']),
+    siteId: state.getIn(['auth', 'siteId']),
+    orderNo: state.getIn(['order', 'detail', 'order', 'order_no']),
+  }),
+  dispatch => ({
+    closePopup: ui => dispatch(closePopup(ui)),
+    locationChange: pathname => dispatch(push(pathname)),
+    initSetOrderComplete: payload => dispatch(initSetOrderComplete(payload)),
+  })
+)(OrderComplete);

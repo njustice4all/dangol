@@ -46,7 +46,7 @@ const _setStatus = (state, action) => {
 
 const getDoneLists = (state, action) => {
   return state.withMutations(s =>
-    s.set('isFetching', false).set('doneLists', fromJS(action.lists))
+    s.set('isFetching', false).set('doneLists', fromJS(action.payload))
   );
 };
 
@@ -71,6 +71,7 @@ export const order = (state = new StateRecord(), action) => {
     case 'order/FETCH_PROCESS_DONE':
     case 'order/FETCH_ORDER_PROCESS':
     case 'order/SET_ORDER_PROCESS':
+    case 'order/SET_ORDER_COMPLETE':
     case 'order/GET_COORDS':
       return state.set('isFetching', true);
 
@@ -92,11 +93,15 @@ export const order = (state = new StateRecord(), action) => {
     case 'order/SET_ORDER_PROCESS_SUCCESS':
       return state;
 
+    case 'order/SET_ORDER_COMPLETE_SUCCESS':
+      return state;
+
     case 'order/FETCH_ORDER_LISTS_ERROR':
     case 'order/FETCH_ORDER_DETAIL_ERROR':
     case 'order/FETCH_PROCESS_DONE_ERROR':
     case 'order/FETCH_ORDER_PROCESS_ERROR':
     case 'order/SET_ORDER_PROCESS_ERROR':
+    case 'order/SET_ORDER_COMPLETE_ERROR':
     case 'order/GET_COORDS_ERROR':
       return errorOnFetching(state, action);
 

@@ -23,7 +23,7 @@ class OrderReception extends Component {
     // FIXME: 주문타입으로 분류
     return (
       <div className="body">
-        <div className="bodyHeader">2017-12-22</div>
+        <div className="bodyHeader">2018-02-07</div>
         <ul className="list-items">
           {order.get('lists').map((order, index) => {
             if (order.get('type') === 'order') {

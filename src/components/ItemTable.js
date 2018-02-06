@@ -1,6 +1,7 @@
 // @flow
 
 import React from 'react';
+import type { Map } from 'immutable';
 
 import getWrapperClassName from '../utils/getWrapperClassName';
 import { getTime } from '../utils/time';
@@ -8,14 +9,16 @@ import { getTime } from '../utils/time';
 type Props = {
   goDetail: (no: string) => void,
   order: Object,
-  status?: string,
+  status: Map<string, number>,
   pathname: string,
 };
 
 const SideButton = ({ status }) => {
-  if (status === 'accept') {
+  if (!status) return null;
+
+  if (status.get('deliveryDone') > 0) {
     return <div className="right-btn">주 문 완 료</div>;
-  } else if (status === 'reject') {
+  } else if (status.get('cancel') > 0) {
     return <div className="right-btn">주 문 취 소</div>;
   } else {
     return null;
