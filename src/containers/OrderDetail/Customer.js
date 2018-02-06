@@ -48,7 +48,6 @@ const Delivery = ({ detail, coords }) => (
   </div>
 );
 
-// FIXME: 수령시간 현재 없음
 const Package = ({ detail }) => (
   <div className="content-wrapper">
     <div className="content-title">주문자 정보</div>
@@ -57,7 +56,7 @@ const Package = ({ detail }) => (
       <li className="list-item">
         <div className="title">수령시간</div>
         <div className="content">
-          <span className="text">빼야함</span>
+          <span className="text">{detail.getIn(['order', 'od_b_pack_req_time'])}</span>
         </div>
       </li>
       <Payment request={detail.getIn(['order', 'od_b_message'])} />

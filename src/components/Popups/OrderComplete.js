@@ -12,7 +12,7 @@ class OrderComplete extends Component {
       locationChange,
       lists,
       currentIdx,
-      initSetOrderProcess,
+      initSetOrderComplete,
       sessionId,
       siteId,
       orderNo,
@@ -48,7 +48,7 @@ class OrderComplete extends Component {
 
 export default connect(
   state => ({
-    lists: state.getIn(['order', 'lists']),
+    lists: state.getIn(['order', 'processLists']),
     currentIdx: state.getIn(['order', 'detail', 'order', 'idx']),
     sessionId: state.getIn(['auth', 'session']),
     siteId: state.getIn(['auth', 'siteId']),

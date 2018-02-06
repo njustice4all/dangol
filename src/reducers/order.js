@@ -72,6 +72,7 @@ export const order = (state = new StateRecord(), action) => {
     case 'order/FETCH_ORDER_PROCESS':
     case 'order/SET_ORDER_PROCESS':
     case 'order/SET_ORDER_COMPLETE':
+    case 'order/SET_DELIVERY_PROCESS':
     case 'order/GET_COORDS':
       return state.set('isFetching', true);
 
@@ -96,12 +97,16 @@ export const order = (state = new StateRecord(), action) => {
     case 'order/SET_ORDER_COMPLETE_SUCCESS':
       return state;
 
+    case 'order/SET_DELIVERY_PROCESS_SUCCESS':
+      return state;
+
     case 'order/FETCH_ORDER_LISTS_ERROR':
     case 'order/FETCH_ORDER_DETAIL_ERROR':
     case 'order/FETCH_PROCESS_DONE_ERROR':
     case 'order/FETCH_ORDER_PROCESS_ERROR':
     case 'order/SET_ORDER_PROCESS_ERROR':
     case 'order/SET_ORDER_COMPLETE_ERROR':
+    case 'order/SET_DELIVERY_PROCESS_ERROR':
     case 'order/GET_COORDS_ERROR':
       return errorOnFetching(state, action);
 

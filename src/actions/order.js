@@ -8,6 +8,8 @@ import {
   apiSetOrderProcess,
   apiGetOrderComplete,
   apiSetOrderComplete,
+  apiSetDeliveryProcess,
+  apiSetOrderCancel,
 } from '../api/order';
 import apiGetCoords from '../api/coords';
 import Converter from '../utils/Converter';
@@ -165,6 +167,7 @@ export const initSetOrderComplete = payload => async dispatch => {
   }
 };
 
+// FIXME:
 /**
  * 배달주문 주문처리중으로 설정
  */
@@ -174,6 +177,46 @@ const setDeliveryProcessSucess = payload => ({
   payload,
 });
 const setDeliveryProcessError = error => ({ type: 'order/SET_DELIVERY_PROCESS_ERROR', error });
+
+export const initSetDeliveryProcess = payload => async dispatch => {
+  dispatch(setDeliveryProcess());
+
+  const response = await apiSetDeliveryProcess(payload);
+
+  try {
+    if (!response) {
+      dispatch(setDeliveryProcessError(error));
+    } else {
+      dispatch(setDeliveryProcessSucess({ success: true }));
+    }
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+// FIXME:
+/**
+ * 주물을 거절함...
+ */
+const setOrderCancel = () => ({ type: 'order/SET_ORDER_CANCEL' });
+const setOrderCancelSuccess = payload => ({ type: 'order/SET_ORDER_CANCEL_SUCCESS', payload });
+const setOrderCancelError = error => ({ type: 'order/SET_ORDER_CANCEL_ERROR', error });
+
+export const initSetOrderCancel = payload => async dispatch => {
+  dispatch(setOrderCancel());
+
+  const response = await apiSetOrderCancel(payload);
+
+  try {
+    if (!response) {
+      dispatch(setOrderCancelError(error));
+    } else {
+      dispatch(setOrderCancelSuccess({ success: true }));
+    }
+  } catch (error) {
+    console.error(error);
+  }
+};
 
 /**
  * 주문자의 gps값 가져옴

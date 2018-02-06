@@ -4,7 +4,7 @@ import { withRouter } from 'react-router-dom';
 import cx from 'classnames';
 
 import { closePopup } from '../../actions/ui';
-import { setStatus, batchActions } from '../../actions/order';
+import { setStatus, batchActions, initSetDeliveryProcess } from '../../actions/order';
 
 class OrderAccept extends Component {
   state = {
@@ -121,11 +121,15 @@ export default withRouter(
     state => ({
       lists: state.getIn(['order', 'lists']),
       currentIdx: state.getIn(['order', 'detail', 'order', 'idx']),
+      orderNo: state.getIn(['order', 'detail', 'order', 'order_no']),
+      sessionId: state.getIn(['auth', 'session']),
+      siteId: state.getIn(['auth', 'siteId']),
     }),
     dispatch => ({
       closePopup: ui => dispatch(closePopup(ui)),
       setStatus: status => dispatch(setStatus(status)),
       batchActions: (first, second) => dispatch(batchActions(first, second)),
+      initSetDeliveryProcess: payload => dispatch(initSetDeliveryProcess(payload)),
     })
   )(OrderAccept)
 );

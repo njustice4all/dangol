@@ -205,6 +205,8 @@ export const apiSetOrderProcess = payload => {
           sub_state: '',
         },
         orderNo: payload.orderNo,
+        title: '주문이 접수되었습니다.',
+        body: '잠시만기다리세요.',
       },
       success: result => {
         resolve(result);
@@ -233,7 +235,67 @@ export const apiSetOrderComplete = payload => {
           state: 'deliveryDone',
           sub_state: '',
         },
-        orderNo: '',
+        orderNo: payload.orderNo,
+      },
+      success: result => {
+        resolve(result);
+      },
+      error: () => {
+        reject(new Error());
+      },
+    });
+  });
+};
+
+// FIXME:
+/**
+ * 배달주문을 처리중 상태로...
+ */
+export const apiSetDeliveryProcess = payload => {
+  return new Promise((resolve, reject) => {
+    $.ajax({
+      type: 'POST',
+      url: ATY_URI + '/aty_convert_order.php',
+      data: {
+        siteId: payload.siteId,
+        sessId: payload.sessionId,
+        keyWord: 'SetOrderListDetail',
+        idx: payload.results,
+        data: {
+          state: 'deliveryPrepare',
+          sub_state: '',
+        },
+        orderNo: payload.orderNo,
+      },
+      success: result => {
+        resolve(result);
+      },
+      error: () => {
+        reject(new Error());
+      },
+    });
+  });
+};
+
+// FIXME:
+/**
+ * 주문을 거절함
+ */
+export const apiSetOrderCancel = payload => {
+  return new Promise((resolve, reject) => {
+    $.ajax({
+      type: 'POST',
+      url: ATY_URI + '/aty_convert_order.php',
+      data: {
+        siteId: payload.siteId,
+        sessId: payload.sessionId,
+        keyWord: 'SetOrderListDetail',
+        idx: payload.results,
+        data: {
+          state: 'deliveryPrepare',
+          sub_state: '',
+        },
+        orderNo: payload.orderNo,
       },
       success: result => {
         resolve(result);

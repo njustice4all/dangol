@@ -23,7 +23,6 @@ class ButtonFooter extends Component {
   };
 
   render() {
-    console.log(this.props.type);
     if (this.props.isComplete) {
       return (
         <div className="btn-wrapper">
