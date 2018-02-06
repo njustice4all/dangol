@@ -42,7 +42,7 @@ export const initFetchOrderLists = payload => async dispatch => {
     if (!response) {
       dispatch(fetchOrderListsError(error));
     } else {
-      dispatch(fetchOrderListsSuccess(Converter.listsToState(response.list)));
+      dispatch(fetchOrderListsSuccess(Converter.listsToState(response.list, 'payDone')));
     }
   } catch (error) {
     console.error(error);
