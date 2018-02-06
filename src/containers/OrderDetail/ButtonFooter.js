@@ -23,6 +23,7 @@ class ButtonFooter extends Component {
   };
 
   render() {
+    console.log(this.props.type);
     if (this.props.isComplete) {
       return (
         <div className="btn-wrapper">
@@ -49,7 +50,7 @@ class ButtonFooter extends Component {
 export default withRouter(
   connect(
     state => ({
-      type: state.getIn(['order', 'detail', 'orderDetail', 'sub_state']),
+      type: state.getIn(['order', 'detail', 'order', 'sub_state']),
     }),
     dispatch => ({
       openPopup: ui => dispatch(openPopup(ui)),

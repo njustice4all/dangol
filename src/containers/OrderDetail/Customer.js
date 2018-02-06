@@ -66,7 +66,7 @@ const Package = ({ detail }) => (
 );
 
 const Customer = ({ detail, shopCoords }) => {
-  const type = detail.getIn(['orderDetail', 'sub_state']);
+  const type = detail.getIn(['order', 'sub_state']);
 
   if (type === 'order') {
     return null;

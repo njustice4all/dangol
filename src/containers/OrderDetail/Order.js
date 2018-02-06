@@ -22,7 +22,7 @@ const Info = ({ title, content, total }) => {
 };
 
 const Order = ({ detail }) => {
-  const type = detail.getIn(['orderDetail', 'sub_state']);
+  const type = detail.getIn(['order', 'sub_state']);
 
   return (
     <div className="content-wrapper">

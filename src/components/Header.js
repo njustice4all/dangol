@@ -118,7 +118,7 @@ class Header extends Component<Props> {
         <div className="title">{customProps.title}</div>
         {customProps.detail && (
           <OrderType
-            type={detail.getIn(['orderDetail', 'sub_state'])}
+            type={detail.getIn(['order', 'sub_state'])}
             date={detail.getIn(['order', 'order_date'])}
           />
         )}

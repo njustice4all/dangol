@@ -166,6 +166,16 @@ export const initSetOrderComplete = payload => async dispatch => {
 };
 
 /**
+ * 배달주문 주문처리중으로 설정
+ */
+const setDeliveryProcess = () => ({ type: 'order/SET_DELIVERY_PROCESS' });
+const setDeliveryProcessSucess = payload => ({
+  type: 'order/SET_DELIVERY_PROCESS_SUCCESS',
+  payload,
+});
+const setDeliveryProcessError = error => ({ type: 'order/SET_DELIVERY_PROCESS_ERROR', error });
+
+/**
  * 주문자의 gps값 가져옴
  */
 const getCoords = () => ({ type: 'order/GET_COORDS' });
