@@ -1,13 +1,6 @@
 import React from 'react';
 
-// const total = products => {
-//   let result = 0;
-//   products.forEach(v => {
-//     result += v.get('quantity') * v.get('price');
-//   });
-
-//   return result;
-// };
+import Converter from '../../utils/Converter';
 
 const Header = () => (
   <div className="table head">
@@ -18,6 +11,8 @@ const Header = () => (
 );
 
 const Product = ({ detail, head }) => {
+  const price = Converter.numberWithCommas(detail && detail.getIn(['orderDetail', 'price']));
+
   return (
     <li className="list-item">
       {head ? (
@@ -30,7 +25,7 @@ const Product = ({ detail, head }) => {
           <div className="qnt">
             {detail && detail.getIn(['orderDetail', 'product', 'quantity'])}
           </div>
-          <div className="price">{detail && detail.getIn(['orderDetail', 'price'])}원</div>
+          <div className="price">{price}원</div>
         </div>
       )}
     </li>
@@ -43,7 +38,7 @@ const Option = ({ option }) => {
       <div className="table">
         <div className="subject">{option.get('option2')}</div>
         <div className="qnt">{option.get('quantity')}</div>
-        <div className="price">{option.get('price')}원</div>
+        <div className="price">{Converter.numberWithCommas(option.get('price'))}원</div>
       </div>
     </li>
   );
@@ -55,6 +50,8 @@ const Products = ({ detail }) => {
     options = [];
   }
 
+  const price = Converter.numberWithCommas(detail.getIn(['order', 'totalprice']));
+
   return (
     <div className="content-wrapper">
       <div className="content-title">주문상품정보</div>
@@ -65,7 +62,7 @@ const Products = ({ detail }) => {
         <li className="list-item">
           <div className="table total">
             <div className="subject">총 주문금액</div>
-            <div className="price">{detail.getIn(['order', 'totalprice'])}원</div>
+            <div className="price">{price}원</div>
           </div>
         </li>
       </ul>

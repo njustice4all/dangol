@@ -1,5 +1,9 @@
 class Convert {
   listsToState = (lists, payDone) => {
+    if (!lists) {
+      return [];
+    }
+
     if (payDone) {
       const newLists = lists.filter(list => list.product[0].state === 'payDone');
       return newLists
@@ -68,6 +72,14 @@ class Convert {
     recursive(data);
 
     return result.join('&');
+  };
+
+  numberWithCommas = number => {
+    if (number) {
+      return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+    }
+
+    return '';
   };
 }
 

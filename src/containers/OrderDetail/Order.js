@@ -1,9 +1,11 @@
 import React from 'react';
 import cx from 'classnames';
 
+import Converter from '../../utils/Converter';
+
 const Total = ({ price, paymentMethod }) => (
   <div className="content">
-    <div className="price">{price}원</div>
+    <div className="price">{Converter.numberWithCommas(price)}원</div>
     <div className="tooltip">{paymentMethod}</div>
   </div>
 );
