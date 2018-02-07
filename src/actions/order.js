@@ -164,10 +164,6 @@ export const initSetOrderComplete = payload => async dispatch => {
   }
 };
 
-// FIXME:
-/**
- * 배달주문 주문처리중으로 설정
- */
 const setDeliveryProcess = () => ({ type: 'order/SET_DELIVERY_PROCESS' });
 const setDeliveryProcessSucess = payload => ({
   type: 'order/SET_DELIVERY_PROCESS_SUCCESS',
