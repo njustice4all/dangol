@@ -27,28 +27,15 @@ class OrderConfirm extends Component {
     locationChange('/order/progress');
   };
 
-  _setProcess = () => {
-    console.log('처리중으로...');
-  };
-
-  _setComplete = () => {
-    console.log('처리완료...');
-  };
-
   render() {
     return (
       <div className="popup-container">
-        <div className="popup-pannel order-time">
-          <div className="header" style={{ height: '75px' }}>
-            <div className="title">주문접수</div>
+        <div className="popup-wrapper" style={{ backgroundColor: 'white' }}>
+          <div className="popup-image-wrapper">
+            <img src="/img/accept.png" />
           </div>
-          <div className="body" style={{ padding: '10px' }}>
-            사장님 접수처리 되었습니다.
-          </div>
-          <div className="btn-wrapper">
-            <div className="btn big" onClick={this._onPress}>
-              확인
-            </div>
+          <div className="popup-btn-wrapper" onClick={this._onPress}>
+            확인
           </div>
         </div>
       </div>

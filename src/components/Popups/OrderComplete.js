@@ -30,15 +30,12 @@ class OrderComplete extends Component {
   render() {
     return (
       <div className="popup-container">
-        <div className="popup-pannel order-time">
-          <div className="header">
-            <div className="title">주문완료</div>
+        <div className="popup-wrapper" style={{ backgroundColor: 'white' }}>
+          <div className="popup-image-wrapper">
+            <img src="/img/complete.png" />
           </div>
-          <div className="body">고생하셨어요 사장님 손님에게 알릴게요</div>
-          <div className="btn-wrapper">
-            <div className="btn big" onClick={this._onPress}>
-              확인
-            </div>
+          <div className="popup-btn-wrapper" onClick={this._onPress}>
+            확인
           </div>
         </div>
       </div>
