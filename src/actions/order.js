@@ -1,6 +1,3 @@
-import { orderDoneLists } from '../dummy';
-
-// real api
 import {
   apiGetOrderLists,
   apiGetOrderDetail,

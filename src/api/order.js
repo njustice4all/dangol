@@ -236,6 +236,8 @@ export const apiSetOrderComplete = payload => {
           sub_state: '',
         },
         orderNo: payload.orderNo,
+        title: '조리완료',
+        body: '주문하신 음식이 나왔습니다.',
       },
       success: result => {
         resolve(result);

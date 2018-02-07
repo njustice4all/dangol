@@ -17,6 +17,7 @@ import ModifyShop from './CEO/ModifyShop';
 import ModifyProducts from './CEO/ModifyProducts';
 import { StopDelivery, Setting, Management, ManagementAdd, EditAdmin } from './Menus';
 
+import { initFetchOrderLists } from '../actions/order';
 import getClassNameByRoutes from '../utils/getClassNameByRoutes';
 
 class App extends Component {
@@ -36,11 +37,13 @@ class App extends Component {
    * reducer에서 해당 메세지 받으면... 아마도 ui가 팝업 되어야 함
    */
   onMessage = event => {
-    const { locationChange, fromMobile } = this.props;
+    const { locationChange, fromMobile, session, siteId, initFetchOrderLists } = this.props;
     const msg = JSON.parse(event.data);
 
     if (msg.type === '@@router/LOCATION_CHANGE') {
       locationChange(msg.payload.route);
+    } else if (msg.type === 'firebase/MESSAGE_RECEIVED') {
+      initFetchOrderLists({ session, siteId });
     } else {
       fromMobile(msg.payload);
     }
@@ -94,12 +97,15 @@ export default withRouter(
       router: state.get('router'),
       sideMenu: state.getIn(['ui', 'sideMenu']),
       status: state.getIn(['order', 'detail', 'order', 'status']),
+      session: state.getIn(['auth', 'session']),
+      siteId: state.getIn(['auth', 'siteId']),
     }),
     dispatch => ({
       closePopup: ui => dispatch(closePopup(ui)),
       locationChange: pathname => dispatch(push(pathname)),
       fromMobile: action => dispatch(action),
       initSignin: user => dispatch(initSignin(user)),
+      initFetchOrderLists: payload => dispatch(initFetchOrderLists(payload)),
     })
   )(App)
 );
