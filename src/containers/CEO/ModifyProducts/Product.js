@@ -15,14 +15,7 @@ const ProductImage = ({ product, shopSequence }) => {
 
 export default class Product extends Component {
   render() {
-    const {
-      product,
-      productIndex,
-      togglePopup,
-      shopSequence,
-      removeProductByIndex,
-      removeProduct,
-    } = this.props;
+    const { product, togglePopup, shopSequence, removeProduct } = this.props;
 
     return (
       <div className="items products">

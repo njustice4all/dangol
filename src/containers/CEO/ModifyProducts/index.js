@@ -3,26 +3,21 @@ import { connect } from 'react-redux';
 import { Map, List, fromJS } from 'immutable';
 
 import { initGetProducts, initDelProduct } from '../../../actions/ceo';
-import {
-  convertDataToState,
-  createUniqueId,
-  getModifyProducts,
-  convertProducts,
-} from '../../../utils';
+import { createUniqueId } from '../../../utils';
 
 import ProductInputModal from './ProductInputModal';
 import Product from './Product';
 import Navigator from '../Navigator';
 
 class ModifyProducts extends Component {
-  state = {
-    products: List(),
-    deletedProducts: List(),
+  state = fromJS({
+    products: [],
+    deletedProducts: [],
     productStack: null,
     updateFromNewProduct: false,
     showInputModal: false,
-    product: List(),
-  };
+    product: [],
+  });
 
   componentDidMount = () => {
     this.props.initGetProducts();
@@ -41,68 +36,6 @@ class ModifyProducts extends Component {
         },
       ]),
     }));
-  };
-
-  setStateByKey = (index, key, value, uniqueId) => {
-    const { productStack } = this.state;
-    this.setState({
-      productStack: productStack.set(key, value),
-    });
-  };
-
-  // FIXME: 동작확인필수
-  deleteImageByIndex = (productIndex, imageIndex, uniqueId) => () => {
-    const { productStack } = this.state;
-    const imageIdFromProductImage = productStack.getIn(['images', imageIndex, 'imageId']);
-
-    if (productStack.get('uniqueId')) {
-      this.setState({
-        productStack: productStack.withMutations(mutator =>
-          mutator.deleteIn(['images', imageIndex]).deleteIn(['addImages', imageIndex])
-        ),
-      });
-    } else {
-      this.setState({
-        productStack: productStack.withMutations(mutator =>
-          mutator
-            .deleteIn(['images', imageIndex])
-            .update(
-              'deleteImages',
-              deleteImages =>
-                productStack.getIn(['images', imageIndex, 'seq'])
-                  ? deleteImages.push(productStack.getIn(['images', imageIndex, 'seq']))
-                  : List([])
-            )
-            .deleteIn(
-              'addImages',
-              productStack
-                .get('addImages')
-                .findIndex(images => images.get('imageId') === imageIdFromProductImage)
-            )
-        ),
-      });
-    }
-  };
-
-  // FIXME: 동작확인필수
-  removeProductByIndex = productIndex => e => {
-    e.stopPropagation();
-    const { products, deletedProducts, productStack } = this.state;
-    const { initSetProducts, franchise } = this.props;
-    const removeProduct = products.get(productIndex);
-
-    if (removeProduct.get('uniqueId')) {
-      this.setState({ products: products.delete(productIndex) });
-    } else {
-      this.setState({
-        products: products.delete(productIndex),
-        deletedProducts: deletedProducts.push(removeProduct.get('productSequence')),
-        productStack: null,
-        showInputModal: false,
-      });
-    }
-
-    console.log(removeProduct.toJS());
   };
 
   onImageChange = productIndex => e => {
@@ -132,73 +65,6 @@ class ModifyProducts extends Component {
     }
   };
 
-  handleConfirm = () => {
-    const { products, deletedProducts } = this.state;
-    const { initAddProducts, initSetProducts, history, franchise, editMode } = this.props;
-    const franchiseSequence = franchise.get('seq');
-
-    if (products.size === 0) return;
-    for (let i = 0; i < products.size; i++) {
-      if (products.getIn([i, 'images']).size === 0) return;
-      if (products.getIn([i, 'title']).trim().length === 0) return;
-      // if (products.getIn([i, 'price']).trim().length === 0) return;
-    }
-
-    if (editMode) {
-      const result = {
-        shop_seq: franchiseSequence,
-        deleteProducts: deletedProducts.toJS(),
-        products: getModifyProducts(products).toJS(),
-      };
-
-      initSetProducts(result);
-      history.push('/result');
-    } else {
-      const result = convertProducts(products);
-      initAddProducts({ products: result, seq: franchiseSequence })
-        .then(result => {
-          if (result.error) {
-            console.error('add products error');
-            return;
-          }
-          history.push('/result');
-        })
-        .catch(e => console.error(e));
-    }
-  };
-
-  // TODO: working...
-  testConfirm = () => {
-    const { franchise, initSetProducts, initAddProducts } = this.props;
-    const { deletedProducts, productStack, updateFromNewProduct } = this.state;
-    const result = {
-      shop_seq: 14,
-      deleteProducts: deletedProducts.toJS(),
-      products: getModifyProducts(productStack).toJS(),
-    };
-    const productIndex = productStack.get('productIndex');
-
-    if (updateFromNewProduct) {
-      // 수정
-      this.setState(prevState => ({
-        products: prevState.products.update(productIndex, () => productStack),
-        showInputModal: false,
-        productStack: null,
-        updateFromNewProduct: false,
-      }));
-    } else {
-      // 새상품
-      this.setState(prevState => ({
-        products: prevState.products.unshift(productStack),
-        showInputModal: false,
-        productStack: null,
-        updateFromNewProduct: false,
-      }));
-    }
-
-    // initSetProducts(result).then(() => this.onEditMode());
-  };
-
   togglePopup = (idx, type) => e => {
     if (type === 'close') {
       this.setState(prevState => ({ showInputModal: false }));
@@ -210,12 +76,6 @@ class ModifyProducts extends Component {
     }));
   };
 
-  handleCancel = () => this.props.history.push('/');
-
-  onBackButtonPress = () => {
-    this.props.history.push('/franchise/addShop');
-  };
-
   renderProducts = () => {
     const { products } = this.props;
     if (products.size === 0) {
@@ -225,18 +85,9 @@ class ModifyProducts extends Component {
     return products.map((product, i) => (
       <Product
         product={product}
-        productIndex={i}
         key={`product-${i}`}
-        editMode
         removeProduct={this.removeProduct}
-        setStateByKey={this.setStateByKey}
-        removeProductByIndex={this.removeProductByIndex}
-        deleteImageByIndex={this.deleteImageByIndex}
-        onImageChange={this.onImageChange}
         shopSequence="14"
-        onAddOptionButtonPress={this.onAddOptionButtonPress}
-        deleteOptionByIndex={this.deleteOptionByIndex}
-        onOptionChange={this.onOptionChange}
         togglePopup={this.togglePopup}
       />
     ));
@@ -245,31 +96,6 @@ class ModifyProducts extends Component {
   removeProduct = idx => e => {
     e.stopPropagation();
     this.props.initDelProduct({ idx });
-  };
-
-  onOptionChange = (productIndex, optionIndex, type) => e => {
-    e.persist();
-    this.setState(prevState => ({
-      productStack: prevState.productStack.setIn(['options', optionIndex, type], e.target.value),
-    }));
-  };
-
-  onAddOptionButtonPress = productIndex => () => {
-    if (this.state.productStack.get('options').size > 4) {
-      return;
-    }
-
-    this.setState(prevState => ({
-      productStack: prevState.productStack.update('options', options =>
-        options.push(Map({ name: '', price: 0 }))
-      ),
-    }));
-  };
-
-  deleteOptionByIndex = (productIndex, optionIndex) => () => {
-    this.setState(prevState => ({
-      productStack: prevState.productStack.deleteIn(['options', optionIndex]),
-    }));
   };
 
   render() {
@@ -315,10 +141,8 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  // initAddProducts: products => dispatch(initAddProducts(products)),
   initGetProducts: payload => dispatch(initGetProducts(payload)),
   initDelProduct: payload => dispatch(initDelProduct(payload)),
-  // initSetProducts: products => dispatch(initSetProducts(products)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(ModifyProducts);

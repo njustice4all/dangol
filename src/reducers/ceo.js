@@ -45,8 +45,13 @@ const getShopSuccess = (state, action) => {
 };
 
 const getProductsSuccess = (state, action) => {
+  let lists = [];
+  if (action.products.list) {
+    lists = action.products.list;
+  }
+
   return state.withMutations(mutator =>
-    mutator.set('products', fromJS(action.products.list)).setIn(['status', 'isFetching'], false)
+    mutator.set('products', fromJS(lists)).setIn(['status', 'isFetching'], false)
   );
 };
 

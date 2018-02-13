@@ -180,6 +180,7 @@ class ProductInputModal extends Component {
     this.props.initUploadImage(payload);
   };
 
+  // FIXME:
   onConfirm = () => {
     console.log(this.state.options.toJS(), this.name, this.price, this.contents);
   };
