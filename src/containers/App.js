@@ -57,10 +57,10 @@ class App extends Component {
       <PopupController>
         <div className={routes.classname}>
           <Header customProps={routes} />
-          {/*{sideMenu ? (
+          {sideMenu ? (
             <div id="sidemenu-overlay" onClick={() => this.props.closePopup('sideMenu')} />
           ) : null}
-          <SideMenu open={sideMenu} />*/}
+          <SideMenu open={sideMenu} />
           <Switch>
             <Route exact path="/" component={Signin} />
             <Route exact path="/order/reception" component={OrderReception} />

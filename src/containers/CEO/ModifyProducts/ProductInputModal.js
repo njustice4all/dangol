@@ -162,6 +162,8 @@ class ProductInputModal extends Component {
   };
 
   _onAddOption = () => {
+    if (this.state.options.size > 4) return;
+
     this.setState(prevState => ({
       options: prevState.options.push(
         Map({

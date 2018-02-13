@@ -61,7 +61,8 @@ class SideMenu extends Component {
                 </li>
                 <li className="list-item sub">
                   <div className="content-wrapper">
-                    <div className="title" onClick={this.onFranchiseModify}>
+                    {/*<div className="title" onClick={this.onFranchiseModify}>*/}
+                    <div className="title" onClick={this._onPress('/ceo/shop')}>
                       업소 정보 수정
                     </div>
                     <div className="title" onClick={this._onPress('/menus/management')}>
