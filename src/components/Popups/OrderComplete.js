@@ -30,7 +30,7 @@ class OrderComplete extends Component {
   render() {
     return (
       <div className="popup-container">
-        <div className="popup-wrapper" style={{ backgroundColor: 'white' }}>
+        <div className="popup-wrapper">
           <div className="popup-image-wrapper">
             <img src="/img/complete.png" />
           </div>
