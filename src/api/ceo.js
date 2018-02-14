@@ -144,3 +144,27 @@ export const apiSetShop = payload => {
     });
   });
 };
+
+/**
+ * 상품 디테일정보
+ */
+export const apiGetProductDetail = idx => {
+  return new Promise((resolve, reject) => {
+    $.ajax({
+      type: 'POST',
+      url: ATY_URI + '/aty_convert_product.php',
+      data: {
+        siteId: SITE_ID,
+        keyWord: 'GetProductItem',
+        shop: 1,
+        idx,
+      },
+      success: result => {
+        resolve(result);
+      },
+      error: () => {
+        reject(new Error());
+      },
+    });
+  });
+};

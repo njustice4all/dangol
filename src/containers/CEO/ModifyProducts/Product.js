@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 
 import { ATY_URI, SITE_ID } from '../../../constants';
 
-const ProductImage = ({ product, shopSequence }) => {
+const ProductImage = ({ product }) => {
   const imageName = product.getIn(['images', 0, 'imageName']);
   if (product.getIn(['images', 0, 'imageId'])) {
     return <img src={product.getIn(['images', 0, 'image'])} alt="" />;
@@ -15,14 +15,14 @@ const ProductImage = ({ product, shopSequence }) => {
 
 export default class Product extends Component {
   render() {
-    const { product, togglePopup, shopSequence, removeProduct } = this.props;
+    const { product, togglePopup, removeProduct } = this.props;
 
     return (
       <div className="items products">
         <div className="product__wrapper-normal" onClick={togglePopup(product.get('idx'))}>
           <div className="image__wrapper">
             <i className="fa fa-camera" aria-hidden="true" />
-            <ProductImage product={product} shopSequence={shopSequence} />
+            <ProductImage product={product} />
           </div>
           <div className="product__form__wrapper">
             <div className="contents-row">

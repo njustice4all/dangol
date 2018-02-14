@@ -10,31 +10,38 @@ import Product from './Product';
 import Navigator from '../Navigator';
 
 class ModifyProducts extends Component {
-  state = fromJS({
+  state = {
     products: [],
     deletedProducts: [],
     productStack: null,
     updateFromNewProduct: false,
     showInputModal: false,
     product: [],
-  });
+    idx: null,
+    isNew: false,
+  };
 
   componentDidMount = () => {
     this.props.initGetProducts();
   };
 
+  componentWillReceiveProps = nextProps => {
+    // this.setState(prevState => ({ products: nextProps.products }));
+  };
+
   addProduct = () => {
     this.setState(prevState => ({
       showInputModal: true,
-      product: fromJS([
-        {
-          option_list: [[]],
-          image: [],
-          contents: '',
-          price: '',
-          name: '',
-        },
-      ]),
+      isNew: true,
+      // product: fromJS([
+      //   {
+      //     option_list: [[]],
+      //     image: [],
+      //     contents: '',
+      //     price: '',
+      //     name: '',
+      //   },
+      // ]),
     }));
   };
 
@@ -65,6 +72,7 @@ class ModifyProducts extends Component {
     }
   };
 
+  // TODO:
   togglePopup = (idx, type) => e => {
     if (type === 'close') {
       this.setState(prevState => ({ showInputModal: false }));
@@ -73,6 +81,7 @@ class ModifyProducts extends Component {
     this.setState(prevState => ({
       showInputModal: !prevState.showInputModal,
       product: this.props.products.filter(product => product.get('idx') === idx),
+      idx,
     }));
   };
 
@@ -87,12 +96,12 @@ class ModifyProducts extends Component {
         product={product}
         key={`product-${i}`}
         removeProduct={this.removeProduct}
-        shopSequence="14"
         togglePopup={this.togglePopup}
       />
     ));
   };
 
+  // FIXME:
   removeProduct = idx => e => {
     e.stopPropagation();
     this.props.initDelProduct({ idx });
@@ -100,7 +109,7 @@ class ModifyProducts extends Component {
 
   render() {
     const { authentication, franchise, editMode } = this.props;
-    const { showInputModal, productStack, product } = this.state;
+    const { showInputModal, productStack, product, idx } = this.state;
 
     return (
       <div
@@ -124,6 +133,8 @@ class ModifyProducts extends Component {
         </div>
         {showInputModal ? (
           <ProductInputModal
+            idx={idx}
+            isNew={this.state.isNew}
             product={product.get(0)}
             togglePopup={this.togglePopup}
             onImageChange={this.onImageChange}

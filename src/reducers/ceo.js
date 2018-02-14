@@ -1,18 +1,9 @@
 import { fromJS, List, Map, Record } from 'immutable';
 
-const initialState = fromJS({
-  shop: {},
-  products: [],
-  status: {
-    isFetching: false,
-    error: false,
-    msg: '',
-  },
-});
-
 const StateRecord = Record({
   shop: Map(),
   products: List(),
+  productDetail: Map(),
   status: Map({
     isFetching: false,
     error: false,
@@ -70,12 +61,19 @@ const getProductsSuccess = (state, action) => {
   );
 };
 
+const getProductDetail = (state, action) => {
+  return state.withMutations(mutator =>
+    mutator.set('productDetail', fromJS(action.payload)).setIn(['status', 'isFetching'], false)
+  );
+};
+
 export const ceo = (state = new StateRecord(), action) => {
   switch (action.type) {
     case 'ceo/GET_SHOP':
     case 'ceo/GET_PRODUCTS':
     case 'ceo/SET_SHOP':
     case 'ceo/SET_PRODUCTS':
+    case 'ceo/GET_PRODUCT_DETAIL':
     case 'ceo/REQ_ADDRESS':
     case 'ceo/REQ_LOAD_MORE':
       return state.setIn(['status', 'isFetching'], true);
@@ -91,6 +89,8 @@ export const ceo = (state = new StateRecord(), action) => {
       return getProductsSuccess(state, action);
     case 'ceo/REQ_ADDRESS_SUCCESS':
       return addressLists(state, action);
+    case 'ceo/GET_PRODUCT_DETAIL_SUCCESS':
+      return getProductDetail(state, action);
     case 'ceo/REQ_LOAD_MORE_SUCCESS':
       return loadMore(state, action);
     case 'ceo/SET_SHOP_FAILURE':
@@ -98,6 +98,7 @@ export const ceo = (state = new StateRecord(), action) => {
     case 'ceo/SET_PRODUCTS_FAILURE':
     case 'ceo/REQ_LOAD_MORE_FAILURE':
     case 'ceo/GET_SHOP_ERROR':
+    case 'ceo/GET_PRODUCT_DETAIL_ERROR':
     case 'ceo/GET_PRODUCTS_ERROR':
       return withError(state, action);
     case 'ceo/DEL_PRODUCT_SUCCESS':

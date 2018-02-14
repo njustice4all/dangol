@@ -6,6 +6,7 @@ import {
   apiSetShop,
   apiAddress,
   apiLoadMoreAddress,
+  apiGetProductDetail,
 } from '../api/ceo';
 import apiUploadImage from '../api/image';
 
@@ -115,6 +116,29 @@ export const initDelProduct = payload => async dispatch => {
   } else {
     dispatch({ type: 'ceo/DEL_PRODUCT_SUCCESS' });
     dispatch(initGetProducts(payload));
+  }
+};
+
+/**
+ * 상품 디테일정보
+ */
+const getProductDetail = () => ({ type: 'ceo/GET_PRODUCT_DETAIL' });
+const getProductDetailSuccess = payload => ({ type: 'ceo/GET_PRODUCT_DETAIL_SUCCESS', payload });
+const getProductDetailError = error => ({ type: 'ceo/GET_PRODUCT_DETAIL_ERROR', error });
+
+export const initGetProductDetail = idx => async dispatch => {
+  dispatch(getProductDetail());
+
+  const response = await apiGetProductDetail(idx);
+
+  try {
+    if (!response) {
+      dispatch(getProductDetailError({ error: true }));
+    } else {
+      dispatch(getProductDetailSuccess(response));
+    }
+  } catch (error) {
+    console.error(error);
   }
 };
 
