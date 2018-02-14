@@ -63,7 +63,8 @@ class Address extends Component {
   _onKeyUp = e => this.props.initRequestAddress(this.search.value.trim());
 
   render() {
-    const addressList = this.props.address.get('lists');
+    // const addressLists = this.props.address.get('lists');
+    const { addressLists } = this.props;
 
     return (
       <div className="address__wrapper">
@@ -87,15 +88,15 @@ class Address extends Component {
           </div>
           <div
             className={cx('address-result-wrapper', {
-              flex: addressList.size === 0,
-              center: addressList.size === 0,
+              flex: addressLists.size === 0,
+              center: addressLists.size === 0,
             })}
             ref={scroll => (this.scroll = scroll)}
             onScroll={this._onScroll}>
-            {addressList.size === 0 ? (
+            {addressLists.size === 0 ? (
               <Nothing />
             ) : (
-              addressList.map((address, index) => (
+              addressLists.map((address, index) => (
                 <Item address={address} key={index} setAddress={this.props.setAddress} />
               ))
             )}
@@ -110,6 +111,7 @@ export default withRouter(
   connect(
     state => ({
       address: state.getIn(['ceo', 'address']),
+      addressLists: state.getIn(['ceo', 'address', 'addressLists']),
     }),
     dispatch => ({
       initRequestAddress: query => dispatch(initRequestAddress(query)),

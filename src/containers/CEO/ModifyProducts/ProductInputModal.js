@@ -6,11 +6,10 @@ import { initUploadImage } from '../../../actions/ceo';
 
 import { ATY_URI, SITE_ID } from '../../../constants';
 
+import $ from 'jquery';
+
 class ButtonAddImage extends Component {
   _uploadImage = e => {
-    // console.log(e.target.files[0]);
-    // console.log(this.image);
-
     const formData = new FormData(this.image);
     formData.append('siteId', SITE_ID);
     // formData.append('userId', userId);
@@ -23,18 +22,19 @@ class ButtonAddImage extends Component {
   render() {
     return (
       <div className="images products">
-        <label>
-          <h1>+</h1>
-          <input
-            style={{ display: 'none' }}
-            multiple
-            accept="image/*"
-            name="img-upload[]"
-            type="file"
-            ref={image => (this.image = image)}
-            onChange={this._uploadImage}
-          />
-        </label>
+        <form ref={image => (this.image = image)} style={{ width: '100%', height: '100%' }}>
+          <label>
+            <h1>+</h1>
+            <input
+              style={{ display: 'none' }}
+              multiple
+              accept="image/*"
+              name="img-upload[]"
+              type="file"
+              onChange={this._uploadImage}
+            />
+          </label>
+        </form>
       </div>
     );
   }

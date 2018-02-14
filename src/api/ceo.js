@@ -82,7 +82,7 @@ const data = {
   limit: 20,
   page: 1,
 };
-export const apiGetProducts = (shop, search, order, limit, page) => {
+export const apiGetProducts = payload => {
   return new Promise((resolve, reject) => {
     $.ajax({
       type: 'POST',

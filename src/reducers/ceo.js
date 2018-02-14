@@ -1,4 +1,4 @@
-import { fromJS, List } from 'immutable';
+import { fromJS, List, Map, Record } from 'immutable';
 
 const initialState = fromJS({
   shop: {},
@@ -8,6 +8,21 @@ const initialState = fromJS({
     error: false,
     msg: '',
   },
+});
+
+const StateRecord = Record({
+  shop: Map(),
+  products: List(),
+  status: Map({
+    isFetching: false,
+    error: false,
+    msg: '',
+  }),
+  address: Map({
+    addressLists: List(),
+    page: Map(),
+    query: '',
+  }),
 });
 
 const withError = (state, action) => {
@@ -23,7 +38,7 @@ const withError = (state, action) => {
 const addressLists = (state, action) => {
   return state.withMutations(mutator =>
     mutator
-      .setIn(['address', 'lists'], List(action.payload.juso))
+      .setIn(['address', 'addressLists'], List(action.payload.juso))
       .setIn(['address', 'page'], action.payload.common)
       .setIn(['status', 'isFetching'], false)
   );
@@ -32,7 +47,7 @@ const addressLists = (state, action) => {
 const loadMore = (state, action) => {
   return state.withMutations(mutator =>
     mutator
-      .updateIn(['address', 'lists'], lists => lists.push(...action.payload.juso))
+      .updateIn(['address', 'addressLists'], lists => lists.push(...action.payload.juso))
       .setIn(['address', 'page'], action.payload.common)
       .setIn(['status', 'isFetching'], false)
   );
@@ -55,7 +70,7 @@ const getProductsSuccess = (state, action) => {
   );
 };
 
-export const ceo = (state = initialState, action) => {
+export const ceo = (state = new StateRecord(), action) => {
   switch (action.type) {
     case 'ceo/GET_SHOP':
     case 'ceo/GET_PRODUCTS':
@@ -88,7 +103,7 @@ export const ceo = (state = initialState, action) => {
     case 'ceo/DEL_PRODUCT_SUCCESS':
       return state;
     case 'ceo/RESET_ADDRESS':
-      return initialState;
+      return new StateRecord();
     default:
       return state;
   }
