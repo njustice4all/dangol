@@ -380,8 +380,8 @@ input {
   .btn-delete {
     position: absolute;
     right: 0;
-    width: 20px;
-    height: 20px;
+    width: 19px;
+    height: 19px;
   }
 
   label {
@@ -858,6 +858,7 @@ input {
 .btn-add-option {
   display: flex;
   justify-content: flex-end;
+  padding: 0 8px;
   span {
     width: 78px;
     display: inline-block;
@@ -879,13 +880,34 @@ input {
     background-color: #f3f3f3;
     padding: 8px;
     color: $color-font-default;
+    max-height: 275px;
+    overflow-y: scroll;
     .options {
-      display: flex;
       margin: 5px 0;
-      align-items: center;
       font-size: 13px;
+      background-color: #f3f3f3;
+      border: 1px solid #cccccc;
+      padding: 7px 5px;
+      .option-title-wrapper {
+        margin-bottom: 5px;
+        display: flex;
+        align-items: center;
+        input {
+          display: inline-block;
+          width: calc(100% - 80px);
+          border-color: #fe931f;
+        }
+      }
+      .options-property {
+        display: flex;
+        align-items: center;
+        margin-bottom: 5px;
+      }
+      .options-property:last-child {
+        margin-bottom: 0;
+      }
       .option-name {
-        width: 41px;
+        width: 60px;
       }
       .option-input-name {
         flex: 1;
@@ -913,14 +935,20 @@ input {
           position: absolute;
           margin: 0;
           width: 15px;
-          top: 9px;
+          top: 7px;
           right: 5px;
           font-size: 12px;
         }
       }
+      .option-input-control {
+        width: 37px;
+        span {
+          padding: 4px;
+        }
+      }
       .button-delete {
-        width: 20px;
-        padding-left: 7px;
+        width: 40px;
+        text-align: right;
       }
     }
     .options:first-child {

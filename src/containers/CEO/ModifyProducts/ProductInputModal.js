@@ -70,43 +70,69 @@ const ProductImage = ({ image, preview, index, deleteImageByIndex }) => {
 
 class OptionWrapper extends Component {
   render() {
-    const { options, _onChangeOptionByKey, _onDeleteOption, _onAddOption } = this.props;
+    const {
+      options,
+      _onChangeOptionByKey,
+      _onDeleteOption,
+      _onAddOption,
+      _onAddProperty,
+    } = this.props;
 
     return (
       <div className="row-wrapper options" style={{ position: 'relative' }}>
         <div className="option-wrapper">
           {options.map((option, index) => (
             <div className="options" key={`options-${index}`}>
-              <div className="option-name">
-                <span>{`옵션 ${index + 1}`}</span>
-              </div>
-              <div className="option-input-name">
+              <div className="option-title-wrapper">
+                <div
+                  className="option-name"
+                  style={{ display: 'inline-block', color: '#fe931f', width: '65px' }}>
+                  옵션명
+                </div>
                 <input
                   type="text"
-                  value={option.get('option_data')}
-                  onChange={_onChangeOptionByKey(index, 'option_data')}
+                  value={option.get('option_name')}
+                  onChange={e => console.log(e)}
                 />
+                <div className="button-delete" onClick={_onDeleteOption(index)}>
+                  <img src="/img/icon-close.png" alt="" />
+                </div>
               </div>
-              <div className="option-price">
-                <span>가격</span>
-              </div>
-              <div className="option-input-price">
-                <input
-                  type="number"
-                  value={option.get('price')}
-                  onChange={_onChangeOptionByKey(index, 'price')}
-                  onClick={e => e.target.select()}
-                />
-                <span>원</span>
-              </div>
-              <div className="button-delete" onClick={_onDeleteOption(index)}>
-                <img src="/img/icon-close.png" alt="" />
-              </div>
+              {option.get('list').map((list, i) => (
+                <div className="options-property" key={`property-${i}`}>
+                  <div className="option-name">
+                    <span>{`옵션속성 ${i + 1}`}</span>
+                  </div>
+                  <div className="option-input-name">
+                    <input
+                      type="text"
+                      value={list.get('option_data')}
+                      onChange={_onChangeOptionByKey(index, i, 'option_data')}
+                    />
+                  </div>
+                  <div className="option-price">
+                    <span>가격</span>
+                  </div>
+                  <div className="option-input-price">
+                    <input
+                      type="number"
+                      value={list.get('price')}
+                      onChange={_onChangeOptionByKey(index, i, 'price')}
+                      onClick={e => e.target.select()}
+                    />
+                    <span>원</span>
+                  </div>
+                  <div className="option-input-control">
+                    <span onClick={() => console.log('-')}>-</span>
+                    <span onClick={_onAddProperty(index)}>+</span>
+                  </div>
+                </div>
+              ))}
             </div>
           ))}
-          <div className="btn-add-option" onClick={_onAddOption}>
-            <span>+ 옵션 추가</span>
-          </div>
+        </div>
+        <div className="btn-add-option">
+          <span onClick={_onAddOption}>+ 옵션 추가</span>
         </div>
       </div>
     );
@@ -114,13 +140,15 @@ class OptionWrapper extends Component {
 }
 
 class ProductInputModal extends Component {
-  // FIXME: 새상품 추가일때... api의 prototype대로 state설정 후 해결...
   state = { preview: List(), productDetail: '' };
 
   componentDidMount = () => {
     const { initGetProductDetail, idx, isNew } = this.props;
     if (!isNew) {
       initGetProductDetail(idx);
+    } else {
+      // FIXME: 새상품 추가일때... api의 prototype대로 state설정 후 해결...
+      console.log('hi...');
     }
   };
 
@@ -139,12 +167,12 @@ class ProductInputModal extends Component {
     }));
   };
 
-  _onChangeOptionByKey = (index, key) => e => {
+  _onChangeOptionByKey = (index, i, key) => e => {
     e.persist();
 
     this.setState(prevState => ({
       productDetail: prevState.productDetail.setIn(
-        ['stock', 'option_control', 'main', 0, 'list', index, key],
+        ['stock', 'option_control', 'main', index, 'list', i, key],
         e.target.value
       ),
     }));
@@ -152,29 +180,45 @@ class ProductInputModal extends Component {
 
   _onDeleteOption = index => () => {
     this.setState(prevState => ({
-      productDetail: prevState.productDetail.deleteIn([
-        'stock',
-        'option_control',
-        'main',
-        0,
-        'list',
-        index,
-      ]),
+      productDetail: prevState.productDetail.deleteIn(['stock', 'option_control', 'main', index]),
+    }));
+  };
+
+  _onDeleteProperty = index => () => {
+    console.log(index);
+  };
+
+  _onAddProperty = index => () => {
+    const { productDetail } = this.state;
+    if (productDetail.getIn(['stock', 'option_control', 'main', index, 'list']).size > 4) {
+      return;
+    }
+
+    const option = Map({ option_data: '', price: '' });
+
+    this.setState(prevState => ({
+      productDetail: prevState.productDetail.updateIn(
+        ['stock', 'option_control', 'main', index, 'list'],
+        list => list.push(option)
+      ),
     }));
   };
 
   _onAddOption = () => {
-    if (this.state.productDetail.getIn(['stock', 'option_control', 'main', 0, 'list']).size > 4) {
+    if (this.state.productDetail.getIn(['stock', 'option_control', 'main']).size > 4) {
       return;
     }
 
     // FIXME:
-    const option = Map({ option_data: '', price: '', stock: '1000' });
+    const option = fromJS({
+      list: [{ option_data: '', price: '' }],
+      option_name: '',
+      option_type: '',
+    });
 
     this.setState(prevState => ({
-      productDetail: prevState.productDetail.updateIn(
-        ['stock', 'option_control', 'main', 0, 'list'],
-        list => list.push(option)
+      productDetail: prevState.productDetail.updateIn(['stock', 'option_control', 'main'], list =>
+        list.push(option)
       ),
     }));
   };
@@ -233,8 +277,8 @@ class ProductInputModal extends Component {
     const info = productDetail && productDetail.get('info');
     const sellInfo = productDetail && productDetail.get('sellinfo');
     let images = productDetail && productDetail.getIn(['info', 'mainImage']);
-    let options =
-      productDetail && productDetail.getIn(['stock', 'option_control', 'main', 0, 'list']);
+    let options = productDetail && productDetail.getIn(['stock', 'option_control', 'main']);
+    // productDetail && productDetail.getIn(['stock', 'option_control', 'main', 0, 'list']);
 
     if (!options) {
       options = List();
@@ -319,6 +363,7 @@ class ProductInputModal extends Component {
               _onChangeOptionByKey={this._onChangeOptionByKey}
               _onDeleteOption={this._onDeleteOption}
               _onAddOption={this._onAddOption}
+              _onAddProperty={this._onAddProperty}
             />
             <div className="button-normal">
               <span className="button button-left" onClick={togglePopup(null, 'close', isNew)}>
