@@ -8,6 +8,8 @@ import { ATY_URI, SITE_ID } from '../../../constants';
 
 class ButtonAddImage extends Component {
   _uploadImage = e => {
+    // FIXME: userId etc... 필요
+    // 이미지 업로드시 어떤 상품의 사진인가? 알아야 getProducts했을때 사진이 적용된다
     const formData = new FormData(this.image);
     formData.append('siteId', SITE_ID);
     formData.append('folder', 'all');
@@ -99,11 +101,14 @@ class OptionWrapper extends Component {
 }
 
 class ProductInputModal extends Component {
+  // FIXME: 새상품 추가일때... api의 prototype대로 state설정 후 해결...
   state = { preview: '', productDetail: '' };
 
   componentDidMount = () => {
-    const { initGetProductDetail, idx } = this.props;
-    initGetProductDetail(idx);
+    const { initGetProductDetail, idx, isNew } = this.props;
+    if (!isNew) {
+      initGetProductDetail(idx);
+    }
   };
 
   componentWillReceiveProps = nextProps => {
@@ -112,6 +117,10 @@ class ProductInputModal extends Component {
 
   _onChangeByKeys = (key1, key2) => e => {
     e.persist();
+    if (this.props.isNew) {
+      console.log('hi');
+      return;
+    }
     this.setState(prevState => ({
       productDetail: prevState.productDetail.setIn([key1, key2], e.target.value),
     }));
@@ -146,6 +155,7 @@ class ProductInputModal extends Component {
       return;
     }
 
+    // FIXME:
     const option = Map({ option_data: '', price: '', stock: '1000' });
 
     this.setState(prevState => ({
@@ -161,13 +171,18 @@ class ProductInputModal extends Component {
   };
 
   // FIXME:
-  onConfirm = () => {
+  onConfirm = isNew => () => {
+    if (isNew) {
+      console.log('new product');
+      return;
+    }
+
     console.log(this.state.productDetail.toJS());
   };
 
   render() {
     const { preview, productDetail } = this.state;
-    const { togglePopup, onImageChange } = this.props;
+    const { togglePopup, isNew } = this.props;
 
     const info = productDetail && productDetail.get('info');
     const sellInfo = productDetail && productDetail.get('sellinfo');
@@ -238,10 +253,10 @@ class ProductInputModal extends Component {
               _onAddOption={this._onAddOption}
             />
             <div className="button-normal">
-              <span className="button button-left" onClick={togglePopup('close')}>
+              <span className="button button-left" onClick={togglePopup(null, 'close', isNew)}>
                 취 소
               </span>
-              <span className="button button-right" onClick={this.onConfirm}>
+              <span className="button button-right" onClick={this.onConfirm(isNew)}>
                 확 인
               </span>
             </div>

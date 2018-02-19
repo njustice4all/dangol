@@ -44,6 +44,7 @@ body,
 html,
 #root {
   height: 100%;
+  font-family: Arial, Helvetica, sans-serif;
 }
 
 /* ios disable rounding */
@@ -332,7 +333,7 @@ input {
 *  아이템 박스
 */
 .items {
-  margin-bottom: $space-15;
+  // margin-bottom: $space-15;
 }
 
 .items.products {
@@ -1298,5 +1299,20 @@ input {
     color: #fe931f;
     border-bottom: 2px solid #fe931f;
     padding-bottom: 9px;
+  }
+}
+
+.input-register-menu {
+  display: flex;
+  justify-content: space-between;
+  .input-register-items {
+    width: 49.5%;
+    background-color: #606060;
+    color: white;
+    text-align: center;
+    padding: 5px;
+    border-radius: 3px;
+    font-size: 12px;
+    font-family: Arial, Helvetica, sans-serif;
   }
 }

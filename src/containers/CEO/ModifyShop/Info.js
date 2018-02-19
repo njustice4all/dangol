@@ -138,6 +138,36 @@ const Info = ({
           </div>
         </div>
         <div className="input__box">
+          <div className={classNames('input__title', { wrong: validateClass('contact') })}>
+            영업일
+          </div>
+          <div className="input__content">
+            <input
+              style={{ margin: '0' }}
+              type="number"
+              placeholder="영업일을 입력하세요"
+              className="default__form"
+              // onChange={e => setStateByKey('contact', e.target.value)}
+              // value={contact}
+            />
+          </div>
+        </div>
+        <div className="input__box">
+          <div className={classNames('input__title', { wrong: validateClass('contact') })}>
+            사업자번호
+          </div>
+          <div className="input__content">
+            <input
+              style={{ margin: '0' }}
+              type="number"
+              placeholder="사업자등록번호를 입력하세요"
+              className="default__form"
+              // onChange={e => setStateByKey('contact', e.target.value)}
+              // value={contact}
+            />
+          </div>
+        </div>
+        <div className="input__box">
           <div className={classNames('input__title', { wrong: validateClass('openingHours') })}>
             영업시간
           </div>
@@ -196,6 +226,17 @@ const Info = ({
                   </div>
                 );
               })}
+            </div>
+          </div>
+        </div>
+        <div className="input__box" style={{ marginTop: '20px' }}>
+          <div className="input__title" />
+          <div className="input__content">
+            <div className="input-register-menu">
+              <div className="input-register-items">
+                <span>약관 및 개인정보 수정</span>
+              </div>
+              <div className="input-register-items">가맹점 사장님 ID 등록</div>
             </div>
           </div>
         </div>
