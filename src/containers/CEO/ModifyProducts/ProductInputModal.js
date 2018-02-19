@@ -42,22 +42,21 @@ class ButtonAddImage extends Component {
   }
 }
 
-// FIXME: uri고쳐야하는듯?
-const ProductImage = ({ image, preview }) => {
+const ProductImage = ({ image, preview, index, deleteImageByIndex }) => {
   if (preview) {
     return (
       <div className="images products" style={{ verticalAlign: 'top' }}>
-        <span className="btn-delete">
+        <span className="btn-delete" onClick={deleteImageByIndex(index, true)}>
           <img src="/img/icon06.png" alt="" />
         </span>
-        <img className="img-cover" src={image} alt="" />
+        <img className="img-cover" src={image.get('base64')} alt="" />
       </div>
     );
   }
 
   return (
     <div className="images products" style={{ verticalAlign: 'top' }}>
-      <span className="btn-delete">
+      <span className="btn-delete" onClick={deleteImageByIndex(index)}>
         <img src="/img/icon06.png" alt="" />
       </span>
       <img
@@ -187,17 +186,28 @@ class ProductInputModal extends Component {
       const reader = new FileReader();
 
       reader.onloadend = () => {
-        this.setState(prevState => ({ preview: prevState.preview.push(reader.result) }));
+        this.setState(prevState => ({
+          preview: prevState.preview.push(Map({ base64: reader.result, formData })),
+        }));
       };
 
       reader.readAsDataURL(files[i]);
     }
-
-    // this._uploadImage({ formData, idx: this.props.idx });
   };
 
   _uploadImage = payload => {
     this.props.initUploadImage(payload);
+  };
+
+  deleteImageByIndex = (index, preview) => () => {
+    if (preview) {
+      this.setState(prevState => ({ preview: prevState.preview.delete(index) }));
+      return;
+    }
+
+    this.setState(prevState => ({
+      productDetail: prevState.productDetail.deleteIn(['info', 'mainImage', index]),
+    }));
   };
 
   // FIXME:
@@ -207,7 +217,13 @@ class ProductInputModal extends Component {
       return;
     }
 
-    console.log(this.state.productDetail.toJS());
+    console.log(this.state.productDetail.toJS(), this.state.preview.toJS());
+    // if (this.state.preview.size > 0) {
+    //   this._uploadImage({
+    //     formData: this.state.preview.getIn([0, 'formData']),
+    //     idx: this.props.idx,
+    //   });
+    // }
   };
 
   render() {
@@ -242,11 +258,24 @@ class ProductInputModal extends Component {
                 _onChangePreview={this._onChangePreview}
               />
               {images
-                ? images.map((image, i) => <ProductImage key={`images-${i}`} image={image} />)
+                ? images.map((image, i) => (
+                    <ProductImage
+                      key={`images-${i}`}
+                      image={image}
+                      index={i}
+                      deleteImageByIndex={this.deleteImageByIndex}
+                    />
+                  ))
                 : null}
               {preview.size > 0
                 ? preview.map((previewImage, i) => (
-                    <ProductImage key={`previewImage-${i}`} image={previewImage} preview />
+                    <ProductImage
+                      key={`previewImage-${i}`}
+                      image={previewImage}
+                      preview
+                      index={i}
+                      deleteImageByIndex={this.deleteImageByIndex}
+                    />
                   ))
                 : null}
             </div>
