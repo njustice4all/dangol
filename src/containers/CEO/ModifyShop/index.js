@@ -44,6 +44,7 @@ class ModifyShop extends Component {
   };
 
   componentDidMount = () => {
+    // FIXME: 상점번호
     this.props.initGetShopInfo(1);
   };
 

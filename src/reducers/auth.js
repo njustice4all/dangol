@@ -7,6 +7,8 @@ const StateRecord = Record({
   session: '',
   secret: '',
   siteId: '',
+  siteName: '',
+  siteUserId: '',
   coords: new Map({
     lat: '',
     lng: '',
@@ -27,6 +29,8 @@ const getInfo = (state, action) => {
       .set('session', action.info.sessId)
       .set('siteId', action.info.siteId)
       .set('id', action.user.id)
+      .set('siteName', action.info.siteName)
+      .set('siteUserId', action.info.siteUserId)
       .set('isFetching', false)
       .setIn(['status', 'login'], true)
   );

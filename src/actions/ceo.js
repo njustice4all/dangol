@@ -148,8 +148,17 @@ export const initGetProductDetail = idx => async dispatch => {
 export const initUploadImage = payload => async dispatch => {
   dispatch({ type: 'ceo/UPLOAD_IMAGE' });
 
-  const response = await apiUploadImage(payload);
-  console.log(response);
+  const response = await apiUploadImage(payload.formData);
+
+  try {
+    if (response.msg !== 'imgUpOK') {
+      console.log('img upload error');
+    } else {
+      dispatch(initGetProductDetail(payload.idx));
+    }
+  } catch (error) {
+    console.error(error);
+  }
 };
 
 /**

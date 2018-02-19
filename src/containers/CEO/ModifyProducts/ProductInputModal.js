@@ -7,15 +7,18 @@ import { initUploadImage, initGetProductDetail } from '../../../actions/ceo';
 import { ATY_URI, SITE_ID } from '../../../constants';
 
 class ButtonAddImage extends Component {
-  _uploadImage = e => {
+  _onChange = e => {
+    const { _uploadImage, idx } = this.props;
     // FIXME: userId etc... 필요
     // 이미지 업로드시 어떤 상품의 사진인가? 알아야 getProducts했을때 사진이 적용된다
     const formData = new FormData(this.image);
     formData.append('siteId', SITE_ID);
+    formData.append('userId', 'hyj679');
     formData.append('folder', 'all');
     formData.append('keyWord', 'ImageUpload');
 
-    this.props._uploadImage(formData);
+    // _uploadImage({ formData, idx });
+    this.props._onChangePreview(e, formData);
   };
 
   render() {
@@ -30,7 +33,7 @@ class ButtonAddImage extends Component {
               accept="image/*"
               name="img-upload[]"
               type="file"
-              onChange={this._uploadImage}
+              onChange={this._onChange}
             />
           </label>
         </form>
@@ -41,6 +44,17 @@ class ButtonAddImage extends Component {
 
 // FIXME: uri고쳐야하는듯?
 const ProductImage = ({ image, preview }) => {
+  if (preview) {
+    return (
+      <div className="images products" style={{ verticalAlign: 'top' }}>
+        <span className="btn-delete">
+          <img src="/img/icon06.png" alt="" />
+        </span>
+        <img className="img-cover" src={image} alt="" />
+      </div>
+    );
+  }
+
   return (
     <div className="images products" style={{ verticalAlign: 'top' }}>
       <span className="btn-delete">
@@ -48,7 +62,7 @@ const ProductImage = ({ image, preview }) => {
       </span>
       <img
         className="img-cover"
-        src={`${ATY_URI}/aty_image.php?siteId=${SITE_ID}&iID=${image.get('idx')}&thumb=2`}
+        src={`${ATY_URI}/aty_image_view.php?siteId=${SITE_ID}&iID=${image.get('seq')}&thumb=1`}
         alt=""
       />
     </div>
@@ -102,7 +116,7 @@ class OptionWrapper extends Component {
 
 class ProductInputModal extends Component {
   // FIXME: 새상품 추가일때... api의 prototype대로 state설정 후 해결...
-  state = { preview: '', productDetail: '' };
+  state = { preview: List(), productDetail: '' };
 
   componentDidMount = () => {
     const { initGetProductDetail, idx, isNew } = this.props;
@@ -166,6 +180,22 @@ class ProductInputModal extends Component {
     }));
   };
 
+  _onChangePreview = (e, formData) => {
+    e.preventDefault();
+    const files = e.target.files;
+    for (let i = 0; i < files.length; i++) {
+      const reader = new FileReader();
+
+      reader.onloadend = () => {
+        this.setState(prevState => ({ preview: prevState.preview.push(reader.result) }));
+      };
+
+      reader.readAsDataURL(files[i]);
+    }
+
+    // this._uploadImage({ formData, idx: this.props.idx });
+  };
+
   _uploadImage = payload => {
     this.props.initUploadImage(payload);
   };
@@ -182,7 +212,7 @@ class ProductInputModal extends Component {
 
   render() {
     const { preview, productDetail } = this.state;
-    const { togglePopup, isNew } = this.props;
+    const { togglePopup, isNew, idx } = this.props;
 
     const info = productDetail && productDetail.get('info');
     const sellInfo = productDetail && productDetail.get('sellinfo');
@@ -206,9 +236,18 @@ class ProductInputModal extends Component {
           </header>
           <div className="wrapper-padding">
             <div className="image__wrapper" style={{ maxWidth: `${window.innerWidth - 32}px` }}>
-              <ButtonAddImage _uploadImage={this._uploadImage} />
+              <ButtonAddImage
+                _uploadImage={this._uploadImage}
+                idx={idx}
+                _onChangePreview={this._onChangePreview}
+              />
               {images
                 ? images.map((image, i) => <ProductImage key={`images-${i}`} image={image} />)
+                : null}
+              {preview.size > 0
+                ? preview.map((previewImage, i) => (
+                    <ProductImage key={`previewImage-${i}`} image={previewImage} preview />
+                  ))
                 : null}
             </div>
           </div>
