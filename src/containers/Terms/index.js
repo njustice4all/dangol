@@ -6,14 +6,13 @@ import { push } from 'react-router-redux';
 import Use from './Use';
 import Agreement from './Agreement';
 import Personal from './Personal';
+import { TermsNavigator } from '../../components';
 
 class Terms extends Component {
   render() {
     return (
       <div>
-        <button onClick={() => this.props.navigateTo('/ceo/terms/use')}>Hey</button>
-        <button onClick={() => this.props.navigateTo('/ceo/terms/personal')}>Man</button>
-        <button onClick={() => this.props.navigateTo('/ceo/terms/agreement')}>Wow</button>
+        <TermsNavigator />
         <Route path="/ceo/terms/use" render={props => <Use {...props} />} />
         <Route path="/ceo/terms/personal" render={props => <Personal {...props} />} />
         <Route path="/ceo/terms/agreement" render={props => <Agreement {...props} />} />
