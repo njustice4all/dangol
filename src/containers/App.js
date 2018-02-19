@@ -15,6 +15,7 @@ import OrderComplete from './OrderComplete';
 import OrderDetail from './OrderDetail';
 import ModifyShop from './CEO/ModifyShop';
 import ModifyProducts from './CEO/ModifyProducts';
+import Terms from './Terms';
 import { StopDelivery, Setting, Management, ManagementAdd, EditAdmin } from './Menus';
 
 import { initFetchOrderLists } from '../actions/order';
@@ -84,6 +85,7 @@ class App extends Component {
             <Route exact path="/menus/admin" component={EditAdmin} />
             <Route exact path="/ceo/shop" component={ModifyShop} />
             <Route exact path="/ceo/products" component={ModifyProducts} />
+            <Route path="/ceo/terms/:options" component={Terms} />
           </Switch>
         </div>
       </PopupController>

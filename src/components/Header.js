@@ -112,7 +112,9 @@ class Header extends Component<Props> {
     }
 
     return (
-      <div className="header">
+      <div
+        className="header"
+        style={customProps.color ? { backgroundColor: customProps.color } : {}}>
         {customProps.buttonOpenSideMenu && <ButtonOpenSideMenu openSideMenu={this.openSideMenu} />}
         {(customProps.detail || customProps.goBack) && <ButtonBack goBack={this._goBack} />}
         <div className="title">{customProps.title}</div>

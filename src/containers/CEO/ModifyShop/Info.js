@@ -18,6 +18,7 @@ const Info = ({
   validateClass,
   id,
   setId,
+  navigateTo,
 }) => {
   return (
     <div className="items" style={{ padding: '5px 8px', marginTop: '10px' }}>
@@ -233,7 +234,7 @@ const Info = ({
           <div className="input__title" />
           <div className="input__content">
             <div className="input-register-menu">
-              <div className="input-register-items">
+              <div className="input-register-items" onClick={navigateTo('/ceo/terms/use')}>
                 <span>약관 및 개인정보 수정</span>
               </div>
               <div className="input-register-items">가맹점 사장님 ID 등록</div>

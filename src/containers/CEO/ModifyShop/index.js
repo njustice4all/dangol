@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import classNames from 'classnames';
 import { List, Map } from 'immutable';
 import { connect } from 'react-redux';
+import { push } from 'react-router-redux';
 
 import Info from './Info';
 import Images from './Images';
@@ -195,6 +196,7 @@ class ModifyShop extends Component {
       errors,
       id,
     } = this.state;
+    const { navigateTo } = this.props;
 
     return (
       <div className="ceo">
@@ -239,6 +241,7 @@ class ModifyShop extends Component {
             validateClass={this.validateClass}
             id={id}
             setId={this.setId}
+            navigateTo={navigateTo}
           />
         </div>
         <Buttons
@@ -254,4 +257,5 @@ class ModifyShop extends Component {
 
 export default connect(null, dispatch => ({
   initGetShopInfo: shopNo => dispatch(initGetShopInfo(shopNo)),
+  navigateTo: route => () => dispatch(push(route)),
 }))(ModifyShop);
