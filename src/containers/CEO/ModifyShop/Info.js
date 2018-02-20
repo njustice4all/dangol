@@ -19,6 +19,7 @@ const Info = ({
   id,
   setId,
   navigateTo,
+  permitNumber,
 }) => {
   return (
     <div className="items" style={{ padding: '5px 8px', marginTop: '10px' }}>
@@ -145,7 +146,7 @@ const Info = ({
           <div className="input__content">
             <input
               style={{ margin: '0' }}
-              type="number"
+              type="text"
               placeholder="영업일을 입력하세요"
               className="default__form"
               // onChange={e => setStateByKey('contact', e.target.value)}
@@ -160,11 +161,11 @@ const Info = ({
           <div className="input__content">
             <input
               style={{ margin: '0' }}
-              type="number"
+              type="text"
               placeholder="사업자등록번호를 입력하세요"
               className="default__form"
-              // onChange={e => setStateByKey('contact', e.target.value)}
-              // value={contact}
+              onChange={e => setStateByKey('permitNumber', e.target.value)}
+              value={permitNumber}
             />
           </div>
         </div>

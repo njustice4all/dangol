@@ -30,6 +30,7 @@ class ModifyShop extends Component {
       detailAddress: 'ATY빌딩 401호',
     }),
     contact: '025551234',
+    permitNumber: '123-4567-8901',
     openingHours: '평일 11:00 ~ 22:00 / 일요일 11:30 ~ 22:30',
     closeDays: '연중무휴',
     possible: List([
@@ -195,6 +196,7 @@ class ModifyShop extends Component {
       category,
       errors,
       id,
+      permitNumber,
     } = this.state;
     const { navigateTo } = this.props;
 
@@ -242,6 +244,7 @@ class ModifyShop extends Component {
             id={id}
             setId={this.setId}
             navigateTo={navigateTo}
+            permitNumber={permitNumber}
           />
         </div>
         <Buttons

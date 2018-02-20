@@ -887,7 +887,7 @@ input {
       font-size: 13px;
       background-color: #f3f3f3;
       border: 1px solid #cccccc;
-      padding: 7px 5px;
+      padding: 9px;
       .option-title-wrapper {
         margin-bottom: 5px;
         display: flex;
@@ -942,8 +942,29 @@ input {
       }
       .option-input-control {
         width: 37px;
+        display: flex;
+        padding-left: 4px;
         span {
-          padding: 4px;
+          flex: 1;
+          img {
+            width: 15px;
+          }
+        }
+        #plus {
+          display: none;
+        }
+      }
+      .option-input-control.first,
+      .option-input-control.plus {
+        // text-align: right;
+        #plus {
+          display: block;
+        }
+      }
+      .option-input-control.first.plus {
+        text-align: right;
+        #minus {
+          display: none;
         }
       }
       .button-delete {

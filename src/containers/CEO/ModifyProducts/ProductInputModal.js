@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { fromJS, List, Map } from 'immutable';
 import { connect } from 'react-redux';
+import cx from 'classnames';
 
 import { initUploadImage, initGetProductDetail } from '../../../actions/ceo';
 
@@ -76,6 +77,7 @@ class OptionWrapper extends Component {
       _onDeleteOption,
       _onAddOption,
       _onAddProperty,
+      _onDeleteProperty,
     } = this.props;
 
     return (
@@ -98,36 +100,46 @@ class OptionWrapper extends Component {
                   <img src="/img/icon-close.png" alt="" />
                 </div>
               </div>
-              {option.get('list').map((list, i) => (
-                <div className="options-property" key={`property-${i}`}>
-                  <div className="option-name">
-                    <span>{`옵션속성 ${i + 1}`}</span>
+              {option.get('list').map((list, i) => {
+                return (
+                  <div className="options-property" key={`property-${i}`}>
+                    <div className="option-name">
+                      <span>{`옵션속성 ${i + 1}`}</span>
+                    </div>
+                    <div className="option-input-name">
+                      <input
+                        type="text"
+                        value={list.get('option_data')}
+                        onChange={_onChangeOptionByKey(index, i, 'option_data')}
+                      />
+                    </div>
+                    <div className="option-price">
+                      <span>가격</span>
+                    </div>
+                    <div className="option-input-price">
+                      <input
+                        type="number"
+                        value={list.get('price')}
+                        onChange={_onChangeOptionByKey(index, i, 'price')}
+                        onClick={e => e.target.select()}
+                      />
+                      <span>원</span>
+                    </div>
+                    <div
+                      className={cx('option-input-control', {
+                        first: option.get('list').size === 1 ? true : false,
+                        plus: option.get('list').size - 1 === i ? true : false,
+                      })}>
+                      <span id="minus" onClick={_onDeleteProperty(index, i)}>
+                        <img src="/img/minus.png" />
+                      </span>
+                      <span id="plus" onClick={_onAddProperty(index)}>
+                        <img src="/img/plus.png" />
+                      </span>
+                    </div>
                   </div>
-                  <div className="option-input-name">
-                    <input
-                      type="text"
-                      value={list.get('option_data')}
-                      onChange={_onChangeOptionByKey(index, i, 'option_data')}
-                    />
-                  </div>
-                  <div className="option-price">
-                    <span>가격</span>
-                  </div>
-                  <div className="option-input-price">
-                    <input
-                      type="number"
-                      value={list.get('price')}
-                      onChange={_onChangeOptionByKey(index, i, 'price')}
-                      onClick={e => e.target.select()}
-                    />
-                    <span>원</span>
-                  </div>
-                  <div className="option-input-control">
-                    <span onClick={() => console.log('-')}>-</span>
-                    <span onClick={_onAddProperty(index)}>+</span>
-                  </div>
-                </div>
-              ))}
+                );
+              })}
             </div>
           ))}
         </div>
@@ -184,8 +196,17 @@ class ProductInputModal extends Component {
     }));
   };
 
-  _onDeleteProperty = index => () => {
-    console.log(index);
+  _onDeleteProperty = (index, i) => () => {
+    this.setState(prevState => ({
+      productDetail: prevState.productDetail.deleteIn([
+        'stock',
+        'option_control',
+        'main',
+        index,
+        'list',
+        i,
+      ]),
+    }));
   };
 
   _onAddProperty = index => () => {
@@ -364,6 +385,7 @@ class ProductInputModal extends Component {
               _onDeleteOption={this._onDeleteOption}
               _onAddOption={this._onAddOption}
               _onAddProperty={this._onAddProperty}
+              _onDeleteProperty={this._onDeleteProperty}
             />
             <div className="button-normal">
               <span className="button button-left" onClick={togglePopup(null, 'close', isNew)}>
