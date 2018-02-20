@@ -79,7 +79,7 @@ const OrderComplete = ({ isComplete, status }) => {
   if (isComplete) {
     return (
       <div className="comment">
-        {status === 'accept' ? '완료된 주문입니다.' : '취소된 주문입니다.'}
+        {status === 'deliveryDone' ? '완료된 주문입니다.' : '취소된 주문입니다.'}
       </div>
     );
   }
@@ -139,7 +139,8 @@ export default withRouter(
     state => ({
       router: state.get('router'),
       order: state.getIn(['order', 'detail', 'order']),
-      status: state.getIn(['order', 'detail', 'order', 'status']),
+      status: state.getIn(['order', 'detail', 'orderDetail', 'state']),
+      // status: state.getIn(['order', 'detail', 'order', 'status']),
       detail: state.getIn(['order', 'detail']),
     }),
     dispatch => ({

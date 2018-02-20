@@ -63,8 +63,9 @@ export default (routeObject: routeObject, status: string): route => {
     default:
       try {
         if (routeObject.pathname.split('/order/')[1].split('/')[0] === 'complete') {
+          console.log(status);
           return {
-            classname: `orderDetail ${status === 'accept' ? 'done' : 'done cancel'}`,
+            classname: `orderDetail ${status === 'deliveryDone' ? 'done' : 'done cancel'}`,
             title: '주문상세',
             detail: true,
           };

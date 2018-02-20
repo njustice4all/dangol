@@ -45,10 +45,21 @@ class Convert {
   };
 
   getDetail = payload => {
-    return {
-      order: payload.order,
-      orderDetail: payload.orderDetail[0],
-    };
+    try {
+      if (payload.fail) {
+        return {
+          order: {},
+          orderDetail: {},
+        };
+      } else {
+        return {
+          order: payload.order,
+          orderDetail: payload.orderDetail[0],
+        };
+      }
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   getFormData = data => {

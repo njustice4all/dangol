@@ -1,13 +1,15 @@
 import React from 'react';
 
 import getCoords from '../../utils/getCoords';
+import { getTime } from '../../utils/time';
 
 const CustomerInfo = ({ detail }) => {
   const phone =
-    detail &&
-    `${detail.getIn(['order', 'od_b_hp1'])}-
-     ${detail.getIn(['order', 'od_b_hp2'])}-
-     ${detail.getIn(['order', 'od_b_hp3'])}`;
+    detail.getIn(['order', 'od_b_hp1']) +
+    ' - ' +
+    detail.getIn(['order', 'od_b_hp2']) +
+    ' - ' +
+    detail.getIn(['order', 'od_b_hp3']);
 
   return (
     <li className="list-item">
@@ -56,7 +58,7 @@ const Package = ({ detail }) => (
       <li className="list-item">
         <div className="title">수령시간</div>
         <div className="content">
-          <span className="text">{detail.getIn(['order', 'od_b_pack_req_time'])}</span>
+          <span className="text">{getTime(detail.getIn(['order', 'od_b_pack_req_time']))}</span>
         </div>
       </li>
       <Payment request={detail.getIn(['order', 'od_b_message'])} />
