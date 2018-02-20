@@ -3,10 +3,6 @@ import { connect } from 'react-redux';
 import { push } from 'react-router-redux';
 import cx from 'classnames';
 
-const fontSize = {
-  fontSize: '14px',
-};
-
 class Termsnavigator extends Component {
   render() {
     const { navigateTo, pathname } = this.props;
@@ -15,7 +11,6 @@ class Termsnavigator extends Component {
       <div className="ceo-navigator">
         <div
           className={cx('navigator-buttons', { on: pathname === '/ceo/terms/use' ? true : false })}
-          style={fontSize}
           onClick={() => navigateTo('/ceo/terms/use')}>
           이용약관
         </div>
@@ -23,7 +18,6 @@ class Termsnavigator extends Component {
           className={cx('navigator-buttons', {
             on: pathname === '/ceo/terms/personal' ? true : false,
           })}
-          style={fontSize}
           onClick={() => navigateTo('/ceo/terms/personal')}>
           개인정보취급방침
         </div>
@@ -31,7 +25,6 @@ class Termsnavigator extends Component {
           className={cx('navigator-buttons', {
             on: pathname === '/ceo/terms/agreement' ? true : false,
           })}
-          style={fontSize}
           onClick={() => navigateTo('/ceo/terms/agreement')}>
           개인정보수집동의
         </div>

@@ -29,7 +29,7 @@ class PopupController extends Component {
     const ui = this.props.ui.toJS();
 
     return (
-      <div>
+      <div style={{ height: '100%' }}>
         {this._renderPopup(ui)}
         {this.props.children}
       </div>

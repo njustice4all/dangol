@@ -41,21 +41,21 @@ export default (routeObject: routeObject, status: string): route => {
       return { classname: 'order-manage-wrapper add', title: '업소 정보 수정', goBack: true };
     case '/ceo/terms/use':
       return {
-        classname: 'order-manage-wrapper add',
+        classname: 'order-manage-wrapper add terms',
         title: '약관 및 기본정보 수정',
         goBack: true,
         color: '#fe931f',
       };
     case '/ceo/terms/personal':
       return {
-        classname: 'order-manage-wrapper add',
+        classname: 'order-manage-wrapper add terms',
         title: '약관 및 기본정보 수정',
         goBack: true,
         color: '#fe931f',
       };
     case '/ceo/terms/agreement':
       return {
-        classname: 'order-manage-wrapper add',
+        classname: 'order-manage-wrapper add terms',
         title: '약관 및 기본정보 수정',
         goBack: true,
         color: '#fe931f',
