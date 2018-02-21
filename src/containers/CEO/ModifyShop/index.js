@@ -30,7 +30,7 @@ class ModifyShop extends Component {
       firstAddress: '서울특별시 강남구 대치동',
       detailAddress: 'ATY빌딩 401호',
     }),
-    openDay: '',
+    openDay: '맨날',
     contact: '025551234',
     permitNumber: '123-4567-8901',
     openingHours: '평일 11:00 ~ 22:00 / 일요일 11:30 ~ 22:30',
@@ -135,6 +135,7 @@ class ModifyShop extends Component {
       closeDays,
       permitNumber,
       preview,
+      openDay,
     } = this.state;
     const { initSetShop, initGetShopLists, initUploadImage } = this.props;
     const { possible } = validateState(this.state);
@@ -148,36 +149,38 @@ class ModifyShop extends Component {
       zipCode: address.get('zipCode'),
       contacts: contact,
       permitNumber,
-      openDay: '',
+      openDay,
       closeDay: closeDays,
       openTime: openingHours,
       possible: possible.toJS(),
       mainImage: [],
     };
 
-    // FIXME:
-    if (preview.size > 0) {
-      // initUploadImage({})
-    }
+    // const newPossible = new Array(5);
+    const newPossible = ['0', '0', '0', '0', '0'];
+    possible.forEach(data => {
+      const index = data.get('index');
+      newPossible[index] = '1';
+    });
+    console.log(newPossible);
+
+    // if (preview.size > 0) {
+    //   initUploadImage({
+    //     formData: this.state.preview
+    //       .map(addImage => {
+    //         return addImage.get('formData');
+    //       })
+    //       .toJS(),
+    //     idx: '10', // FIXME: 상점의 번호
+    //     result,
+    //     shop: true,
+    //   });
+    // } else {
+    //   console.log('set shop here');
+    // }
   };
 
   handleCancel = () => this.props.history.push('/');
-
-  addBase64Images = async result => {
-    const imageData = await JSON.parse(result);
-    const image = Map({
-      image: `data:image/jpeg;base64, ${imageData.data}`,
-      imageName: imageData.path,
-      imageType: imageData.mime,
-      added: true,
-      uniqueId: createUniqueId(),
-    });
-
-    this.setState(prevState => ({
-      images: prevState.images.push(image),
-      addImages: prevState.addImages.push(image),
-    }));
-  };
 
   setId = e => {
     e.persist();
@@ -223,8 +226,6 @@ class ModifyShop extends Component {
             onImageChange={this.onImageChange}
             validateClass={this.validateClass}
             deleteImageByIndex={this.deleteImageByIndex}
-            shopSequence="14"
-            addBase64Images={this.addBase64Images}
           />
           <div className="divider">
             <div />

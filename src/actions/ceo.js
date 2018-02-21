@@ -168,6 +168,13 @@ export const initUploadImage = payload => async dispatch => {
     if (response.msg !== 'imgUpOK') {
       console.log('img upload error');
     } else {
+      if (payload.shop) {
+        const result = Converter.toSetShopData(payload.result, response.success_seq);
+        // FIXME:
+        console.log('set shop here', result);
+        return;
+      }
+
       const result = Converter.toSetProductData(
         payload.productDetail,
         typeof response.success_seq === 'object' ? response.success_seq : [response.success_seq],

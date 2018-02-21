@@ -118,7 +118,6 @@ class Convert {
   };
 
   toSetProductData = (detail, addImage, idx) => {
-    console.log(addImage);
     let result = null;
     if (idx) {
       result = {
@@ -144,6 +143,15 @@ class Convert {
     }
 
     return result;
+  };
+
+  toSetShopData = (data, images) => {
+    console.log(images);
+    if (typeof images === 'object') {
+      return { ...data, mainImage: images };
+    }
+
+    return { ...data, mainImage: [images] };
   };
 }
 

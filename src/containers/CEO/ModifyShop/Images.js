@@ -65,14 +65,7 @@ const ShopImage = ({ preview, image, deleteImageByIndex, index }) => {
 
 class Images extends Component {
   render() {
-    const {
-      preview,
-      images,
-      onImageChange,
-      validateClass,
-      deleteImageByIndex,
-      shopSequence,
-    } = this.props;
+    const { preview, images, onImageChange, validateClass, deleteImageByIndex } = this.props;
 
     return (
       <div className="items" style={{ marginBottom: '0px', marginTop: '3px', padding: '5px 8px' }}>
