@@ -12,6 +12,7 @@ class ButtonAddImage extends Component {
     formData.append('folder', 'all');
     formData.append('keyWord', 'ImageUpload');
 
+    // _onChangePreview(e, this.image);
     _onChangePreview(e, formData);
   };
 
@@ -23,7 +24,7 @@ class ButtonAddImage extends Component {
             <h1>+</h1>
             <input
               style={{ display: 'none' }}
-              multiple
+              // multiple
               accept="image/*"
               name="img-upload[]"
               type="file"

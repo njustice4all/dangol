@@ -22,7 +22,7 @@ const getShopError = error => ({ type: 'ceo/GET_SHOP_ERROR', error });
 export const initGetShopInfo = payload => async dispatch => {
   dispatch(getShop());
 
-  const response = await apiGetShopInfo();
+  const response = await apiGetShopInfo(payload);
 
   try {
     if (!response) {
@@ -148,7 +148,21 @@ export const initGetProductDetail = idx => async dispatch => {
 export const initUploadImage = payload => async dispatch => {
   dispatch({ type: 'ceo/UPLOAD_IMAGE' });
 
-  const response = await apiUploadImage(payload.formData);
+  let response = null;
+
+  if (payload.formData.length > 1) {
+    const promiseData = payload.formData.map(form => {
+      return new Promise(resolve => {
+        resolve(apiUploadImage(form));
+      });
+    });
+
+    await Promise.all(promiseData).then(values => {
+      response = { msg: 'imgUpOK', success_seq: values.map(value => value.success_seq) };
+    });
+  } else {
+    response = await apiUploadImage(payload.formData[0]);
+  }
 
   try {
     if (response.msg !== 'imgUpOK') {
@@ -156,7 +170,7 @@ export const initUploadImage = payload => async dispatch => {
     } else {
       const result = Converter.toSetProductData(
         payload.productDetail,
-        response.success_seq,
+        typeof response.success_seq === 'object' ? response.success_seq : [response.success_seq],
         payload.idx
       );
       dispatch(initSetProducts(result));

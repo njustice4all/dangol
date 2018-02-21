@@ -22,7 +22,8 @@ export const apiLoadMoreAddress = (query, page = 1) => {
 /**
  * 상점정보 가져오기
  */
-export const apiGetShopInfo = (shopNo = 1) => {
+// FIXME: payload는 siteid
+export const apiGetShopInfo = payload => {
   return new Promise((resolve, reject) => {
     $.ajax({
       type: 'POST',
@@ -30,7 +31,7 @@ export const apiGetShopInfo = (shopNo = 1) => {
       data: {
         siteId: SITE_ID,
         keyWord: 'GetBasicInfo',
-        shop: shopNo,
+        shop: 1,
       },
       success: result => {
         resolve(result);

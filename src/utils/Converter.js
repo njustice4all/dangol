@@ -118,6 +118,7 @@ class Convert {
   };
 
   toSetProductData = (detail, addImage, idx) => {
+    console.log(addImage);
     let result = null;
     if (idx) {
       result = {
@@ -127,7 +128,7 @@ class Convert {
         contents: detail.getIn(['info', 'contents']),
         options: detail.getIn(['stock', 'option_control', 'main']).toJS(),
         mainImage: addImage
-          ? [...detail.getIn(['info', 'mainImage']).map(image => image.get('seq')), addImage]
+          ? [...detail.getIn(['info', 'mainImage']).map(image => image.get('seq')), ...addImage]
           : [...detail.getIn(['info', 'mainImage']).map(image => image.get('seq'))],
       };
     } else {
@@ -137,7 +138,7 @@ class Convert {
         contents: detail.getIn(['info', 'contents']),
         options: detail.getIn(['stock', 'option_control', 'main']).toJS(),
         mainImage: addImage
-          ? [...detail.getIn(['info', 'mainImage']).map(image => image.get('seq')), addImage]
+          ? [...detail.getIn(['info', 'mainImage']).map(image => image.get('seq')), ...addImage]
           : [...detail.getIn(['info', 'mainImage']).map(image => image.get('seq'))],
       };
     }

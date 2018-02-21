@@ -174,12 +174,29 @@ class ProductInputModal extends Component {
     const { initGetProducts, initUploadImage, initSetProducts, idx } = this.props;
 
     if (isNew) {
-      initUploadImage({ formData: this.state.preview.getIn([0, 'formData']), idx, productDetail });
+      initUploadImage({
+        formData: this.state.preview
+          .map(addImage => {
+            return addImage.get('formData');
+          })
+          .toJS(),
+        idx,
+        productDetail,
+      });
       return;
     }
 
     if (preview.size > 0) {
-      initUploadImage({ formData: this.state.preview.getIn([0, 'formData']), idx, productDetail });
+      // initUploadImage({ formData: this.state.preview.getIn([0, 'formData']), idx, productDetail });
+      initUploadImage({
+        formData: this.state.preview
+          .map(addImage => {
+            return addImage.get('formData');
+          })
+          .toJS(),
+        idx,
+        productDetail,
+      });
     } else {
       const result = Converter.toSetProductData(productDetail, null, idx);
       initSetProducts(result);

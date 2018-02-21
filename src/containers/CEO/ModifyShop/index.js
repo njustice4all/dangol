@@ -12,10 +12,11 @@ import Buttons from './Buttons';
 import Navigator from '../Navigator';
 
 import { validateState, createUniqueId, convertUrlToBase64 } from '../../../utils';
-import { initGetShopInfo } from '../../../actions/ceo';
+import { initGetShopInfo, initUploadImage } from '../../../actions/ceo';
 
 class ModifyShop extends Component {
   state = {
+    preview: List(),
     images: List([]),
     base64Images: List([]),
     isOpenAddress: false,
@@ -29,6 +30,7 @@ class ModifyShop extends Component {
       firstAddress: '서울특별시 강남구 대치동',
       detailAddress: 'ATY빌딩 401호',
     }),
+    openDay: '',
     contact: '025551234',
     permitNumber: '123-4567-8901',
     openingHours: '평일 11:00 ~ 22:00 / 일요일 11:30 ~ 22:30',
@@ -45,9 +47,9 @@ class ModifyShop extends Component {
     addImages: List([]),
   };
 
+  // FIXME: payload = siteid
   componentDidMount = () => {
-    // FIXME: 상점번호
-    this.props.initGetShopInfo(1);
+    this.props.initGetShopInfo();
   };
 
   setStateByKey = (key, value) => this.setState(prevState => ({ [key]: value }));
@@ -78,31 +80,28 @@ class ModifyShop extends Component {
     });
   };
 
-  onImageChange = e => {
+  onImageChange = (e, formData) => {
     e.preventDefault();
     const files = e.target.files;
     for (let i = 0; i < files.length; i++) {
       const reader = new FileReader();
 
       reader.onloadend = () => {
-        const image = Map({
-          image: reader.result,
-          imageName: files[i].name,
-          imageType: files[i].type,
-          added: true,
-          uniqueId: createUniqueId(),
-        });
-        this.setState({
-          images: this.state.images.push(image),
-          addImages: this.state.addImages.push(image),
-        });
+        this.setState(prevState => ({
+          preview: prevState.preview.push(Map({ base64: reader.result, formData })),
+        }));
       };
 
       reader.readAsDataURL(files[i]);
     }
   };
 
-  deleteImageByIndex = index => () => {
+  deleteImageByIndex = (index, preview) => () => {
+    if (preview) {
+      this.setState(prevState => ({ preview: prevState.preview.delete(index) }));
+      return;
+    }
+
     const deleteImage = this.state.images.get(index);
     let deleteIndexFromAddImages = null;
 
@@ -134,29 +133,32 @@ class ModifyShop extends Component {
       contact,
       openingHours,
       closeDays,
+      permitNumber,
+      preview,
     } = this.state;
-    const { initSetShop, history, authentication, franchise, initGetShopLists } = this.props;
+    const { initSetShop, initGetShopLists, initUploadImage } = this.props;
     const { possible } = validateState(this.state);
 
     const result = {
-      addImages: addImages.toJS(),
-      deleteImages: deleteImages.toJS(),
-      shop_seq: this.props.match.params.shopSequence,
-      address: address.toJS(),
-      possible: possible.toJS(),
       category,
       name,
-      description,
-      contact,
-      openingHours,
-      closeDays,
+      desc: description,
+      addr1: address.get('firstAddress'),
+      addr2: address.get('detailAddress'),
+      zipCode: address.get('zipCode'),
+      contacts: contact,
+      permitNumber,
+      openDay: '',
+      closeDay: closeDays,
+      openTime: openingHours,
+      possible: possible.toJS(),
+      mainImage: [],
     };
 
-    // initSetShop(result).then(() => {
-    //   initGetShopLists(authentication.get('seq'));
-    //   history.push(`/franchise/setProducts/${franchise.get('seq')}`);
-    // });
-    console.log(result);
+    // FIXME:
+    if (preview.size > 0) {
+      // initUploadImage({})
+    }
   };
 
   handleCancel = () => this.props.history.push('/');
@@ -197,6 +199,8 @@ class ModifyShop extends Component {
       errors,
       id,
       permitNumber,
+      preview,
+      openDay,
     } = this.state;
     const { navigateTo } = this.props;
 
@@ -213,6 +217,7 @@ class ModifyShop extends Component {
             <Address setAddress={this.setAddress} toggleAddress={this.toggleAddress} />
           ) : null}
           <Images
+            preview={preview}
             images={images}
             editMode
             onImageChange={this.onImageChange}
@@ -245,6 +250,7 @@ class ModifyShop extends Component {
             setId={this.setId}
             navigateTo={navigateTo}
             permitNumber={permitNumber}
+            openDay={openDay}
           />
         </div>
         <Buttons
@@ -259,6 +265,7 @@ class ModifyShop extends Component {
 }
 
 export default connect(null, dispatch => ({
-  initGetShopInfo: shopNo => dispatch(initGetShopInfo(shopNo)),
+  initGetShopInfo: payload => dispatch(initGetShopInfo(payload)),
   navigateTo: route => () => dispatch(push(route)),
+  initUploadImage: payload => dispatch(initUploadImage(payload)),
 }))(ModifyShop);

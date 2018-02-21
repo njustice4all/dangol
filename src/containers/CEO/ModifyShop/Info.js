@@ -20,6 +20,7 @@ const Info = ({
   setId,
   navigateTo,
   permitNumber,
+  openDay,
 }) => {
   return (
     <div className="items" style={{ padding: '5px 8px', marginTop: '10px' }}>
@@ -149,8 +150,8 @@ const Info = ({
               type="text"
               placeholder="영업일을 입력하세요"
               className="default__form"
-              // onChange={e => setStateByKey('contact', e.target.value)}
-              // value={contact}
+              onChange={e => setStateByKey('openDay', e.target.value)}
+              value={openDay}
             />
           </div>
         </div>
