@@ -132,7 +132,7 @@ const Info = ({
           <div className="input__content">
             <input
               style={{ margin: '0' }}
-              type="number"
+              type="text"
               placeholder=" - 제외하고 입력"
               className="default__form"
               onChange={e => setStateByKey('contact', e.target.value)}

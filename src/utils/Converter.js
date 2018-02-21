@@ -27,7 +27,7 @@ class Convert {
       return newLists
         .map(list => {
           if (list.od_b_addr1) {
-            //
+            console.log(getCoords(list.od_b_addr1));
           }
 
           return {

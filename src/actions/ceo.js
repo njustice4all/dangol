@@ -171,7 +171,8 @@ export const initUploadImage = payload => async dispatch => {
       if (payload.shop) {
         const result = Converter.toSetShopData(payload.result, response.success_seq);
         // FIXME:
-        console.log('set shop here', result);
+        // console.log('set shop here', result);
+        dispatch(initSetShop(result));
         return;
       }
 

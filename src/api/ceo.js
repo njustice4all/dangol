@@ -30,7 +30,7 @@ export const apiGetShopInfo = payload => {
       url: ATY_URI + '/aty_convert_basic.php',
       data: {
         siteId: SITE_ID,
-        keyWord: 'GetBasicInfo',
+        keyWord: 'GetBasicInfo_Dgp',
         shop: 1,
       },
       success: result => {
@@ -148,24 +148,25 @@ export const apiSetProduct = payload => {
 /**
  * 상점 수정
  */
+// FIXME:
 export const apiSetShop = payload => {
   return new Promise((resolve, reject) => {
-    // $.ajax({
-    //   type: 'POST',
-    //   url: ATY_URI + '/aty_convert_product.php',
-    //   data: {
-    //     siteId: SITE_ID,
-    //     keyWord: 'AddProductItem',
-    //     shop: shop,
-    //     insert: insert,
-    //   },
-    //   success: result => {
-    //     resolve(result);
-    //   },
-    //   error: () => {
-    //     reject(new Error());
-    //   },
-    // });
+    $.ajax({
+      type: 'POST',
+      url: ATY_URI + '/aty_convert_basic.php',
+      data: {
+        siteId: SITE_ID,
+        keyWord: 'SetBasicInfo_Dgp',
+        setData: payload,
+        shop_idx: 1,
+      },
+      success: result => {
+        resolve(result);
+      },
+      error: () => {
+        reject(new Error());
+      },
+    });
   });
 };
 

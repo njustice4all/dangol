@@ -47,7 +47,7 @@ const loadMore = (state, action) => {
 
 const getShopSuccess = (state, action) => {
   return state.withMutations(mutator =>
-    mutator.set('shop', action.shop).setIn(['status', 'isFetching'], false)
+    mutator.set('shop', fromJS(action.shop)).setIn(['status', 'isFetching'], false)
   );
 };
 
@@ -85,7 +85,6 @@ export const ceo = (state = new StateRecord(), action) => {
     case 'ceo/REQ_LOAD_MORE':
       return state.setIn(['status', 'isFetching'], true);
     case 'ceo/SET_SHOP_SUCCESS':
-      console.log('set shop...');
       return state;
     case 'ceo/SET_PRODUCTS_SUCCESS':
       return setProductsSuccess(state, action);

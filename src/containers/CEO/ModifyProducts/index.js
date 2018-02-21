@@ -8,6 +8,7 @@ import { createUniqueId } from '../../../utils';
 import ProductInputModal from './ProductInputModal';
 import Product from './Product';
 import Navigator from '../Navigator';
+import { DeleteProduct } from '../../../components/Popups';
 
 class ModifyProducts extends Component {
   state = {
@@ -16,6 +17,8 @@ class ModifyProducts extends Component {
     productStack: null,
     updateFromNewProduct: false,
     showInputModal: false,
+    showRemoveModal: false,
+    removeIndex: null,
     product: [],
     idx: null,
     isNew: false,
@@ -82,12 +85,13 @@ class ModifyProducts extends Component {
 
   removeProduct = idx => e => {
     e.stopPropagation();
-    this.props.initDelProduct({ idx });
+    this.setState(prevState => ({ removeIndex: idx, showRemoveModal: true }));
+    // this.props.initDelProduct({ idx });
   };
 
   render() {
-    const { authentication, franchise, editMode } = this.props;
-    const { showInputModal, productStack, idx } = this.state;
+    const { authentication, franchise, editMode, initDelProduct } = this.props;
+    const { showRemoveModal, showInputModal, productStack, idx, removeIndex } = this.state;
 
     return (
       <div
@@ -111,6 +115,16 @@ class ModifyProducts extends Component {
         </div>
         {showInputModal ? (
           <ProductInputModal idx={idx} isNew={this.state.isNew} togglePopup={this.togglePopup} />
+        ) : null}
+        {showRemoveModal ? (
+          <DeleteProduct
+            // removeIndex={removeIndex}
+            closeModal={() => this.setState(prevState => ({ showRemoveModal: false }))}
+            remove={() => {
+              initDelProduct({ idx: removeIndex });
+              this.setState(prevState => ({ showRemoveModal: false }));
+            }}
+          />
         ) : null}
       </div>
     );

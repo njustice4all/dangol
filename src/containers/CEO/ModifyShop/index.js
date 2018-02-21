@@ -12,7 +12,7 @@ import Buttons from './Buttons';
 import Navigator from '../Navigator';
 
 import { validateState, createUniqueId, convertUrlToBase64 } from '../../../utils';
-import { initGetShopInfo, initUploadImage } from '../../../actions/ceo';
+import { initGetShopInfo, initUploadImage, initSetShop } from '../../../actions/ceo';
 
 class ModifyShop extends Component {
   state = {
@@ -22,19 +22,18 @@ class ModifyShop extends Component {
     isOpenAddress: false,
     id: '',
     category: 'restaurant',
-    name: '티바 두마리 치킨 대치점',
-    description:
-      '2001년부터 17년간 치킨만을 생각하고 연구해왔으며 가맹점 사장님의 작은 성공에 도움이 되도록 노력하겠습니다.',
+    name: '',
+    description: '',
     address: Map({
-      zipCode: '419328',
-      firstAddress: '서울특별시 강남구 대치동',
-      detailAddress: 'ATY빌딩 401호',
+      zipCode: '',
+      firstAddress: '',
+      detailAddress: '',
     }),
-    openDay: '맨날',
-    contact: '025551234',
-    permitNumber: '123-4567-8901',
-    openingHours: '평일 11:00 ~ 22:00 / 일요일 11:30 ~ 22:30',
-    closeDays: '연중무휴',
+    openDay: '',
+    contact: '',
+    permitNumber: '',
+    openingHours: '',
+    closeDays: '',
     possible: List([
       Map({ index: 0, title: '홀', isChecked: true, src: '/img/icon01' }),
       Map({ index: 1, title: '배달', isChecked: true, src: '/img/icon02' }),
@@ -50,6 +49,27 @@ class ModifyShop extends Component {
   // FIXME: payload = siteid
   componentDidMount = () => {
     this.props.initGetShopInfo();
+  };
+
+  componentWillReceiveProps = nextProps => {
+    const { shop } = nextProps;
+    // console.log(shop.toJS());
+    this.setState(prevState => ({
+      // images: shop.get('mainImage'),
+      address: Map({
+        zipCode: shop.get('zipCode'),
+        firstAddress: shop.get('addr1'),
+        detailAddress: shop.get('addr2'),
+      }),
+      category: 'restaurant',
+      name: shop.get('name'),
+      description: shop.get('desc'),
+      openDay: shop.get('openDay'),
+      contact: shop.get('contacts'),
+      permitNumber: shop.get('permitNumber'),
+      // possible:
+      openTime: shop.get('openTime'),
+    }));
   };
 
   setStateByKey = (key, value) => this.setState(prevState => ({ [key]: value }));
@@ -124,8 +144,6 @@ class ModifyShop extends Component {
 
   onModifyShop = () => {
     const {
-      addImages,
-      deleteImages,
       category,
       name,
       description,
@@ -140,6 +158,12 @@ class ModifyShop extends Component {
     const { initSetShop, initGetShopLists, initUploadImage } = this.props;
     const { possible } = validateState(this.state);
 
+    const possibleData = ['0', '0', '0', '0', '0'];
+    possible.forEach(data => {
+      const index = data.get('index');
+      possibleData[index] = '1';
+    });
+
     const result = {
       category,
       name,
@@ -152,32 +176,26 @@ class ModifyShop extends Component {
       openDay,
       closeDay: closeDays,
       openTime: openingHours,
-      possible: possible.toJS(),
+      possible: possibleData.join(''),
       mainImage: [],
     };
 
-    // const newPossible = new Array(5);
-    const newPossible = ['0', '0', '0', '0', '0'];
-    possible.forEach(data => {
-      const index = data.get('index');
-      newPossible[index] = '1';
-    });
-    console.log(newPossible);
-
-    // if (preview.size > 0) {
-    //   initUploadImage({
-    //     formData: this.state.preview
-    //       .map(addImage => {
-    //         return addImage.get('formData');
-    //       })
-    //       .toJS(),
-    //     idx: '10', // FIXME: 상점의 번호
-    //     result,
-    //     shop: true,
-    //   });
-    // } else {
-    //   console.log('set shop here');
-    // }
+    if (preview.size > 0) {
+      initUploadImage({
+        formData: this.state.preview
+          .map(addImage => {
+            return addImage.get('formData');
+          })
+          .toJS(),
+        idx: '10', // FIXME: 상점의 번호
+        result,
+        shop: true,
+      });
+    } else {
+      // FIXME:
+      // console.log('set shop here', result);
+      this.props.initSetShop(result);
+    }
   };
 
   handleCancel = () => this.props.history.push('/');
@@ -265,8 +283,14 @@ class ModifyShop extends Component {
   }
 }
 
-export default connect(null, dispatch => ({
-  initGetShopInfo: payload => dispatch(initGetShopInfo(payload)),
-  navigateTo: route => () => dispatch(push(route)),
-  initUploadImage: payload => dispatch(initUploadImage(payload)),
-}))(ModifyShop);
+export default connect(
+  state => ({
+    shop: state.getIn(['ceo', 'shop']),
+  }),
+  dispatch => ({
+    initGetShopInfo: payload => dispatch(initGetShopInfo(payload)),
+    navigateTo: route => () => dispatch(push(route)),
+    initUploadImage: payload => dispatch(initUploadImage(payload)),
+    initSetShop: payload => dispatch(initSetShop(payload)),
+  })
+)(ModifyShop);
