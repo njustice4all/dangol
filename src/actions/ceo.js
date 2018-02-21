@@ -7,8 +7,10 @@ import {
   apiAddress,
   apiLoadMoreAddress,
   apiGetProductDetail,
+  apiSetProduct,
 } from '../api/ceo';
 import apiUploadImage from '../api/image';
+import Converter from '../utils/Converter';
 
 /**
  * 상점정보 가져옴
@@ -43,7 +45,7 @@ const setShopFailure = error => ({ type: 'ceo/SET_SHOP_FAILURE', error });
 export const initSetShop = payload => async dispatch => {
   dispatch(setShop());
 
-  // TODO:
+  // FIXME:
   try {
     const response = await apiSetShop(payload);
 
@@ -87,18 +89,16 @@ const setProducts = () => ({ type: 'ceo/SET_PRODUCTS' });
 const setProductsSuccess = result => ({ type: 'ceo/SET_PRODUCTS_SUCCESS', result });
 const setProductsFailure = error => ({ type: 'ceo/SET_PRODUCTS_FAILURE', error });
 
-export const initSetProducts = products => async dispatch => {
+export const initSetProducts = payload => async dispatch => {
   dispatch(setProducts());
 
-  // TODO:
   try {
-    // const response = await apiSetProducts(products);
-    // const result = await response.json();
+    const response = await apiSetProduct(payload);
 
-    if (!result.msg) {
+    if (!response) {
       dispatch(setProductsFailure({ error: true }));
     } else {
-      dispatch(setProductsSuccess(result));
+      dispatch(setProductsSuccess(response));
     }
   } catch (error) {
     console.error(error);
@@ -154,7 +154,12 @@ export const initUploadImage = payload => async dispatch => {
     if (response.msg !== 'imgUpOK') {
       console.log('img upload error');
     } else {
-      dispatch(initGetProductDetail(payload.idx));
+      const result = Converter.toSetProductData(
+        payload.productDetail,
+        response.success_seq,
+        payload.idx
+      );
+      dispatch(initSetProducts(result));
     }
   } catch (error) {
     console.error(error);

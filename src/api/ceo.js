@@ -122,26 +122,49 @@ export const apiDelProduct = payload => {
 };
 
 /**
- * 상품 추가/수정
+ * 상품수정
  */
-export const apiSetShop = payload => {
+export const apiSetProduct = payload => {
   return new Promise((resolve, reject) => {
     $.ajax({
       type: 'POST',
       url: ATY_URI + '/aty_convert_product.php',
       data: {
         siteId: SITE_ID,
-        keyWord: 'AddProductItem',
-        shop: shop,
-        insert: insert,
+        keyWord: 'AddProductItem_Dgp',
+        data: payload,
       },
       success: result => {
-        resolve(result);
+        resolve({ success: true });
       },
       error: () => {
         reject(new Error());
       },
     });
+  });
+};
+
+/**
+ * 상점 수정
+ */
+export const apiSetShop = payload => {
+  return new Promise((resolve, reject) => {
+    // $.ajax({
+    //   type: 'POST',
+    //   url: ATY_URI + '/aty_convert_product.php',
+    //   data: {
+    //     siteId: SITE_ID,
+    //     keyWord: 'AddProductItem',
+    //     shop: shop,
+    //     insert: insert,
+    //   },
+    //   success: result => {
+    //     resolve(result);
+    //   },
+    //   error: () => {
+    //     reject(new Error());
+    //   },
+    // });
   });
 };
 

@@ -14,6 +14,7 @@ const StateRecord = Record({
     page: Map(),
     query: '',
   }),
+  setProducts: false,
 });
 
 const withError = (state, action) => {
@@ -67,6 +68,12 @@ const getProductDetail = (state, action) => {
   );
 };
 
+const setProductsSuccess = (state, action) => {
+  return state.withMutations(mutator =>
+    mutator.setIn(['status', 'isFetching'], false).set('setProducts', action.result.success)
+  );
+};
+
 export const ceo = (state = new StateRecord(), action) => {
   switch (action.type) {
     case 'ceo/GET_SHOP':
@@ -81,8 +88,7 @@ export const ceo = (state = new StateRecord(), action) => {
       console.log('set shop...');
       return state;
     case 'ceo/SET_PRODUCTS_SUCCESS':
-      console.log('set products');
-      return state;
+      return setProductsSuccess(state, action);
     case 'ceo/GET_SHOP_SUCCESS':
       return getShopSuccess(state, action);
     case 'ceo/GET_PRODUCTS_SUCCESS':
@@ -93,6 +99,10 @@ export const ceo = (state = new StateRecord(), action) => {
       return getProductDetail(state, action);
     case 'ceo/REQ_LOAD_MORE_SUCCESS':
       return loadMore(state, action);
+    case 'ceo/UPLOAD_IMAGE_SUCCESS':
+      return state.set('uploadImageSeq', action.payload);
+    case 'ceo/CLOSE_MODAL':
+      return state.set('setProducts', false);
     case 'ceo/SET_SHOP_FAILURE':
     case 'ceo/REQ_ADDRESS_FAILURE':
     case 'ceo/SET_PRODUCTS_FAILURE':

@@ -4,17 +4,15 @@ import { ATY_URI, SITE_ID } from '../../../constants';
 
 class ButtonAddImage extends Component {
   _onChange = e => {
-    const { _uploadImage, idx } = this.props;
-    // FIXME: userId etc... 필요
-    // 이미지 업로드시 어떤 상품의 사진인가? 알아야 getProducts했을때 사진이 적용된다
+    const { _onChangePreview, idx } = this.props;
+    // FIXME: real data로 바꿔야함
     const formData = new FormData(this.image);
     formData.append('siteId', SITE_ID);
     formData.append('userId', 'hyj679');
     formData.append('folder', 'all');
     formData.append('keyWord', 'ImageUpload');
 
-    // _uploadImage({ formData, idx });
-    this.props._onChangePreview(e, formData);
+    _onChangePreview(e, formData);
   };
 
   render() {

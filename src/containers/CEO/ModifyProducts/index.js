@@ -56,7 +56,6 @@ class ModifyProducts extends Component {
     }
   };
 
-  // TODO:
   togglePopup = (idx, type, isNew) => e => {
     this.setState(prevState => ({
       showInputModal: !prevState.showInputModal,

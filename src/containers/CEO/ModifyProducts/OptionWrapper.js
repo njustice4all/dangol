@@ -10,6 +10,7 @@ class OptionWrapper extends Component {
       _onAddOption,
       _onAddProperty,
       _onDeleteProperty,
+      _onChangeOptionName,
     } = this.props;
 
     return (
@@ -26,7 +27,7 @@ class OptionWrapper extends Component {
                 <input
                   type="text"
                   value={option.get('option_name')}
-                  onChange={e => console.log(e)}
+                  onChange={_onChangeOptionName(index)}
                 />
                 <div className="button-delete" onClick={_onDeleteOption(index)}>
                   <img src="/img/icon-close.png" alt="" />

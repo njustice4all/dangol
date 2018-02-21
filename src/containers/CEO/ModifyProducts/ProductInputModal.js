@@ -5,7 +5,14 @@ import { connect } from 'react-redux';
 import OptionWrapper from './OptionWrapper';
 import ProductImage from './ProductImage';
 import ButtonAddImage from './ButtonAddImage';
-import { initUploadImage, initGetProductDetail } from '../../../actions/ceo';
+import {
+  initUploadImage,
+  initGetProductDetail,
+  initSetProducts,
+  initGetProducts,
+} from '../../../actions/ceo';
+
+import Converter from '../../../utils/Converter';
 
 import { ATY_URI, SITE_ID } from '../../../constants';
 
@@ -17,21 +24,44 @@ class ProductInputModal extends Component {
     if (!isNew) {
       initGetProductDetail(idx);
     } else {
-      // FIXME: 새상품 추가일때... api의 prototype대로 state설정 후 해결...
-      console.log('hi...');
+      this.setState(prevState => ({
+        productDetail: fromJS({
+          sellinfo: {
+            price: '',
+          },
+          info: {
+            mainImage: [],
+            name: '',
+            contents: '',
+          },
+          stock: {
+            option_control: {
+              main: [],
+            },
+          },
+        }),
+      }));
     }
   };
 
   componentWillReceiveProps = nextProps => {
+    const { initGetProducts, initGetProductDetail, idx, isNew, togglePopup } = this.props;
+
+    if (nextProps.setProducts !== this.props.setProducts) {
+      togglePopup()();
+      initGetProducts();
+      return;
+    }
+
     this.setState(prevState => ({ productDetail: nextProps.productDetail }));
+  };
+
+  componentWillUnmount = () => {
+    this.props.closeModal();
   };
 
   _onChangeByKeys = (key1, key2) => e => {
     e.persist();
-    if (this.props.isNew) {
-      console.log('hi');
-      return;
-    }
     this.setState(prevState => ({
       productDetail: prevState.productDetail.setIn([key1, key2], e.target.value),
     }));
@@ -43,6 +73,17 @@ class ProductInputModal extends Component {
     this.setState(prevState => ({
       productDetail: prevState.productDetail.setIn(
         ['stock', 'option_control', 'main', index, 'list', i, key],
+        e.target.value
+      ),
+    }));
+  };
+
+  _onChangeOptionName = index => e => {
+    e.persist();
+
+    this.setState(prevState => ({
+      productDetail: prevState.productDetail.setIn(
+        ['stock', 'option_control', 'main', index, 'option_name'],
         e.target.value
       ),
     }));
@@ -88,11 +129,10 @@ class ProductInputModal extends Component {
       return;
     }
 
-    // FIXME:
     const option = fromJS({
       list: [{ option_data: '', price: '' }],
       option_name: '',
-      option_type: '',
+      option_type: '1',
     });
 
     this.setState(prevState => ({
@@ -118,10 +158,6 @@ class ProductInputModal extends Component {
     }
   };
 
-  _uploadImage = payload => {
-    this.props.initUploadImage(payload);
-  };
-
   deleteImageByIndex = (index, preview) => () => {
     if (preview) {
       this.setState(prevState => ({ preview: prevState.preview.delete(index) }));
@@ -133,20 +169,21 @@ class ProductInputModal extends Component {
     }));
   };
 
-  // FIXME:
   onConfirm = isNew => () => {
+    const { productDetail, preview } = this.state;
+    const { initGetProducts, initUploadImage, initSetProducts, idx } = this.props;
+
     if (isNew) {
-      console.log('new product');
+      initUploadImage({ formData: this.state.preview.getIn([0, 'formData']), idx, productDetail });
       return;
     }
 
-    console.log(this.state.productDetail.toJS(), this.state.preview.toJS());
-    // if (this.state.preview.size > 0) {
-    //   this._uploadImage({
-    //     formData: this.state.preview.getIn([0, 'formData']),
-    //     idx: this.props.idx,
-    //   });
-    // }
+    if (preview.size > 0) {
+      initUploadImage({ formData: this.state.preview.getIn([0, 'formData']), idx, productDetail });
+    } else {
+      const result = Converter.toSetProductData(productDetail, null, idx);
+      initSetProducts(result);
+    }
   };
 
   render() {
@@ -157,7 +194,6 @@ class ProductInputModal extends Component {
     const sellInfo = productDetail && productDetail.get('sellinfo');
     let images = productDetail && productDetail.getIn(['info', 'mainImage']);
     let options = productDetail && productDetail.getIn(['stock', 'option_control', 'main']);
-    // productDetail && productDetail.getIn(['stock', 'option_control', 'main', 0, 'list']);
 
     if (!options) {
       options = List();
@@ -175,11 +211,7 @@ class ProductInputModal extends Component {
           </header>
           <div className="wrapper-padding">
             <div className="image__wrapper" style={{ maxWidth: `${window.innerWidth - 32}px` }}>
-              <ButtonAddImage
-                _uploadImage={this._uploadImage}
-                idx={idx}
-                _onChangePreview={this._onChangePreview}
-              />
+              <ButtonAddImage idx={idx} _onChangePreview={this._onChangePreview} />
               {images
                 ? images.map((image, i) => (
                     <ProductImage
@@ -244,6 +276,7 @@ class ProductInputModal extends Component {
               _onAddOption={this._onAddOption}
               _onAddProperty={this._onAddProperty}
               _onDeleteProperty={this._onDeleteProperty}
+              _onChangeOptionName={this._onChangeOptionName}
             />
             <div className="button-normal">
               <span className="button button-left" onClick={togglePopup(null, 'close', isNew)}>
@@ -263,9 +296,14 @@ class ProductInputModal extends Component {
 export default connect(
   state => ({
     productDetail: state.getIn(['ceo', 'productDetail']),
+    uploadImageSeq: state.getIn(['ceo', 'uploadImageSeq']),
+    setProducts: state.getIn(['ceo', 'setProducts']),
   }),
   dispatch => ({
     initUploadImage: payload => dispatch(initUploadImage(payload)),
     initGetProductDetail: idx => dispatch(initGetProductDetail(idx)),
+    initSetProducts: payload => dispatch(initSetProducts(payload)),
+    initGetProducts: payload => dispatch(initGetProducts(payload)),
+    closeModal: () => dispatch({ type: 'ceo/CLOSE_MODAL' }),
   })
 )(ProductInputModal);
