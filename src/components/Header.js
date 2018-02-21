@@ -93,7 +93,8 @@ class Header extends Component<Props> {
   };
 
   _goBack = () => {
-    this.props.history.goBack();
+    // this.props.history.goBack();
+    this.props.locationChange('/order/reception');
   };
 
   openSideMenu = () => {
