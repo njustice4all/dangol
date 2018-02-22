@@ -1,6 +1,6 @@
+import { fromJS } from 'immutable';
 import apiGetCoords from '../api/coords';
 
-// FIXME:
 const getCoords = async address => {
   const response = await apiGetCoords({ address });
 
@@ -27,7 +27,9 @@ class Convert {
       return newLists
         .map(list => {
           if (list.od_b_addr1) {
-            console.log(getCoords(list.od_b_addr1));
+            // TODO:
+            // const coords = new Promise(resolve => resolve(getCoords(list.od_b_addr1)));
+            // coords.then(value => console.log(value));
           }
 
           return {
@@ -146,12 +148,24 @@ class Convert {
   };
 
   toSetShopData = (data, images) => {
-    console.log(images);
     if (typeof images === 'object') {
-      return { ...data, mainImage: images };
+      return { ...data, mainImage: [...data.mainImage, ...images] };
     }
 
-    return { ...data, mainImage: [images] };
+    return { ...data, mainImage: [...data.mainImage, images] };
+  };
+
+  setPossible = (string, protoType) => {
+    const split = string.split('');
+    const result = protoType.toJS().map((value, index) => {
+      if (split[index] === '1') {
+        return { ...value, isChecked: true };
+      }
+
+      return { ...value, isChecked: false };
+    });
+
+    return fromJS(result);
   };
 }
 

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import classNames from 'classnames';
-import { List, Map } from 'immutable';
+import { List, Map, fromJS } from 'immutable';
 import { connect } from 'react-redux';
 import { push } from 'react-router-redux';
 
@@ -14,10 +14,25 @@ import Navigator from '../Navigator';
 import { validateState, createUniqueId, convertUrlToBase64 } from '../../../utils';
 import { initGetShopInfo, initUploadImage, initSetShop } from '../../../actions/ceo';
 
+import Converter from '../../../utils/Converter';
+
+const setPossible = (string, protoType) => {
+  const split = string.split('');
+  const result = protoType.toJS().map((value, index) => {
+    if (split[index] === '1') {
+      return { ...value, isChecked: true };
+    }
+
+    return { ...value, isChecked: false };
+  });
+
+  return fromJS(result);
+};
+
 class ModifyShop extends Component {
   state = {
     preview: List(),
-    images: List([]),
+    images: List(),
     base64Images: List([]),
     isOpenAddress: false,
     id: '',
@@ -35,10 +50,10 @@ class ModifyShop extends Component {
     openingHours: '',
     closeDays: '',
     possible: List([
-      Map({ index: 0, title: '홀', isChecked: true, src: '/img/icon01' }),
-      Map({ index: 1, title: '배달', isChecked: true, src: '/img/icon02' }),
-      Map({ index: 2, title: '포장', isChecked: true, src: '/img/icon03' }),
-      Map({ index: 3, title: '예약', isChecked: true, src: '/img/icon04' }),
+      Map({ index: 0, title: '홀', isChecked: false, src: '/img/icon01' }),
+      Map({ index: 1, title: '배달', isChecked: false, src: '/img/icon02' }),
+      Map({ index: 2, title: '포장', isChecked: false, src: '/img/icon03' }),
+      Map({ index: 3, title: '예약', isChecked: false, src: '/img/icon04' }),
       Map({ index: 4, title: '주차', isChecked: false, src: '/img/icon05' }),
     ]),
     errors: [],
@@ -53,21 +68,22 @@ class ModifyShop extends Component {
 
   componentWillReceiveProps = nextProps => {
     const { shop } = nextProps;
-    // console.log(shop.toJS());
     this.setState(prevState => ({
-      // images: shop.get('mainImage'),
+      images: fromJS(shop.getIn(['mainImage', 0]) === '' ? [] : shop.get('mainImage')),
       address: Map({
         zipCode: shop.get('zipCode'),
         firstAddress: shop.get('addr1'),
         detailAddress: shop.get('addr2'),
       }),
-      category: 'restaurant',
+      category: shop.get('category'),
       name: shop.get('name'),
       description: shop.get('desc'),
+      closeDays: shop.get('closeDay'),
       openDay: shop.get('openDay'),
+      openingHours: shop.get('openTime'),
       contact: shop.get('contacts'),
       permitNumber: shop.get('permitNumber'),
-      // possible:
+      possible: Converter.setPossible(shop.get('possible'), prevState.possible),
       openTime: shop.get('openTime'),
     }));
   };
@@ -122,22 +138,7 @@ class ModifyShop extends Component {
       return;
     }
 
-    const deleteImage = this.state.images.get(index);
-    let deleteIndexFromAddImages = null;
-
-    if (deleteImage.get('added')) {
-      this.state.addImages.forEach((image, index) => {
-        if (image.get('uniqueId') === deleteImage.get('uniqueId')) {
-          deleteIndexFromAddImages = index;
-        }
-      });
-    }
-
-    this.setState({
-      images: this.state.images.delete(index),
-      deleteImages: this.state.deleteImages.push(deleteImage.get('seq')),
-      addImages: this.state.addImages.delete(deleteIndexFromAddImages),
-    });
+    this.setState(prevState => ({ images: prevState.images.filter((image, i) => i !== index) }));
   };
 
   validateClass = name => (this.state.errors.includes(name) ? true : false);
@@ -154,6 +155,7 @@ class ModifyShop extends Component {
       permitNumber,
       preview,
       openDay,
+      images,
     } = this.state;
     const { initSetShop, initGetShopLists, initUploadImage } = this.props;
     const { possible } = validateState(this.state);
@@ -177,7 +179,7 @@ class ModifyShop extends Component {
       closeDay: closeDays,
       openTime: openingHours,
       possible: possibleData.join(''),
-      mainImage: [],
+      mainImage: images.toJS(),
     };
 
     if (preview.size > 0) {
@@ -192,13 +194,11 @@ class ModifyShop extends Component {
         shop: true,
       });
     } else {
-      // FIXME:
-      // console.log('set shop here', result);
       this.props.initSetShop(result);
     }
   };
 
-  handleCancel = () => this.props.history.push('/');
+  handleCancel = () => this.props.history.push('/order/reception');
 
   setId = e => {
     e.persist();

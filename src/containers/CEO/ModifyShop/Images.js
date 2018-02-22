@@ -55,10 +55,7 @@ const ShopImage = ({ preview, image, deleteImageByIndex, index }) => {
       <span className="btn-delete" onClick={deleteImageByIndex(index)}>
         <img src="/img/icon06.png" alt="" />
       </span>
-      <img
-        src={`${ATY_URI}/aty_image_view.php?siteId=${SITE_ID}&iID=${image.get('seq')}&thumb=1`}
-        alt=""
-      />
+      <img src={`${ATY_URI}/aty_image_view.php?siteId=${SITE_ID}&iID=${image}&thumb=1`} alt="" />
     </div>
   );
 };
