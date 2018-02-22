@@ -59,8 +59,10 @@ export const auth = (state = new StateRecord(), action) => {
     case 'geo/GET_COORDS_ERROR':
       return errorOnFetching(state, action);
     case 'auth/LOGOUT':
-      return state.setIn(['status', 'login'], false);
+      // return state.setIn(['status', 'login'], false);
+      return StateRecord();
     case 'auth/AUTO_LOGIN':
+      console.log('need auto login');
       return state;
     default:
       return state;

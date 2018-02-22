@@ -172,9 +172,10 @@ class ModifyShop extends Component {
       openDay,
       images,
     } = this.state;
-    const { initSetShop, initGetShopLists, initUploadImage, siteId } = this.props;
+    const { initSetShop, initGetShopLists, initUploadImage, siteId, navigateTo } = this.props;
     const { possible } = validateState(this.state);
 
+    // TODO: immutable하게...
     const possibleData = ['0', '0', '0', '0', '0'];
     possible.forEach(data => {
       const index = data.get('index');
@@ -211,6 +212,8 @@ class ModifyShop extends Component {
     } else {
       this.props.initSetShop({ result, siteId });
     }
+
+    navigateTo('/ceo/products')();
   };
 
   handleCancel = () => this.props.history.push('/order/reception');

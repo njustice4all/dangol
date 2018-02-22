@@ -12,7 +12,8 @@ class Signin extends Component {
   };
 
   onLoginButtonPress = () => {
-    this.props.initSignin({ id: this.id.value, pw: this.pw.value });
+    this.props.initSignin({ id: 'tiba', pw: 'test1234' });
+    // this.props.initSignin({ id: this.id.value, pw: this.pw.value });
   };
 
   render() {

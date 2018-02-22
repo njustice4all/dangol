@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
+import { push } from 'react-router-redux';
 import cx from 'classnames';
 
 import { closePopup } from '../actions/ui';
@@ -9,6 +10,11 @@ import { initGetShopInfo } from '../actions/ceo';
 import { ATY_URI } from '../constants';
 
 class SideMenu extends Component {
+  componentDidMount = () => {
+    const { initGetShopInfo, siteId } = this.props;
+    initGetShopInfo({ siteId });
+  };
+
   componentWillReceiveProps = nextProps => {
     if (this.props.siteId !== nextProps.siteId) {
       this.props.initGetShopInfo({ siteId: nextProps.siteId });
@@ -18,6 +24,11 @@ class SideMenu extends Component {
   _onPress = pathname => () => {
     this.props.closePopup('sideMenu');
     this.props.history.push(pathname);
+  };
+
+  goSetting = () => {
+    this.props.closePopup('sideMenu');
+    this.props.navigateTo('/menus/admin');
   };
 
   onFranchiseModify = () => {
@@ -63,7 +74,7 @@ class SideMenu extends Component {
                   <div className="count">{order.get('lists').size}</div>
                 </div>
               </div>
-              <div className="btn">
+              <div className="btn" onClick={this.goSetting}>
                 <div className="icon login" />
               </div>
             </div>
@@ -133,6 +144,7 @@ export default withRouter(
     dispatch => ({
       closePopup: ui => dispatch(closePopup(ui)),
       initGetShopInfo: payload => dispatch(initGetShopInfo(payload)),
+      navigateTo: route => dispatch(push(route)),
     })
   )(SideMenu)
 );

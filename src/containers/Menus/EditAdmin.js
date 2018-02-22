@@ -1,6 +1,14 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { push } from 'react-router-redux';
 
 class EditAdmin extends Component {
+  _onPress = () => {
+    const { logout, navigateTo } = this.props;
+    logout();
+    navigateTo('/');
+  };
+
   render() {
     return (
       <div className="body">
@@ -14,9 +22,17 @@ class EditAdmin extends Component {
         <div className="btn-wrapper">
           <div className="btn big">정보 수정</div>
         </div>
+        <div className="btn-wrapper">
+          <div className="btn big" onClick={this._onPress}>
+            로그아웃
+          </div>
+        </div>
       </div>
     );
   }
 }
 
-export default EditAdmin;
+export default connect(null, dispatch => ({
+  logout: () => dispatch({ type: 'auth/LOGOUT' }),
+  navigateTo: route => dispatch(push(route)),
+}))(EditAdmin);

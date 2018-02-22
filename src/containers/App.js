@@ -24,8 +24,8 @@ import getClassNameByRoutes from '../utils/getClassNameByRoutes';
 class App extends Component {
   componentDidMount = () => {
     document.addEventListener('message', this.onMessage);
-    // FIXME:
-    this.props.initSignin({ id: 'tiba', pw: 'test1234' });
+    // FIXME: autologin logic here
+    // this.props.initSignin({ id: 'tiba', pw: 'test1234' });
   };
 
   componentWillUnmount = () => {
@@ -53,6 +53,7 @@ class App extends Component {
   render() {
     const { sideMenu, status, router, siteId } = this.props;
     const routes = getClassNameByRoutes(router.location, status);
+    const pathname = router.location.pathname;
 
     return (
       <PopupController>
@@ -61,7 +62,7 @@ class App extends Component {
           {sideMenu ? (
             <div id="sidemenu-overlay" onClick={() => this.props.closePopup('sideMenu')} />
           ) : null}
-          <SideMenu open={sideMenu} siteId={siteId} />
+          {pathname === '/' ? null : <SideMenu open={sideMenu} siteId={siteId} />}
           <Switch>
             <Route exact path="/" component={Signin} />
             <Route exact path="/order/reception" component={OrderReception} />

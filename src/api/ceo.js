@@ -73,7 +73,7 @@ export const apiGetShopInfo = payload => {
         resolve(result);
       },
       error: () => {
-        reject(new Error());
+        reject(console.error('login error'));
       },
     });
   });

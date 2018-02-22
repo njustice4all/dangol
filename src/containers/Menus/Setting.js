@@ -37,12 +37,9 @@ class Setting extends Component<Props> {
         <Content title="앱 정보" content={`버전정보 ${version}`} />
         <Content
           title="앱 계정 설정"
-          content="사장님 계정 정보 수정"
+          content="사장님 계정 정보"
           onPress={() => this.props.history.push('/menus/admin')}
         />
-        <div className="btn-wrapper">
-          <div className="btn big">로그아웃</div>
-        </div>
       </div>
     );
   }
