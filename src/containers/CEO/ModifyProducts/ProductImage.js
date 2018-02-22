@@ -1,8 +1,8 @@
 import React from 'react';
 
-import { ATY_URI, SITE_ID } from '../../../constants';
+import { ATY_URI } from '../../../constants';
 
-const ProductImage = ({ image, preview, index, deleteImageByIndex }) => {
+const ProductImage = ({ image, preview, index, deleteImageByIndex, siteId }) => {
   if (preview) {
     return (
       <div className="images products" style={{ verticalAlign: 'top' }}>
@@ -21,7 +21,7 @@ const ProductImage = ({ image, preview, index, deleteImageByIndex }) => {
       </span>
       <img
         className="img-cover"
-        src={`${ATY_URI}/aty_image_view.php?siteId=${SITE_ID}&iID=${image.get('seq')}&thumb=1`}
+        src={`${ATY_URI}/aty_image_view.php?siteId=${siteId}&iID=${image.get('seq')}&thumb=1`}
         alt=""
       />
     </div>

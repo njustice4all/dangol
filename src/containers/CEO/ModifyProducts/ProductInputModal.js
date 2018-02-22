@@ -20,9 +20,9 @@ class ProductInputModal extends Component {
   state = { preview: List(), productDetail: '' };
 
   componentDidMount = () => {
-    const { initGetProductDetail, idx, isNew } = this.props;
-    if (!isNew) {
-      initGetProductDetail(idx);
+    const { initGetProductDetail, idx, isNew, session, siteId } = this.props;
+    if (!isNew && session) {
+      initGetProductDetail({ session, siteId, idx });
     } else {
       this.setState(prevState => ({
         productDetail: fromJS({
@@ -48,8 +48,9 @@ class ProductInputModal extends Component {
     const { initGetProducts, initGetProductDetail, idx, isNew, togglePopup } = this.props;
 
     if (nextProps.setProducts !== this.props.setProducts) {
+      const { session, siteId } = nextProps;
       togglePopup()();
-      initGetProducts();
+      initGetProducts({ session, siteId });
       return;
     }
 
@@ -171,7 +172,7 @@ class ProductInputModal extends Component {
 
   onConfirm = isNew => () => {
     const { productDetail, preview } = this.state;
-    const { initGetProducts, initUploadImage, initSetProducts, idx } = this.props;
+    const { initGetProducts, initUploadImage, initSetProducts, idx, siteId } = this.props;
 
     if (isNew) {
       initUploadImage({
@@ -187,7 +188,6 @@ class ProductInputModal extends Component {
     }
 
     if (preview.size > 0) {
-      // initUploadImage({ formData: this.state.preview.getIn([0, 'formData']), idx, productDetail });
       initUploadImage({
         formData: this.state.preview
           .map(addImage => {
@@ -196,16 +196,17 @@ class ProductInputModal extends Component {
           .toJS(),
         idx,
         productDetail,
+        siteId,
       });
     } else {
       const result = Converter.toSetProductData(productDetail, null, idx);
-      initSetProducts(result);
+      initSetProducts({ result, siteId });
     }
   };
 
   render() {
     const { preview, productDetail } = this.state;
-    const { togglePopup, isNew, idx } = this.props;
+    const { togglePopup, isNew, idx, siteId, userId } = this.props;
 
     const info = productDetail && productDetail.get('info');
     const sellInfo = productDetail && productDetail.get('sellinfo');
@@ -228,7 +229,12 @@ class ProductInputModal extends Component {
           </header>
           <div className="wrapper-padding">
             <div className="image__wrapper" style={{ maxWidth: `${window.innerWidth - 32}px` }}>
-              <ButtonAddImage idx={idx} _onChangePreview={this._onChangePreview} />
+              <ButtonAddImage
+                idx={idx}
+                _onChangePreview={this._onChangePreview}
+                siteId={siteId}
+                userId={userId}
+              />
               {images
                 ? images.map((image, i) => (
                     <ProductImage
@@ -236,6 +242,7 @@ class ProductInputModal extends Component {
                       image={image}
                       index={i}
                       deleteImageByIndex={this.deleteImageByIndex}
+                      siteId={siteId}
                     />
                   ))
                 : null}
@@ -247,6 +254,7 @@ class ProductInputModal extends Component {
                       preview
                       index={i}
                       deleteImageByIndex={this.deleteImageByIndex}
+                      siteId={siteId}
                     />
                   ))
                 : null}
@@ -315,6 +323,9 @@ export default connect(
     productDetail: state.getIn(['ceo', 'productDetail']),
     uploadImageSeq: state.getIn(['ceo', 'uploadImageSeq']),
     setProducts: state.getIn(['ceo', 'setProducts']),
+    session: state.getIn(['auth', 'session']),
+    siteId: state.getIn(['auth', 'siteId']),
+    userId: state.getIn(['auth', 'siteUserId']),
   }),
   dispatch => ({
     initUploadImage: payload => dispatch(initUploadImage(payload)),

@@ -9,7 +9,18 @@ import { ItemDelivery, ItemTable, ItemPackage } from '../../components';
 class OrderReception extends Component {
   componentDidMount = () => {
     const { initFetchOrderLists, session, siteId } = this.props;
-    initFetchOrderLists({ session, siteId });
+    if (session) {
+      initFetchOrderLists({ session, siteId });
+    }
+  };
+
+  componentWillReceiveProps = nextProps => {
+    const { initFetchOrderLists } = this.props;
+
+    if (nextProps.session !== this.props.session) {
+      const { session, siteId } = nextProps;
+      initFetchOrderLists({ session, siteId });
+    }
   };
 
   goDetail = no => () => {

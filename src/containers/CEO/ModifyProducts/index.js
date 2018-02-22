@@ -25,7 +25,19 @@ class ModifyProducts extends Component {
   };
 
   componentDidMount = () => {
-    this.props.initGetProducts();
+    const { initGetProducts, session, siteId } = this.props;
+    if (session) {
+      initGetProducts({ session, siteId });
+    }
+  };
+
+  componentWillReceiveProps = nextProps => {
+    const { initGetProducts } = this.props;
+
+    if (nextProps.session !== this.props.session) {
+      const { session, siteId } = nextProps;
+      initGetProducts({ session, siteId });
+    }
   };
 
   addProduct = () => {
@@ -68,7 +80,7 @@ class ModifyProducts extends Component {
   };
 
   renderProducts = () => {
-    const { products } = this.props;
+    const { products, siteId } = this.props;
     if (products.size === 0) {
       return null;
     }
@@ -79,6 +91,7 @@ class ModifyProducts extends Component {
         key={`product-${i}`}
         removeProduct={this.removeProduct}
         togglePopup={this.togglePopup}
+        siteId={siteId}
       />
     ));
   };
@@ -86,11 +99,10 @@ class ModifyProducts extends Component {
   removeProduct = idx => e => {
     e.stopPropagation();
     this.setState(prevState => ({ removeIndex: idx, showRemoveModal: true }));
-    // this.props.initDelProduct({ idx });
   };
 
   render() {
-    const { authentication, franchise, editMode, initDelProduct } = this.props;
+    const { authentication, franchise, editMode, initDelProduct, siteId } = this.props;
     const { showRemoveModal, showInputModal, productStack, idx, removeIndex } = this.state;
 
     return (
@@ -118,10 +130,9 @@ class ModifyProducts extends Component {
         ) : null}
         {showRemoveModal ? (
           <DeleteProduct
-            // removeIndex={removeIndex}
             closeModal={() => this.setState(prevState => ({ showRemoveModal: false }))}
             remove={() => {
-              initDelProduct({ idx: removeIndex });
+              initDelProduct({ idx: removeIndex, siteId });
               this.setState(prevState => ({ showRemoveModal: false }));
             }}
           />
@@ -135,6 +146,9 @@ const mapStateToProps = state => ({
   authentication: state.get('authentication'),
   franchise: state.get('franchise'),
   products: state.getIn(['ceo', 'products']),
+  session: state.getIn(['auth', 'session']),
+  siteId: state.getIn(['auth', 'siteId']),
+  userId: state.getIn(['auth', 'siteUserId']),
 });
 
 const mapDispatchToProps = dispatch => ({

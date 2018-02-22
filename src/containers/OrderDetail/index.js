@@ -28,8 +28,6 @@ class OrderDetail extends Component {
         ' ' +
         this.props.detail.getIn(['order', 'od_b_addr2']);
 
-      // const address = this.props.detail.getIn(['order', 'od_b_addr1']);
-
       if (prevProps.detail.get('order').size !== this.props.detail.get('order').size) {
         this.props.initGetCoords({ address });
       }

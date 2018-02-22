@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 
-import { ATY_URI, SITE_ID } from '../../../constants';
+import { ATY_URI } from '../../../constants';
 
-const ProductImage = ({ product }) => {
+const ProductImage = ({ product, siteId }) => {
   const imageName = product.getIn(['images', 0, 'imageName']);
   if (product.getIn(['images', 0, 'imageId'])) {
     return <img src={product.getIn(['images', 0, 'image'])} alt="" />;
@@ -10,19 +10,19 @@ const ProductImage = ({ product }) => {
 
   const idx = product.getIn(['image', 0, 'idx']);
 
-  return <img src={`${ATY_URI}/aty_image.php?siteId=${SITE_ID}&iID=${idx}&thumb=2`} alt="" />;
+  return <img src={`${ATY_URI}/aty_image.php?siteId=${siteId}&iID=${idx}&thumb=2`} alt="" />;
 };
 
 export default class Product extends Component {
   render() {
-    const { product, togglePopup, removeProduct } = this.props;
+    const { product, togglePopup, removeProduct, siteId } = this.props;
 
     return (
       <div className="items products">
         <div className="product__wrapper-normal" onClick={togglePopup(product.get('idx'))}>
           <div className="image__wrapper">
             <i className="fa fa-camera" aria-hidden="true" />
-            <ProductImage product={product} />
+            <ProductImage product={product} siteId={siteId} />
           </div>
           <div className="product__form__wrapper">
             <div className="contents-row">

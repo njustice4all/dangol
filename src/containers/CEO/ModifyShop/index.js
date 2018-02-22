@@ -16,19 +16,6 @@ import { initGetShopInfo, initUploadImage, initSetShop } from '../../../actions/
 
 import Converter from '../../../utils/Converter';
 
-const setPossible = (string, protoType) => {
-  const split = string.split('');
-  const result = protoType.toJS().map((value, index) => {
-    if (split[index] === '1') {
-      return { ...value, isChecked: true };
-    }
-
-    return { ...value, isChecked: false };
-  });
-
-  return fromJS(result);
-};
-
 class ModifyShop extends Component {
   state = {
     preview: List(),
@@ -61,31 +48,59 @@ class ModifyShop extends Component {
     addImages: List([]),
   };
 
-  // FIXME: payload = siteid
   componentDidMount = () => {
-    this.props.initGetShopInfo();
+    const { initGetShopInfo, session, siteId } = this.props;
+    if (session) {
+      initGetShopInfo({ session, siteId }).then(shop => {
+        this.setState(prevState => ({
+          images: fromJS(shop.mainImage[0] === '' ? [] : shop.mainImage),
+          address: Map({
+            zipCode: shop.zipCode,
+            firstAddress: shop.addr1,
+            detailAddress: shop.addr2,
+          }),
+          category: shop.category,
+          name: shop.name,
+          description: shop.desc,
+          closeDays: shop.closeDay,
+          openDay: shop.openDay,
+          openingHours: shop.openTime,
+          contact: shop.contacts,
+          permitNumber: shop.permitNumber,
+          possible: Converter.setPossible(shop.possible, prevState.possible),
+          openTime: shop.openTime,
+        }));
+      });
+    }
   };
 
   componentWillReceiveProps = nextProps => {
-    const { shop } = nextProps;
-    this.setState(prevState => ({
-      images: fromJS(shop.getIn(['mainImage', 0]) === '' ? [] : shop.get('mainImage')),
-      address: Map({
-        zipCode: shop.get('zipCode'),
-        firstAddress: shop.get('addr1'),
-        detailAddress: shop.get('addr2'),
-      }),
-      category: shop.get('category'),
-      name: shop.get('name'),
-      description: shop.get('desc'),
-      closeDays: shop.get('closeDay'),
-      openDay: shop.get('openDay'),
-      openingHours: shop.get('openTime'),
-      contact: shop.get('contacts'),
-      permitNumber: shop.get('permitNumber'),
-      possible: Converter.setPossible(shop.get('possible'), prevState.possible),
-      openTime: shop.get('openTime'),
-    }));
+    const { initGetShopInfo } = this.props;
+
+    if (nextProps.session !== this.props.session) {
+      const { session, siteId } = nextProps;
+      // TODO: 배포할때 then삭제해도됨
+      initGetShopInfo({ session, siteId }).then(shop => {
+        this.setState(prevState => ({
+          images: fromJS(shop.mainImage[0] === '' ? [] : shop.mainImage),
+          address: Map({
+            zipCode: shop.zipCode,
+            firstAddress: shop.addr1,
+            detailAddress: shop.addr2,
+          }),
+          category: shop.category,
+          name: shop.name,
+          description: shop.desc,
+          closeDays: shop.closeDay,
+          openDay: shop.openDay,
+          openingHours: shop.openTime,
+          contact: shop.contacts,
+          permitNumber: shop.permitNumber,
+          possible: Converter.setPossible(shop.possible, prevState.possible),
+          openTime: shop.openTime,
+        }));
+      });
+    }
   };
 
   setStateByKey = (key, value) => this.setState(prevState => ({ [key]: value }));
@@ -157,7 +172,7 @@ class ModifyShop extends Component {
       openDay,
       images,
     } = this.state;
-    const { initSetShop, initGetShopLists, initUploadImage } = this.props;
+    const { initSetShop, initGetShopLists, initUploadImage, siteId } = this.props;
     const { possible } = validateState(this.state);
 
     const possibleData = ['0', '0', '0', '0', '0'];
@@ -189,12 +204,12 @@ class ModifyShop extends Component {
             return addImage.get('formData');
           })
           .toJS(),
-        idx: '10', // FIXME: 상점의 번호
         result,
         shop: true,
+        siteId,
       });
     } else {
-      this.props.initSetShop(result);
+      this.props.initSetShop({ result, siteId });
     }
   };
 
@@ -286,6 +301,9 @@ class ModifyShop extends Component {
 export default connect(
   state => ({
     shop: state.getIn(['ceo', 'shop']),
+    auth: state.get('auth'),
+    session: state.getIn(['auth', 'session']),
+    siteId: state.getIn(['auth', 'siteId']),
   }),
   dispatch => ({
     initGetShopInfo: payload => dispatch(initGetShopInfo(payload)),

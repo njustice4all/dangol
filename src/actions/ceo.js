@@ -29,6 +29,7 @@ export const initGetShopInfo = payload => async dispatch => {
       dispatch(getShopError({ error: true }));
     } else {
       dispatch(getShopSuccess(response));
+      return response;
     }
   } catch (error) {
     console.log(error);
@@ -45,7 +46,6 @@ const setShopFailure = error => ({ type: 'ceo/SET_SHOP_FAILURE', error });
 export const initSetShop = payload => async dispatch => {
   dispatch(setShop());
 
-  // FIXME:
   try {
     const response = await apiSetShop(payload);
 
@@ -69,7 +69,7 @@ const getProductsError = error => ({ type: 'ceo/GET_PRODUCTS_ERROR', error });
 export const initGetProducts = payload => async dispatch => {
   dispatch(getProducts());
 
-  const response = await apiGetProducts();
+  const response = await apiGetProducts(payload);
 
   try {
     if (!response) {
@@ -126,10 +126,10 @@ const getProductDetail = () => ({ type: 'ceo/GET_PRODUCT_DETAIL' });
 const getProductDetailSuccess = payload => ({ type: 'ceo/GET_PRODUCT_DETAIL_SUCCESS', payload });
 const getProductDetailError = error => ({ type: 'ceo/GET_PRODUCT_DETAIL_ERROR', error });
 
-export const initGetProductDetail = idx => async dispatch => {
+export const initGetProductDetail = payload => async dispatch => {
   dispatch(getProductDetail());
 
-  const response = await apiGetProductDetail(idx);
+  const response = await apiGetProductDetail(payload);
 
   try {
     if (!response) {
@@ -170,7 +170,7 @@ export const initUploadImage = payload => async dispatch => {
     } else {
       if (payload.shop) {
         const result = Converter.toSetShopData(payload.result, response.success_seq);
-        dispatch(initSetShop(result));
+        dispatch(initSetShop({ result, siteId: payload.siteId }));
         return;
       }
 
@@ -179,7 +179,7 @@ export const initUploadImage = payload => async dispatch => {
         typeof response.success_seq === 'object' ? response.success_seq : [response.success_seq],
         payload.idx
       );
-      dispatch(initSetProducts(result));
+      dispatch(initSetProducts({ result, siteId: payload.siteId }));
     }
   } catch (error) {
     console.error(error);

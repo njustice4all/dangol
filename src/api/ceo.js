@@ -1,53 +1,7 @@
 import $ from 'jquery';
-import { DAUM_ADDRESS, DAUM_KEY, SITE_ID, ATY_URI } from '../constants';
+import { DAUM_ADDRESS, DAUM_KEY, ATY_URI } from '../constants';
 
-/**
- * 주소검색
- */
-export const apiAddress = query => {
-  return fetch(
-    `${DAUM_ADDRESS}?currentPage=1&countPerPage=10&keyword=${query}&confmKey=${DAUM_KEY}&resultType=json`
-  );
-};
-
-/**
- * 주소검색 더읽기
- */
-export const apiLoadMoreAddress = (query, page = 1) => {
-  return fetch(
-    `${DAUM_ADDRESS}?currentPage=${page}&countPerPage=10&keyword=${query}&confmKey=${DAUM_KEY}&resultType=json`
-  );
-};
-
-/**
- * 상점정보 가져오기
- */
-// FIXME: payload는 siteid
-export const apiGetShopInfo = payload => {
-  return new Promise((resolve, reject) => {
-    $.ajax({
-      type: 'POST',
-      url: ATY_URI + '/aty_convert_basic.php',
-      data: {
-        siteId: SITE_ID,
-        keyWord: 'GetBasicInfo_Dgp',
-        shop: 1,
-      },
-      success: result => {
-        resolve(result);
-      },
-      error: () => {
-        reject(new Error());
-      },
-    });
-  });
-};
-
-/**
- * 상품정보 가져오기
- */
-const data = {
-  siteId: SITE_ID,
+const DATA = {
   keyWord: 'GetProductList',
   shop: 1,
   search: {
@@ -83,12 +37,59 @@ const data = {
   limit: 20,
   page: 1,
 };
+
+/**
+ * 주소검색
+ */
+export const apiAddress = query => {
+  return fetch(
+    `${DAUM_ADDRESS}?currentPage=1&countPerPage=10&keyword=${query}&confmKey=${DAUM_KEY}&resultType=json`
+  );
+};
+
+/**
+ * 주소검색 더읽기
+ */
+export const apiLoadMoreAddress = (query, page = 1) => {
+  return fetch(
+    `${DAUM_ADDRESS}?currentPage=${page}&countPerPage=10&keyword=${query}&confmKey=${DAUM_KEY}&resultType=json`
+  );
+};
+
+/**
+ * 상점정보 가져오기
+ */
+export const apiGetShopInfo = payload => {
+  return new Promise((resolve, reject) => {
+    $.ajax({
+      type: 'POST',
+      url: ATY_URI + '/aty_convert_basic.php',
+      data: {
+        siteId: payload.siteId,
+        keyWord: 'GetBasicInfo_Dgp',
+        shop: 1,
+      },
+      success: result => {
+        resolve(result);
+      },
+      error: () => {
+        reject(new Error());
+      },
+    });
+  });
+};
+
+/**
+ * 상품정보 가져오기
+ */
 export const apiGetProducts = payload => {
+  const newData = { ...DATA, siteId: payload.siteId };
+
   return new Promise((resolve, reject) => {
     $.ajax({
       type: 'POST',
       url: ATY_URI + '/aty_convert_product.php',
-      data: data,
+      data: newData,
       success: result => {
         resolve(result);
       },
@@ -108,7 +109,7 @@ export const apiDelProduct = payload => {
       type: 'POST',
       url: ATY_URI + '/aty_convert_product.php',
       data: {
-        siteId: SITE_ID,
+        siteId: payload.siteId,
         keyWord: 'DelProductItem',
         idx: payload.idx,
       },
@@ -131,9 +132,9 @@ export const apiSetProduct = payload => {
       type: 'POST',
       url: ATY_URI + '/aty_convert_product.php',
       data: {
-        siteId: SITE_ID,
+        siteId: payload.siteId,
         keyWord: 'AddProductItem_Dgp',
-        data: payload,
+        data: payload.result,
       },
       success: result => {
         resolve({ success: true });
@@ -148,16 +149,15 @@ export const apiSetProduct = payload => {
 /**
  * 상점 수정
  */
-// FIXME:
 export const apiSetShop = payload => {
   return new Promise((resolve, reject) => {
     $.ajax({
       type: 'POST',
       url: ATY_URI + '/aty_convert_basic.php',
       data: {
-        siteId: SITE_ID,
+        siteId: payload.siteId,
         keyWord: 'SetBasicInfo_Dgp',
-        setData: payload,
+        setData: payload.result,
         shop_idx: 1,
       },
       success: result => {
@@ -173,16 +173,16 @@ export const apiSetShop = payload => {
 /**
  * 상품 디테일정보
  */
-export const apiGetProductDetail = idx => {
+export const apiGetProductDetail = payload => {
   return new Promise((resolve, reject) => {
     $.ajax({
       type: 'POST',
       url: ATY_URI + '/aty_convert_product.php',
       data: {
-        siteId: SITE_ID,
+        siteId: payload.siteId,
         keyWord: 'GetProductItem',
         shop: 1,
-        idx,
+        idx: payload.idx,
       },
       success: result => {
         resolve(result);

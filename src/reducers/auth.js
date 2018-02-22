@@ -21,7 +21,6 @@ const StateRecord = Record({
   }),
 });
 
-// FIXME: 응답저장 바꿔야함
 const getInfo = (state, action) => {
   return state.withMutations(mutator =>
     mutator

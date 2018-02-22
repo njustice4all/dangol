@@ -9,7 +9,18 @@ import { ItemDelivery, ItemTable, ItemPackage } from '../../components';
 class OrderProgress extends Component {
   componentDidMount = () => {
     const { initFetchOrderProcess, session, siteId } = this.props;
-    initFetchOrderProcess({ session, siteId });
+    if (session) {
+      initFetchOrderProcess({ session, siteId });
+    }
+  };
+
+  componentWillReceiveProps = nextProps => {
+    const { initFetchOrderProcess } = this.props;
+
+    if (nextProps.session !== this.props.session) {
+      const { session, siteId } = nextProps;
+      initFetchOrderProcess({ session, siteId });
+    }
   };
 
   goDetail = no => () => {

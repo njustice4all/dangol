@@ -4,11 +4,12 @@ import { ATY_URI, SITE_ID } from '../../../constants';
 
 class ButtonAddImage extends Component {
   _onChange = e => {
-    const { _onChangePreview, idx } = this.props;
-    // FIXME: real data로 바꿔야함
+    const { _onChangePreview, idx, siteId, userId } = this.props;
+
     const formData = new FormData(this.image);
-    formData.append('siteId', SITE_ID);
-    formData.append('userId', 'hyj679');
+
+    formData.append('siteId', siteId);
+    formData.append('userId', userId);
     formData.append('folder', 'all');
     formData.append('keyWord', 'ImageUpload');
 

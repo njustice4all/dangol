@@ -22,6 +22,8 @@ class OrderComplete extends Component {
     const index = lists.findIndex(list => list.getIn(['data', 'idx']) === currentIdx + '');
     lists.getIn([index, 'data', 'product']).forEach(product => results.push(product.get('idx')));
 
+    console.log(sessionId, siteId);
+
     closePopup('orderComplete');
     initSetOrderComplete({ results, sessionId, siteId, orderNo });
     locationChange('/order/complete');

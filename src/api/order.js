@@ -1,11 +1,38 @@
-// FIXME:
-
 import $ from 'jquery';
 
-import { SITE_ID, ATY_URI, RSAPI, SESSION_ID } from '../constants';
+import { ATY_URI, RSAPI } from '../constants';
 import Converter from '../utils/Converter';
 
 const headers = new Headers({ 'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8' });
+
+const DATA = {
+  keyWord: 'GetOrderList',
+  shop: 1,
+  search: {
+    searchType: '0',
+    keyword: '',
+    periodType: '0',
+    period_msg: '',
+    period_start: '',
+    period_end: '',
+    memberBuy: '0',
+    payMothodCard: '1',
+    payMothodPhone: '1',
+    payMothodBank: '1',
+    payMothodMoney: '1',
+    totalPriceStart: '',
+    totalPriceEnd: '',
+    delivery: '0',
+    category: '',
+    brand: '',
+  },
+  order: {
+    name: 'order_date',
+    sort: '0',
+  },
+  limit: 20,
+  page: 1,
+};
 
 /**
  * 주문목록 가져오기
@@ -16,41 +43,13 @@ export const apiGetOrderLists = payload => {
   //   headers,
   //   body: Converter.getFormData(data),
   // });
+  const newData = { ...DATA, siteId: payload.siteId };
 
   return new Promise((resolve, reject) => {
     $.ajax({
       type: 'POST',
       url: ATY_URI + '/aty_convert_order.php',
-      data: {
-        siteId: SITE_ID,
-        // siteId: payload.siteId,
-        keyWord: 'GetOrderList',
-        shop: 1,
-        search: {
-          searchType: '0',
-          keyword: '',
-          periodType: '0',
-          period_msg: '',
-          period_start: '',
-          period_end: '',
-          memberBuy: '0',
-          payMothodCard: '1',
-          payMothodPhone: '1',
-          payMothodBank: '1',
-          payMothodMoney: '1',
-          totalPriceStart: '',
-          totalPriceEnd: '',
-          delivery: '0',
-          category: '',
-          brand: '',
-        },
-        order: {
-          name: 'order_date',
-          sort: '0',
-        },
-        limit: 20,
-        page: 1,
-      },
+      data: newData,
       success: result => {
         resolve(result);
       },
@@ -74,10 +73,6 @@ export const apiGetOrderDetail = payload => {
         sessId: payload.session,
         keyWord: 'admin.order.getOrderDetail',
         order_idx: payload.no,
-        // siteId: SITE_ID,
-        // sessId: SESSION_ID,
-        // keyWord: 'admin.order.getOrderDetail',
-        // order_idx: payload.no,
       },
       success: result => {
         resolve(result);
@@ -93,41 +88,17 @@ export const apiGetOrderDetail = payload => {
  * 처리중 주문
  */
 export const apiGetOrderProcess = payload => {
+  const newData = {
+    ...DATA,
+    siteId: payload.siteId,
+    search: { ...DATA.search, orderState: 'deliveryPrepare' },
+  };
+
   return new Promise((resolve, reject) => {
     $.ajax({
       type: 'POST',
       url: ATY_URI + '/aty_convert_order.php',
-      data: {
-        siteId: SITE_ID,
-        // siteId: payload.siteId,
-        keyWord: 'GetOrderList',
-        shop: 1,
-        search: {
-          searchType: '0',
-          keyword: '',
-          periodType: '0',
-          period_msg: '',
-          period_start: '',
-          period_end: '',
-          memberBuy: '0',
-          payMothodCard: '1',
-          payMothodPhone: '1',
-          payMothodBank: '1',
-          payMothodMoney: '1',
-          totalPriceStart: '',
-          totalPriceEnd: '',
-          delivery: '0',
-          category: '',
-          brand: '',
-          orderState: 'deliveryPrepare',
-        },
-        order: {
-          name: 'order_date',
-          sort: '0',
-        },
-        limit: 20,
-        page: 1,
-      },
+      data: newData,
       success: result => {
         resolve(result);
       },
@@ -142,41 +113,17 @@ export const apiGetOrderProcess = payload => {
  * 처리완료 목록
  */
 export const apiGetOrderComplete = payload => {
+  const newData = {
+    ...DATA,
+    siteId: payload.siteId,
+    search: { ...DATA.search, orderState: 'deliveryDone' },
+  };
+
   return new Promise((resolve, reject) => {
     $.ajax({
       type: 'POST',
       url: ATY_URI + '/aty_convert_order.php',
-      data: {
-        siteId: SITE_ID,
-        // siteId: payload.siteId,
-        keyWord: 'GetOrderList',
-        shop: 1,
-        search: {
-          searchType: '0',
-          keyword: '',
-          periodType: '0',
-          period_msg: '',
-          period_start: '',
-          period_end: '',
-          memberBuy: '0',
-          payMothodCard: '1',
-          payMothodPhone: '1',
-          payMothodBank: '1',
-          payMothodMoney: '1',
-          totalPriceStart: '',
-          totalPriceEnd: '',
-          delivery: '0',
-          category: '',
-          brand: '',
-          orderState: 'deliveryDone',
-        },
-        order: {
-          name: 'order_date',
-          sort: '0',
-        },
-        limit: 20,
-        page: 1,
-      },
+      data: newData,
       success: result => {
         resolve(result);
       },

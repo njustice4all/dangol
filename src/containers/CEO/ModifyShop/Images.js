@@ -1,15 +1,17 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import classNames from 'classnames';
 
-import { ATY_URI, SITE_ID } from '../../../constants';
+import { ATY_URI } from '../../../constants';
 
 class AddImageButton extends Component {
   _onChange = e => {
-    const { onImageChange } = this.props;
-    // FIXME: real data로 바꿔야함
+    const { onImageChange, siteId, userId } = this.props;
+
     const formData = new FormData(this.image);
-    formData.append('siteId', SITE_ID);
-    formData.append('userId', 'hyj679');
+
+    formData.append('siteId', siteId);
+    formData.append('userId', userId);
     formData.append('folder', 'all');
     formData.append('keyWord', 'ImageUpload');
 
@@ -38,7 +40,7 @@ class AddImageButton extends Component {
   }
 }
 
-const ShopImage = ({ preview, image, deleteImageByIndex, index }) => {
+const ShopImage = ({ preview, image, deleteImageByIndex, index, siteId }) => {
   if (preview) {
     return (
       <div className="images" style={{ verticalAlign: 'top' }}>
@@ -55,14 +57,22 @@ const ShopImage = ({ preview, image, deleteImageByIndex, index }) => {
       <span className="btn-delete" onClick={deleteImageByIndex(index)}>
         <img src="/img/icon06.png" alt="" />
       </span>
-      <img src={`${ATY_URI}/aty_image_view.php?siteId=${SITE_ID}&iID=${image}&thumb=1`} alt="" />
+      <img src={`${ATY_URI}/aty_image_view.php?siteId=${siteId}&iID=${image}&thumb=1`} alt="" />
     </div>
   );
 };
 
 class Images extends Component {
   render() {
-    const { preview, images, onImageChange, validateClass, deleteImageByIndex } = this.props;
+    const {
+      preview,
+      images,
+      onImageChange,
+      validateClass,
+      deleteImageByIndex,
+      userId,
+      siteId,
+    } = this.props;
 
     return (
       <div className="items" style={{ marginBottom: '0px', marginTop: '3px', padding: '5px 8px' }}>
@@ -70,13 +80,14 @@ class Images extends Component {
           가맹점 이미지
         </h5>
         <div className="image__wrapper" style={{ marginTop: '10px' }}>
-          <AddImageButton onImageChange={onImageChange} />
+          <AddImageButton onImageChange={onImageChange} siteId={siteId} userId={userId} />
           {images.map((image, index) => (
             <ShopImage
               key={index}
               image={image}
               index={index}
               deleteImageByIndex={deleteImageByIndex}
+              siteId={siteId}
             />
           ))}
           {preview.size > 0
@@ -86,6 +97,7 @@ class Images extends Component {
                   image={previewImage}
                   index={index}
                   deleteImageByIndex={deleteImageByIndex}
+                  siteId={siteId}
                   preview
                 />
               ))
@@ -96,4 +108,7 @@ class Images extends Component {
   }
 }
 
-export default Images;
+export default connect(state => ({
+  userId: state.getIn(['auth', 'siteUserId']),
+  siteId: state.getIn(['auth', 'siteId']),
+}))(Images);

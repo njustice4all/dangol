@@ -9,7 +9,18 @@ import { initFetchProcessDone } from '../../actions/order';
 class OrderComplete extends Component {
   componentDidMount = () => {
     const { initFetchProcessDone, session, siteId } = this.props;
-    initFetchProcessDone({ session, siteId });
+    if (session) {
+      initFetchProcessDone({ session, siteId });
+    }
+  };
+
+  componentWillReceiveProps = nextProps => {
+    const { initFetchProcessDone } = this.props;
+
+    if (nextProps.session !== this.props.session) {
+      const { session, siteId } = nextProps;
+      initFetchProcessDone({ session, siteId });
+    }
   };
 
   goDetail = no => () => {
