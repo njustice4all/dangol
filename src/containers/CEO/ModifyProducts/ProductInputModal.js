@@ -14,7 +14,7 @@ import {
 
 import Converter from '../../../utils/Converter';
 
-import { ATY_URI, SITE_ID } from '../../../constants';
+import { ATY_URI } from '../../../constants';
 
 class ProductInputModal extends Component {
   state = { preview: List(), productDetail: '' };

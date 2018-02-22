@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-import { ATY_URI, SITE_ID } from '../../../constants';
+import { ATY_URI } from '../../../constants';
 
 class ButtonAddImage extends Component {
   _onChange = e => {

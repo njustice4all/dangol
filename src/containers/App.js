@@ -51,7 +51,7 @@ class App extends Component {
   };
 
   render() {
-    const { sideMenu, status, router } = this.props;
+    const { sideMenu, status, router, siteId } = this.props;
     const routes = getClassNameByRoutes(router.location, status);
 
     return (
@@ -61,7 +61,7 @@ class App extends Component {
           {sideMenu ? (
             <div id="sidemenu-overlay" onClick={() => this.props.closePopup('sideMenu')} />
           ) : null}
-          <SideMenu open={sideMenu} />
+          <SideMenu open={sideMenu} siteId={siteId} />
           <Switch>
             <Route exact path="/" component={Signin} />
             <Route exact path="/order/reception" component={OrderReception} />

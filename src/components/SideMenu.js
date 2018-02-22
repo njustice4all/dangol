@@ -4,8 +4,17 @@ import { withRouter } from 'react-router-dom';
 import cx from 'classnames';
 
 import { closePopup } from '../actions/ui';
+import { initGetShopInfo } from '../actions/ceo';
+
+import { ATY_URI } from '../constants';
 
 class SideMenu extends Component {
+  componentWillReceiveProps = nextProps => {
+    if (this.props.siteId !== nextProps.siteId) {
+      this.props.initGetShopInfo({ siteId: nextProps.siteId });
+    }
+  };
+
   _onPress = pathname => () => {
     this.props.closePopup('sideMenu');
     this.props.history.push(pathname);
@@ -24,25 +33,34 @@ class SideMenu extends Component {
   };
 
   render() {
-    const { open } = this.props;
+    const { open, order, shop, siteId } = this.props;
 
     return (
       <div className={cx('sidemenu', { active: open })}>
         <div className="menu-wrapper active">
           <div className="header">
             <div className="logo-wrapper">
-              <div className="image">
-                <input type="file" />
+              <div className="image" style={{ overflow: 'hidden' }}>
+                {siteId ? (
+                  <img
+                    src={`${ATY_URI}/aty_image_view.php?siteId=${siteId}&iID=${shop.getIn([
+                      'mainImage',
+                      0,
+                    ])}&thumb=1`}
+                    alt=""
+                    style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                  />
+                ) : null}
               </div>
             </div>
-            <div className="title">교촌치킨 선릉점</div>
-            <div className="sub-title">
+            <div className="title">{shop.get('name')}</div>
+            {/*<div className="sub-title">
               <span className="name">홍길동사장님</span> 안녕하세요.
-            </div>
+            </div>*/}
             <div className="btn-wrapper">
               <div className="btn">
                 <div className="icon notice">
-                  <div className="count">5</div>
+                  <div className="count">{order.get('lists').size}</div>
                 </div>
               </div>
               <div className="btn">
@@ -105,7 +123,16 @@ class SideMenu extends Component {
 }
 
 export default withRouter(
-  connect(null, dispatch => ({
-    closePopup: ui => dispatch(closePopup(ui)),
-  }))(SideMenu)
+  connect(
+    state => ({
+      order: state.get('order'),
+      session: state.getIn(['auth', 'session']),
+      siteId: state.getIn(['auth', 'siteId']),
+      shop: state.getIn(['ceo', 'shop']),
+    }),
+    dispatch => ({
+      closePopup: ui => dispatch(closePopup(ui)),
+      initGetShopInfo: payload => dispatch(initGetShopInfo(payload)),
+    })
+  )(SideMenu)
 );
