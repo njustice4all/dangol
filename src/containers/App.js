@@ -25,7 +25,7 @@ class App extends Component {
   componentDidMount = () => {
     document.addEventListener('message', this.onMessage);
     // FIXME: autologin logic here
-    // this.props.initSignin({ id: 'tiba', pw: 'test1234' });
+    this.props.initSignin({ id: 'tiba', pw: 'test1234' });
   };
 
   componentWillUnmount = () => {

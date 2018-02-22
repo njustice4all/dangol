@@ -12,7 +12,9 @@ import { ATY_URI } from '../constants';
 class SideMenu extends Component {
   componentDidMount = () => {
     const { initGetShopInfo, siteId } = this.props;
-    initGetShopInfo({ siteId });
+    if (siteId) {
+      initGetShopInfo({ siteId });
+    }
   };
 
   componentWillReceiveProps = nextProps => {

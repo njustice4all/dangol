@@ -5,6 +5,9 @@ import Converter from '../utils/Converter';
 
 const headers = new Headers({ 'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8' });
 
+const date = new Date();
+
+// FIXME: start 어제껄로하고 앱이 계속 켜져있으면?
 const DATA = {
   keyWord: 'GetOrderList',
   shop: 1,
@@ -13,7 +16,12 @@ const DATA = {
     keyword: '',
     periodType: '0',
     period_msg: '',
-    period_start: '',
+    // 어제날짜
+    period_start: {
+      year: date.getFullYear(),
+      month: date.getMonth() + 1,
+      date: date.getDate() - 1,
+    },
     period_end: '',
     memberBuy: '0',
     payMothodCard: '1',
