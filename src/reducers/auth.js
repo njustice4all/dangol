@@ -60,7 +60,7 @@ export const auth = (state = new StateRecord(), action) => {
       return errorOnFetching(state, action);
     case 'auth/LOGOUT':
       // return state.setIn(['status', 'login'], false);
-      return StateRecord();
+      return new StateRecord();
     case 'auth/AUTO_LOGIN':
       console.log('need auto login');
       return state;

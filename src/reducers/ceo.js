@@ -15,6 +15,7 @@ const StateRecord = Record({
     query: '',
   }),
   setProducts: false,
+  managers: List(),
 });
 
 const withError = (state, action) => {
@@ -74,6 +75,12 @@ const setProductsSuccess = (state, action) => {
   );
 };
 
+const getManagers = (state, action) => {
+  return state.withMutations(mutator =>
+    mutator.setIn(['status', 'isFetching'], false).set('managers', fromJS(action.payload.users))
+  );
+};
+
 export const ceo = (state = new StateRecord(), action) => {
   switch (action.type) {
     case 'ceo/GET_SHOP':
@@ -83,25 +90,39 @@ export const ceo = (state = new StateRecord(), action) => {
     case 'ceo/GET_PRODUCT_DETAIL':
     case 'ceo/REQ_ADDRESS':
     case 'ceo/REQ_LOAD_MORE':
+    case 'ceo/GET_MANAGERS':
       return state.setIn(['status', 'isFetching'], true);
+
     case 'ceo/SET_SHOP_SUCCESS':
       return state;
+
     case 'ceo/SET_PRODUCTS_SUCCESS':
       return setProductsSuccess(state, action);
+
     case 'ceo/GET_SHOP_SUCCESS':
       return getShopSuccess(state, action);
+
     case 'ceo/GET_PRODUCTS_SUCCESS':
       return getProductsSuccess(state, action);
+
     case 'ceo/REQ_ADDRESS_SUCCESS':
       return addressLists(state, action);
+
     case 'ceo/GET_PRODUCT_DETAIL_SUCCESS':
       return getProductDetail(state, action);
+
     case 'ceo/REQ_LOAD_MORE_SUCCESS':
       return loadMore(state, action);
+
     case 'ceo/UPLOAD_IMAGE_SUCCESS':
       return state.set('uploadImageSeq', action.payload);
+
     case 'ceo/CLOSE_MODAL':
       return state.set('setProducts', false);
+
+    case 'ceo/GET_MANAGERS_SUCCESS':
+      return getManagers(state, action);
+
     case 'ceo/SET_SHOP_FAILURE':
     case 'ceo/REQ_ADDRESS_FAILURE':
     case 'ceo/SET_PRODUCTS_FAILURE':
@@ -109,9 +130,12 @@ export const ceo = (state = new StateRecord(), action) => {
     case 'ceo/GET_SHOP_ERROR':
     case 'ceo/GET_PRODUCT_DETAIL_ERROR':
     case 'ceo/GET_PRODUCTS_ERROR':
+    case 'ceo/GET_MANAGERS_ERROR':
       return withError(state, action);
+
     case 'ceo/DEL_PRODUCT_SUCCESS':
       return state;
+
     case 'ceo/RESET_ADDRESS':
       return new StateRecord();
     default:

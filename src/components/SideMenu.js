@@ -46,7 +46,7 @@ class SideMenu extends Component {
   };
 
   render() {
-    const { open, order, shop, siteId } = this.props;
+    const { open, order, shop, siteId, auth } = this.props;
 
     return (
       <div className={cx('sidemenu', { active: open })}>
@@ -102,7 +102,7 @@ class SideMenu extends Component {
                     <div className="title" onClick={this._onPress('/menus/delivery')}>
                       배달 주문 임시 중단
                     </div>
-                    <div className="title">업소 통계</div>
+                    {/*<div className="title">업소 통계</div>*/}
                   </div>
                 </li>
                 <li className="list-item selected">
@@ -119,13 +119,13 @@ class SideMenu extends Component {
                     <div className="title">고객센터</div>
                   </div>
                 </li>
-                <li className="list-item sub">
+                {/*<li className="list-item sub">
                   <div className="content-wrapper">
                     <div className="title selected">앱 이용안내</div>
                     <div className="title">1:1 문의</div>
                     <div className="title">자주묻는 질문</div>
                   </div>
-                </li>
+                </li>*/}
               </ul>
             </div>
           </div>

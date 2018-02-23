@@ -8,6 +8,7 @@ import {
   apiLoadMoreAddress,
   apiGetProductDetail,
   apiSetProduct,
+  apiGetManagers,
 } from '../api/ceo';
 import apiUploadImage from '../api/image';
 import Converter from '../utils/Converter';
@@ -197,11 +198,15 @@ export const initRequestAddress = query => async dispatch => {
   dispatch(reqAddress(query));
   const response = await apiAddress(query);
 
-  if (response.status >= 400) {
-    dispatch(reqAddressFailure({ error: true }));
-  } else {
-    const result = await response.json();
-    dispatch(reqAddressSuccess(result.results));
+  try {
+    if (response.status >= 400) {
+      dispatch(reqAddressFailure({ error: true }));
+    } else {
+      const result = await response.json();
+      dispatch(reqAddressSuccess(result.results));
+    }
+  } catch (error) {
+    console.error(error);
   }
 };
 
@@ -225,3 +230,26 @@ export const initRequestLoadMore = (query, page) => async dispatch => {
 };
 
 export const resetAddress = () => ({ type: 'ceo/RESET_ADDRESS' });
+
+/**
+ * 부관리자 정보 조회
+ */
+const getManagers = () => ({ type: 'ceo/GET_MANAGERS' });
+const getManagersSuccess = payload => ({ type: 'ceo/GET_MANAGERS_SUCCESS', payload });
+const getManagersError = error => ({ type: 'ceo/GET_MANAGERS_ERROR', error });
+
+export const initGetManagers = payload => async dispatch => {
+  dispatch(getManagers());
+
+  const response = await apiGetManagers(payload);
+
+  try {
+    if (!response) {
+      dispatch(getManagersError({ error: true }));
+    } else {
+      dispatch(getManagersSuccess(JSON.parse(response)));
+    }
+  } catch (error) {
+    console.error(error);
+  }
+};

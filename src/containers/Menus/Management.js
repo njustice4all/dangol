@@ -1,16 +1,36 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
+import { initGetManagers } from '../../actions/ceo';
+
 const Row = ({ name, id, password, header }) => (
   <div className={`tr${header ? ' head' : ''}`}>
     <div className="name">{name}</div>
     <div className="id">{id}</div>
-    <div className="pw">{password}</div>
+    {/*<div className="pw">{password}</div>*/}
   </div>
 );
 
 class Management extends Component {
+  componentDidMount = () => {
+    const { initGetManagers, id, secret } = this.props;
+    if (secret) {
+      initGetManagers({ id, secret });
+    }
+  };
+
+  componentWillReceiveProps = nextProps => {
+    const { initGetManagers } = this.props;
+
+    if (nextProps.secret !== this.props.secret) {
+      const { id, secret } = nextProps;
+      initGetManagers({ id, secret });
+    }
+  };
+
   render() {
+    const { id, secret } = this.props;
+
     return (
       <div className="body">
         <div className="content-title">부관리자 목록</div>
@@ -34,4 +54,12 @@ class Management extends Component {
   }
 }
 
-export default connect()(Management);
+export default connect(
+  state => ({
+    id: state.getIn(['auth', 'id']),
+    secret: state.getIn(['auth', 'secret']),
+  }),
+  dispatch => ({
+    initGetManagers: payload => dispatch(initGetManagers(payload)),
+  })
+)(Management);

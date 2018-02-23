@@ -51,7 +51,7 @@ class App extends Component {
   };
 
   render() {
-    const { sideMenu, status, router, siteId } = this.props;
+    const { sideMenu, status, router, siteId, auth } = this.props;
     const routes = getClassNameByRoutes(router.location, status);
     const pathname = router.location.pathname;
 
@@ -62,7 +62,7 @@ class App extends Component {
           {sideMenu ? (
             <div id="sidemenu-overlay" onClick={() => this.props.closePopup('sideMenu')} />
           ) : null}
-          {pathname === '/' ? null : <SideMenu open={sideMenu} siteId={siteId} />}
+          {pathname === '/' ? null : <SideMenu open={sideMenu} siteId={siteId} auth={auth} />}
           <Switch>
             <Route exact path="/" component={Signin} />
             <Route exact path="/order/reception" component={OrderReception} />
@@ -103,6 +103,7 @@ export default withRouter(
       // status: state.getIn(['order', 'detail', 'order', 'status']),
       session: state.getIn(['auth', 'session']),
       siteId: state.getIn(['auth', 'siteId']),
+      auth: state.get('auth'),
     }),
     dispatch => ({
       closePopup: ui => dispatch(closePopup(ui)),

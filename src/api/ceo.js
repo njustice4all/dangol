@@ -1,5 +1,5 @@
 import $ from 'jquery';
-import { DAUM_ADDRESS, DAUM_KEY, ATY_URI } from '../constants';
+import { DAUM_ADDRESS, DAUM_KEY, ATY_URI, ATY_DGP } from '../constants';
 
 const DATA = {
   keyWord: 'GetProductList',
@@ -183,6 +183,28 @@ export const apiGetProductDetail = payload => {
         keyWord: 'GetProductItem',
         shop: 1,
         idx: payload.idx,
+      },
+      success: result => {
+        resolve(result);
+      },
+      error: () => {
+        reject(new Error());
+      },
+    });
+  });
+};
+
+/**
+ * 부관리자 정보 조회
+ */
+export const apiGetManagers = payload => {
+  return new Promise((resolve, reject) => {
+    $.ajax({
+      type: 'POST',
+      url: ATY_DGP + '/memberGet',
+      data: {
+        id: payload.id,
+        secret: payload.secret,
       },
       success: result => {
         resolve(result);

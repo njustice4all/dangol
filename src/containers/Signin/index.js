@@ -11,6 +11,7 @@ class Signin extends Component {
     }
   };
 
+  // FIXME:
   onLoginButtonPress = () => {
     this.props.initSignin({ id: 'tiba', pw: 'test1234' });
     // this.props.initSignin({ id: this.id.value, pw: this.pw.value });

@@ -1,12 +1,18 @@
+// FIXME:
+
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { push } from 'react-router-redux';
 
 class EditAdmin extends Component {
-  _onPress = () => {
+  _onLogout = () => {
     const { logout, navigateTo } = this.props;
     logout();
     navigateTo('/');
+  };
+
+  _onModify = () => {
+    console.log(this.pw.value);
   };
 
   render() {
@@ -17,13 +23,15 @@ class EditAdmin extends Component {
             김홍주 사장님
           </div>
           <div style={{ fontSize: '20px' }}>KIMATY01</div>
-          <input type="password" placeholder="비밀번호" />
+          <input type="password" placeholder="비밀번호" ref={pw => (this.pw = pw)} />
         </div>
         <div className="btn-wrapper">
-          <div className="btn big">정보 수정</div>
+          <div className="btn big" onClick={this._onModify}>
+            정보 수정
+          </div>
         </div>
         <div className="btn-wrapper">
-          <div className="btn big" onClick={this._onPress}>
+          <div className="btn big" onClick={this._onLogout}>
             로그아웃
           </div>
         </div>
