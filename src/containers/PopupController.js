@@ -1,7 +1,13 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
-import { OrderReject, DeliveryAccept, OrderComplete, OrderAccept } from '../components/Popups';
+import {
+  OrderReject,
+  DeliveryAccept,
+  OrderComplete,
+  OrderAccept,
+  UserDel,
+} from '../components/Popups';
 
 class PopupController extends Component {
   // prevent scroll when pop up
@@ -14,6 +20,8 @@ class PopupController extends Component {
   };
 
   _renderPopup = type => {
+    const { member } = this.props;
+
     if (type.reject) {
       return <OrderReject />;
     } else if (type.order) {
@@ -22,6 +30,8 @@ class PopupController extends Component {
       return <OrderComplete />;
     } else if (type.orderAccept) {
       return <OrderAccept />;
+    } else if (type.deleteUser) {
+      return <UserDel />;
     }
   };
 
@@ -37,6 +47,14 @@ class PopupController extends Component {
   }
 }
 
-export default connect(state => ({
-  ui: state.get('ui'),
-}))(PopupController);
+export default connect(
+  state => ({
+    ui: state.get('ui'),
+    // member: state.getIn(['ui', 'payload']),
+    // id: state.getIn(['auth', 'id']),
+    // secret: state.getIn(['auth', 'secret']),
+  })
+  // dispatch => ({
+  //   closePopup: ui => dispatch(closePopup(ui)),
+  // })
+)(PopupController);

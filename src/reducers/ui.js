@@ -9,14 +9,30 @@ const StateRecord = Record({
   orderComplete: false, // 주문이 완료됨 (배달완료)
   sideMenu: false, // 사이드메뉴
   isPop: false, // 팝업 오픈시 true
+  deleteUser: false,
+  payload: '',
 });
 
 const _openPopup = (state, action) => {
+  if (action.payload) {
+    return state.withMutations(s =>
+      s
+        .set(action.ui, true)
+        .set('isPop', true)
+        .set('payload', action.payload)
+    );
+  }
+
   return state.withMutations(s => s.set(action.ui, true).set('isPop', true));
 };
 
 const _closePopup = (state, action) => {
-  return state.withMutations(s => s.set(action.ui, false).set('isPop', false));
+  return state.withMutations(s =>
+    s
+      .set(action.ui, false)
+      .set('isPop', false)
+      .set('payload', '')
+  );
 };
 
 const _toggleSideMenu = (state, action) => {

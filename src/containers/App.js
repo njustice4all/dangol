@@ -83,6 +83,11 @@ class App extends Component {
             <Route exact path="/menus/setting" component={Setting} />
             <Route exact path="/menus/management" component={Management} />
             <Route exact path="/menus/management/add" component={ManagementAdd} />
+            <Route
+              exact
+              path="/menus/management/:member"
+              render={props => <ManagementAdd {...props} edit />}
+            />
             <Route exact path="/menus/admin" component={EditAdmin} />
             <Route exact path="/ceo/shop" component={ModifyShop} />
             <Route exact path="/ceo/products" component={ModifyProducts} />

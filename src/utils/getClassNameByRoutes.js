@@ -62,8 +62,15 @@ export default (routeObject: routeObject, status: string): route => {
       };
     default:
       try {
+        if (routeObject.pathname.split('/menus/management/')[0] === '') {
+          return {
+            classname: 'order-manage-wrapper add',
+            title: '업소 부관리자 정보 수정',
+            goBack: true,
+          };
+        }
+
         if (routeObject.pathname.split('/order/')[1].split('/')[0] === 'complete') {
-          console.log(status);
           return {
             classname: `orderDetail ${status === 'deliveryDone' ? 'done' : 'done cancel'}`,
             title: '주문상세',

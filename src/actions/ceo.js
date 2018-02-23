@@ -9,6 +9,8 @@ import {
   apiGetProductDetail,
   apiSetProduct,
   apiGetManagers,
+  apiSetManager,
+  apiDeleteManager,
 } from '../api/ceo';
 import apiUploadImage from '../api/image';
 import Converter from '../utils/Converter';
@@ -248,6 +250,54 @@ export const initGetManagers = payload => async dispatch => {
       dispatch(getManagersError({ error: true }));
     } else {
       dispatch(getManagersSuccess(JSON.parse(response)));
+    }
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+/**
+ * 부관리자 수정/추가
+ */
+const setManager = () => ({ type: 'ceo/SET_MANAGER' });
+const setManagerSuccess = payload => ({ type: 'ceo/SET_MANAGER_SUCCESS', payload });
+const setManagerError = error => ({ type: 'ceo/SET_MANAGER_ERROR', error });
+
+export const initSetManager = payload => async dispatch => {
+  dispatch(setManager());
+
+  const response = await apiSetManager(payload);
+
+  try {
+    if (!response) {
+      dispatch(setManagerError({ error: true }));
+    } else {
+      dispatch(setManagerSuccess(response));
+    }
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+/**
+ * 부관리자 삭제
+ */
+const deleteManager = () => ({ type: 'ceo/DELETE_MANAGER' });
+const deleteManagerSuccess = payload => ({ type: 'ceo/DELETE_MANAGER_SUCCESS', payload });
+const deleteManagerError = error => ({ type: 'ceo/DELETE_MANAGER_ERROR', error });
+
+export const initDeleteManager = payload => async dispatch => {
+  dispatch(deleteManager());
+
+  const response = await apiDeleteManager(payload);
+
+  try {
+    // TODO: delete response
+    if (false) {
+      dispatch(deleteManagerError({ error: true }));
+    } else {
+      // dispatch(deleteManagerSuccess(response));
+      dispatch(initGetManagers({ id: payload.id, secret: payload.secret }));
     }
   } catch (error) {
     console.error(error);

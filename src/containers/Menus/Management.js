@@ -1,17 +1,31 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { push } from 'react-router-redux';
 
 import { initGetManagers } from '../../actions/ceo';
 
-const Row = ({ name, id, password, header }) => (
-  <div className={`tr${header ? ' head' : ''}`}>
-    <div className="name">{name}</div>
-    <div className="id">{id}</div>
+import { openPopup } from '../../actions/ui';
+
+const Row = ({ name, id, password, header, deleteMember, goEdit }) => (
+  <div className={`tr${header ? ' head' : ''}`} onClick={header ? null : goEdit(id)}>
+    <div className="name" style={{ textAlign: 'center' }}>
+      {name}
+    </div>
+    <div className="id" style={{ position: 'relative' }}>
+      {id}
+      {header ? null : (
+        <span style={{ position: 'absolute', right: '10px' }} onClick={deleteMember(id)}>
+          <img src="/img/remove.png" style={{ width: '17px' }} />
+        </span>
+      )}
+    </div>
     {/*<div className="pw">{password}</div>*/}
   </div>
 );
 
 class Management extends Component {
+  state = { showModal: false };
+
   componentDidMount = () => {
     const { initGetManagers, id, secret } = this.props;
     if (secret) {
@@ -28,8 +42,18 @@ class Management extends Component {
     }
   };
 
+  goEdit = member => e => {
+    this.props.navigateTo(`/menus/management/${member}`);
+  };
+
+  deleteMember = member => e => {
+    e.stopPropagation();
+    const { openPopup } = this.props;
+    openPopup('deleteUser', member);
+  };
+
   render() {
-    const { id, secret } = this.props;
+    const { managers } = this.props;
 
     return (
       <div className="body">
@@ -38,9 +62,15 @@ class Management extends Component {
           <li className="list-item">
             <div className="table2">
               <Row name="부관리자명" id="ID" password="비밀번호" header />
-              <Row name="김아티" id="kimaty" password="qwe12345" />
-              <Row name="김가티" id="kimgaty" password="q1w2e3" />
-              <Row name="김나티" id="kimnaty" password="1q2w3e" />
+              {managers.map((manager, index) => (
+                <Row
+                  key={`managers-${index}`}
+                  name={manager.get('name')}
+                  id={manager.get('id')}
+                  goEdit={this.goEdit}
+                  deleteMember={this.deleteMember}
+                />
+              ))}
             </div>
           </li>
         </ul>
@@ -58,8 +88,11 @@ export default connect(
   state => ({
     id: state.getIn(['auth', 'id']),
     secret: state.getIn(['auth', 'secret']),
+    managers: state.getIn(['ceo', 'managers']),
   }),
   dispatch => ({
     initGetManagers: payload => dispatch(initGetManagers(payload)),
+    navigateTo: route => dispatch(push(route)),
+    openPopup: (ui, payload) => dispatch(openPopup(ui, payload)),
   })
 )(Management);

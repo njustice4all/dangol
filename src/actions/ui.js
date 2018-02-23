@@ -1,15 +1,12 @@
 // @flow
 
-type UI = {
-  ui: string,
-};
-
-export const openPopup = (ui: UI) => ({
+export const openPopup = (ui: string, payload?: any) => ({
   type: 'ui/OPEN_POPUP',
-  ui: ui,
+  ui,
+  payload,
 });
 
-export const closePopup = (ui: UI) => ({
+export const closePopup = (ui: string) => ({
   type: 'ui/CLOSE_POPUP',
   ui: ui,
 });

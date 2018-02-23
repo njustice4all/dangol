@@ -215,3 +215,52 @@ export const apiGetManagers = payload => {
     });
   });
 };
+
+/**
+ * 부관리자 수정/추가
+ */
+export const apiSetManager = payload => {
+  return new Promise((resolve, reject) => {
+    $.ajax({
+      type: 'POST',
+      url: ATY_DGP + '/memberSet',
+      data: {
+        id: payload.id,
+        secret: payload.secret,
+        userId: payload.userId,
+        userPw: payload.userPw,
+        userName: payload.userName,
+        userRole: '',
+      },
+      success: result => {
+        resolve(result);
+      },
+      error: () => {
+        reject(new Error());
+      },
+    });
+  });
+};
+
+/**
+ * 부관리자 삭제
+ */
+export const apiDeleteManager = payload => {
+  return new Promise((resolve, reject) => {
+    $.ajax({
+      type: 'POST',
+      url: ATY_DGP + '/memberDel',
+      data: {
+        id: payload.id,
+        secret: payload.secret,
+        userId: payload.member,
+      },
+      success: result => {
+        resolve(result);
+      },
+      error: () => {
+        reject(new Error());
+      },
+    });
+  });
+};
