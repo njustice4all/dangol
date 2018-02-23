@@ -230,7 +230,8 @@ export const apiSetManager = payload => {
         userId: payload.userId,
         userPw: payload.userPw,
         userName: payload.userName,
-        userRole: '',
+        // TODO: userRole ceo/manager/reseller 명시해야함
+        userRole: 'manager',
       },
       success: result => {
         resolve(result);
@@ -258,8 +259,8 @@ export const apiDeleteManager = payload => {
       success: result => {
         resolve(result);
       },
-      error: () => {
-        reject(new Error());
+      error: error => {
+        reject(error);
       },
     });
   });

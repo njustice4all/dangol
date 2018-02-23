@@ -244,9 +244,10 @@ export const initGetManagers = payload => async dispatch => {
   dispatch(getManagers());
 
   const response = await apiGetManagers(payload);
+  const result = JSON.parse(response);
 
   try {
-    if (!response) {
+    if (!result.success) {
       dispatch(getManagersError({ error: true }));
     } else {
       dispatch(getManagersSuccess(JSON.parse(response)));
@@ -267,9 +268,10 @@ export const initSetManager = payload => async dispatch => {
   dispatch(setManager());
 
   const response = await apiSetManager(payload);
+  const result = JSON.parse(response);
 
   try {
-    if (!response) {
+    if (!result.success) {
       dispatch(setManagerError({ error: true }));
     } else {
       dispatch(setManagerSuccess(response));
@@ -290,13 +292,12 @@ export const initDeleteManager = payload => async dispatch => {
   dispatch(deleteManager());
 
   const response = await apiDeleteManager(payload);
+  const result = JSON.parse(response);
 
   try {
-    // TODO: delete response
-    if (false) {
+    if (!result.success) {
       dispatch(deleteManagerError({ error: true }));
     } else {
-      // dispatch(deleteManagerSuccess(response));
       dispatch(initGetManagers({ id: payload.id, secret: payload.secret }));
     }
   } catch (error) {
