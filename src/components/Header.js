@@ -17,6 +17,7 @@ type Props = {
   locationChange: string => void,
   history: Object,
   openPopup: string => void,
+  first: string,
 };
 
 const ButtonOpenSideMenu = ({ openSideMenu }) => {
@@ -29,7 +30,12 @@ const ButtonOpenSideMenu = ({ openSideMenu }) => {
   );
 };
 
-const ButtonBack = ({ goBack }) => {
+// TODO: 어떤방식으로 할것인가...?
+const ButtonBack = ({ goBack, first }) => {
+  if (first === '1' || first === '') {
+    return null;
+  }
+
   return <div className="btn back" onClick={goBack} />;
 };
 
@@ -102,7 +108,7 @@ class Header extends Component<Props> {
   };
 
   render() {
-    const { customProps, router, order, status, detail } = this.props;
+    const { customProps, router, order, status, detail, first } = this.props;
 
     let isComplete = false;
     if (
@@ -117,7 +123,9 @@ class Header extends Component<Props> {
         className="header"
         style={customProps.color ? { backgroundColor: customProps.color } : {}}>
         {customProps.buttonOpenSideMenu && <ButtonOpenSideMenu openSideMenu={this.openSideMenu} />}
-        {(customProps.detail || customProps.goBack) && <ButtonBack goBack={this._goBack} />}
+        {(customProps.detail || customProps.goBack) && (
+          <ButtonBack goBack={this._goBack} first={first} />
+        )}
         <div className="title">{customProps.title}</div>
         {customProps.detail && (
           <OrderType
@@ -143,6 +151,7 @@ export default withRouter(
       status: state.getIn(['order', 'detail', 'orderDetail', 'state']),
       // status: state.getIn(['order', 'detail', 'order', 'status']),
       detail: state.getIn(['order', 'detail']),
+      first: state.getIn(['auth', 'first']),
     }),
     dispatch => ({
       openPopup: ui => dispatch(openPopup(ui)),

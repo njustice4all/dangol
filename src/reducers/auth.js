@@ -9,6 +9,8 @@ const StateRecord = Record({
   siteId: '',
   siteName: '',
   siteUserId: '',
+  role: 'ceo',
+  first: '1',
   coords: new Map({
     lat: '',
     lng: '',
@@ -25,6 +27,8 @@ const getInfo = (state, action) => {
   return state.withMutations(mutator =>
     mutator
       .set('secret', action.info.secret)
+      .set('role', action.info.role)
+      .set('first', action.info.first)
       .set('session', action.info.sessId)
       .set('siteId', action.info.siteId)
       .set('id', action.user.id)

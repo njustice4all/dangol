@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Route, withRouter, Switch } from 'react-router-dom';
+import { Route, withRouter, Switch, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { push } from 'react-router-redux';
 
@@ -23,9 +23,15 @@ import getClassNameByRoutes from '../utils/getClassNameByRoutes';
 
 class App extends Component {
   componentDidMount = () => {
+    const { locationChange, initSignin } = this.props;
+
     document.addEventListener('message', this.onMessage);
     // FIXME: autologin logic here
-    this.props.initSignin({ id: 'tiba', pw: 'test1234' });
+    initSignin({ id: 'tiba', pw: 'test1234' }).then(value => {
+      // if (value.redirect) {
+      //   locationChange('/menus/admin');
+      // }
+    });
   };
 
   componentWillUnmount = () => {

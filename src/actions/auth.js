@@ -34,12 +34,15 @@ export const initSignin = user => async dispatch => {
   dispatch(reqSignin());
 
   const response = await apiReqLogin(user);
-  const toJSON = JSON.parse(response);
+  const result = JSON.parse(response);
 
-  if (toJSON.msg !== 'ok') {
+  if (result.msg !== 'ok') {
     dispatch(reqSigninError(errors));
   } else {
-    dispatch(reqSigninSuccess({ ...toJSON }, user));
+    dispatch(reqSigninSuccess({ ...result }, user));
     dispatch(initGetCoords(info));
+    if (result.first === '1') {
+      return { redirect: true };
+    }
   }
 };

@@ -12,7 +12,7 @@ class EditAdmin extends Component {
   };
 
   _onModify = () => {
-    console.log(this.pw.value);
+    console.log('pw', this.pw.value);
   };
 
   render() {

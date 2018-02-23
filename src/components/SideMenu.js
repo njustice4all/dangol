@@ -46,7 +46,7 @@ class SideMenu extends Component {
   };
 
   render() {
-    const { open, order, shop, siteId, auth } = this.props;
+    const { open, order, shop, siteId, auth, role } = this.props;
 
     return (
       <div className={cx('sidemenu', { active: open })}>
@@ -93,12 +93,16 @@ class SideMenu extends Component {
                 <li className="list-item sub">
                   <div className="content-wrapper">
                     {/*<div className="title" onClick={this.onFranchiseModify}>*/}
-                    <div className="title" onClick={this._onPress('/ceo/shop')}>
-                      업소 정보 수정
-                    </div>
-                    <div className="title" onClick={this._onPress('/menus/management')}>
-                      업소 부관리자 관리
-                    </div>
+                    {role === 'ceo' ? (
+                      <div className="title" onClick={this._onPress('/ceo/shop')}>
+                        업소 정보 수정
+                      </div>
+                    ) : null}
+                    {role === 'ceo' ? (
+                      <div className="title" onClick={this._onPress('/menus/management')}>
+                        업소 부관리자 관리
+                      </div>
+                    ) : null}
                     <div className="title" onClick={this._onPress('/menus/delivery')}>
                       배달 주문 임시 중단
                     </div>
@@ -142,6 +146,7 @@ export default withRouter(
       session: state.getIn(['auth', 'session']),
       siteId: state.getIn(['auth', 'siteId']),
       shop: state.getIn(['ceo', 'shop']),
+      role: state.getIn(['auth', 'role']),
     }),
     dispatch => ({
       closePopup: ui => dispatch(closePopup(ui)),

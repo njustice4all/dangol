@@ -13,7 +13,13 @@ class Signin extends Component {
 
   // FIXME:
   onLoginButtonPress = () => {
-    this.props.initSignin({ id: 'tiba', pw: 'test1234' });
+    const { initSignin, locationChange } = this.props;
+
+    initSignin({ id: 'tiba', pw: 'test1234' }).then(value => {
+      if (value.redirect) {
+        locationChange('/menus/admin');
+      }
+    });
     // this.props.initSignin({ id: this.id.value, pw: this.pw.value });
   };
 
