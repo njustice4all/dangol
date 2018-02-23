@@ -54,7 +54,7 @@ class SideMenu extends Component {
           <div className="header">
             <div className="logo-wrapper">
               <div className="image" style={{ overflow: 'hidden' }}>
-                {siteId ? (
+                {shop.size > 0 ? (
                   <img
                     src={`${ATY_URI}/aty_image_view.php?siteId=${siteId}&iID=${shop.getIn([
                       'mainImage',

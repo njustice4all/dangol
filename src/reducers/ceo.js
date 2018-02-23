@@ -93,6 +93,8 @@ export const ceo = (state = new StateRecord(), action) => {
     case 'ceo/GET_MANAGERS':
     case 'ceo/SET_MANAGER':
     case 'ceo/DELETE_MANAGER':
+    case 'ceo/GET_TERMS':
+    case 'ceo/SET_TERMS':
       return state.setIn(['status', 'isFetching'], true);
 
     case 'ceo/SET_SHOP_SUCCESS':
@@ -113,6 +115,9 @@ export const ceo = (state = new StateRecord(), action) => {
     case 'ceo/GET_PRODUCT_DETAIL_SUCCESS':
       return getProductDetail(state, action);
 
+    case 'ceo/DEL_PRODUCT_SUCCESS':
+      return state;
+
     case 'ceo/REQ_LOAD_MORE_SUCCESS':
       return loadMore(state, action);
 
@@ -131,6 +136,12 @@ export const ceo = (state = new StateRecord(), action) => {
     case 'ceo/DELETE_MANAGER_SUCCESS':
       return state.setIn(['status', 'isFetching'], false);
 
+    case 'ceo/GET_TERMS_SUCCESS':
+      return state;
+
+    case 'ceo/SET_TERMS_SUCCESS':
+      return state;
+
     case 'ceo/SET_SHOP_FAILURE':
     case 'ceo/REQ_ADDRESS_FAILURE':
     case 'ceo/SET_PRODUCTS_FAILURE':
@@ -140,11 +151,10 @@ export const ceo = (state = new StateRecord(), action) => {
     case 'ceo/GET_PRODUCTS_ERROR':
     case 'ceo/GET_MANAGERS_ERROR':
     case 'ceo/SET_MANAGER_ERROR':
-    case 'ceo/DELETE_MANAGER':
+    case 'ceo/DELETE_MANAGER_ERROR':
+    case 'ceo/GET_TERMS_ERROR':
+    case 'ceo/SET_TERMS_ERROR':
       return withError(state, action);
-
-    case 'ceo/DEL_PRODUCT_SUCCESS':
-      return state;
 
     case 'ceo/RESET_ADDRESS':
       return new StateRecord();

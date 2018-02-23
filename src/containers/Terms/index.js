@@ -3,31 +3,76 @@ import { Route } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { push } from 'react-router-redux';
 
-import Use from './Use';
-import Agreement from './Agreement';
-import Personal from './Personal';
+import { initGetTerms, initSetTerms } from '../../actions/ceo';
+
+import Textarea from './Textarea';
 import Footer from './Footer';
 import { TermsNavigator } from '../../components';
 
 class Terms extends Component {
   state = {
-    terms: '',
+    agreementText: '',
+    policyCollectAgreeMemberText: '',
+    policyText: '',
   };
 
-  setTerms = value => {
-    this.setState(prevState => ({ terms: value }));
+  // TODO: 변경해야함... 동작은 되는데 마음에 안듬
+  componentDidMount = () => {
+    const { siteId, initGetTerms } = this.props;
+    if (siteId) {
+      initGetTerms({
+        siteId,
+        lists: ['agreementText', 'policyCollectAgreeMemberText', 'policyText'],
+      }).then(result => {
+        this.setState(prevState => ({
+          agreementText: result.list.agreementText,
+          policyCollectAgreeMemberText: result.list.policyCollectAgreeMemberText,
+          policyText: result.list.policyText,
+        }));
+      });
+    }
+  };
+
+  componentWillReceiveProps = nextProps => {
+    if (nextProps.siteId !== this.props.siteId) {
+      const { initGetTerms } = this.props;
+      initGetTerms({
+        siteId: nextProps.siteId,
+        lists: ['agreementText', 'policyCollectAgreeMemberText', 'policyText'],
+      }).then(result => {
+        this.setState(prevState => ({
+          agreementText: result.list.agreementText,
+          policyCollectAgreeMemberText: result.list.policyCollectAgreeMemberText,
+          policyText: result.list.policyText,
+        }));
+      });
+    }
+  };
+
+  setTerms = (type, value) => {
+    this.setState(prevState => ({ [type]: value }));
   };
 
   onCancel = () => {
-    console.log('취소');
+    this.props.navigateTo('/ceo/shop');
   };
 
   onModify = () => {
-    console.log('수정', this.state.terms);
+    const { agreementText, policyCollectAgreeMemberText, policyText } = this.state;
+    const { initSetTerms, siteId, match: { params: { options } } } = this.props;
+
+    if (options === 'use') {
+      initSetTerms({ siteId, data: { agreementText } });
+    } else if (options === 'personal') {
+      initSetTerms({ siteId, data: { policyText } });
+    } else {
+      initSetTerms({ siteId, data: { policyCollectAgreeMemberText } });
+    }
   };
 
   render() {
-    const { terms } = this.state;
+    const { match: { params: { options } } } = this.props;
+    const { agreementText, policyCollectAgreeMemberText, policyText } = this.state;
 
     return (
       <div className="terms-screen">
@@ -35,15 +80,26 @@ class Terms extends Component {
         <div className="terms-top-divider" />
         <Route
           path="/ceo/terms/use"
-          render={props => <Use {...props} terms={terms} setTerms={this.setTerms} />}
+          render={props => (
+            <Textarea {...props} terms={agreementText} setTerms={this.setTerms} options={options} />
+          )}
         />
         <Route
           path="/ceo/terms/personal"
-          render={props => <Personal {...props} terms={terms} setTerms={this.setTerms} />}
+          render={props => (
+            <Textarea {...props} terms={policyText} setTerms={this.setTerms} options={options} />
+          )}
         />
         <Route
           path="/ceo/terms/agreement"
-          render={props => <Agreement {...props} terms={terms} setTerms={this.setTerms} />}
+          render={props => (
+            <Textarea
+              {...props}
+              terms={policyCollectAgreeMemberText}
+              setTerms={this.setTerms}
+              options={options}
+            />
+          )}
         />
         <Footer onCancel={this.onCancel} onModify={this.onModify} />
       </div>
@@ -51,6 +107,13 @@ class Terms extends Component {
   }
 }
 
-export default connect(null, dispatch => ({
-  navigateTo: route => dispatch(push(route)),
-}))(Terms);
+export default connect(
+  state => ({
+    siteId: state.getIn(['auth', 'siteId']),
+  }),
+  dispatch => ({
+    navigateTo: route => dispatch(push(route)),
+    initGetTerms: payload => dispatch(initGetTerms(payload)),
+    initSetTerms: payload => dispatch(initSetTerms(payload)),
+  })
+)(Terms);

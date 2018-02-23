@@ -11,6 +11,8 @@ import {
   apiGetManagers,
   apiSetManager,
   apiDeleteManager,
+  apiGetTerms,
+  apiSetTerms,
 } from '../api/ceo';
 import apiUploadImage from '../api/image';
 import Converter from '../utils/Converter';
@@ -299,6 +301,53 @@ export const initDeleteManager = payload => async dispatch => {
       dispatch(deleteManagerError({ error: true }));
     } else {
       dispatch(initGetManagers({ id: payload.id, secret: payload.secret }));
+    }
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+/**
+ * 약관 조회
+ */
+const getTerms = () => ({ type: 'ceo/GET_TERMS' });
+const getTermsSuccess = payload => ({ type: 'ceo/GET_TERMS_SUCCESS', payload });
+const getTermsError = error => ({ type: 'ceo/GET_TERMS_ERROR', error });
+
+export const initGetTerms = payload => async dispatch => {
+  dispatch(getTerms());
+
+  const response = await apiGetTerms(payload);
+
+  try {
+    if (!response) {
+      dispatch(getTermsError({ error: true }));
+    } else {
+      dispatch(getTermsSuccess(response.list));
+      return { list: response.list };
+    }
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+/**
+ * 약관 수정
+ */
+const setTerms = () => ({ type: 'ceo/SET_TERMS' });
+const setTermsSuccess = payload => ({ type: 'ceo/SET_TERMS_SUCCESS', payload });
+const setTermsError = error => ({ type: 'ceo/SET_TERMS_ERROR', error });
+
+export const initSetTerms = payload => async dispatch => {
+  dispatch(setTerms());
+
+  const response = await apiSetTerms(payload);
+
+  try {
+    if (!response) {
+      dispatch(setTermsError({ error: true }));
+    } else {
+      dispatch(setTermsSuccess({ success: true }));
     }
   } catch (error) {
     console.error(error);

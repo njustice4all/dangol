@@ -265,3 +265,51 @@ export const apiDeleteManager = payload => {
     });
   });
 };
+
+/**
+ * 약관 조회
+ */
+export const apiGetTerms = payload => {
+  return new Promise((resolve, reject) => {
+    $.ajax({
+      type: 'POST',
+      url: ATY_URI + '/aty_convert_basic.php',
+      data: {
+        siteId: payload.siteId,
+        keyWord: 'GetBasicItem',
+        shop: 1,
+        data: payload.lists,
+      },
+      success: result => {
+        resolve(result);
+      },
+      error: error => {
+        reject(error);
+      },
+    });
+  });
+};
+
+/**
+ * 약관 수정
+ */
+export const apiSetTerms = payload => {
+  return new Promise((resolve, reject) => {
+    $.ajax({
+      type: 'POST',
+      url: ATY_URI + '/aty_convert_basic.php',
+      data: {
+        siteId: payload.siteId,
+        keyWord: 'SetBasicItem',
+        shop: 1,
+        data: payload.data,
+      },
+      success: result => {
+        resolve(result);
+      },
+      error: error => {
+        reject(error);
+      },
+    });
+  });
+};
