@@ -1,20 +1,20 @@
 import { fromJS } from 'immutable';
 import apiGetCoords from '../api/coords';
 
-const getCoords = async address => {
-  const response = await apiGetCoords({ address });
+// const getCoords = async address => {
+//   const response = await apiGetCoords({ address });
 
-  try {
-    if (response.status > 400) {
-      return { lat: null, lng: null };
-    } else {
-      const result = await response.json();
-      return result.results[0].geometry.location;
-    }
-  } catch (error) {
-    console.error(error);
-  }
-};
+//   try {
+//     if (response.status > 400) {
+//       return { lat: null, lng: null };
+//     } else {
+//       const result = await response.json();
+//       return result.results[0].geometry.location;
+//     }
+//   } catch (error) {
+//     console.error(error);
+//   }
+// };
 
 class Convert {
   listsToState = (lists, payDone) => {

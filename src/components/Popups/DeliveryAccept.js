@@ -4,7 +4,12 @@ import { withRouter } from 'react-router-dom';
 import cx from 'classnames';
 
 import { closePopup } from '../../actions/ui';
-import { setStatus, batchActions, initSetDeliveryProcess } from '../../actions/order';
+import {
+  setStatus,
+  batchActions,
+  initSetDeliveryProcess,
+  initSetOrderProcess,
+} from '../../actions/order';
 
 class DeliveryAccept extends Component {
   state = {
@@ -58,13 +63,27 @@ class DeliveryAccept extends Component {
 
   onAcceptButtonPress = () => {
     const { options } = this.state;
-    const { batchActions, setStatus, closePopup, history } = this.props;
+    const {
+      closePopup,
+      history,
+      lists,
+      currentIdx,
+      initSetOrderProcess,
+      sessionId,
+      siteId,
+      orderNo,
+    } = this.props;
 
     const result = options.filter(option => option.selected);
 
     if (result.length > 0) {
-      const payloads = { status: 'accept', option: result[0].id };
-      batchActions(setStatus(payloads), closePopup('order'));
+      const results = [];
+      const option = result[0].id + '분';
+      const index = lists.findIndex(list => list.getIn(['data', 'idx']) === currentIdx + '');
+      lists.getIn([index, 'data', 'product']).forEach(product => results.push(product.get('idx')));
+
+      initSetOrderProcess({ results, sessionId, siteId, orderNo, option });
+      closePopup('order');
       history.push('/order/progress');
     } else {
       this.setState(prevState => ({ error: true }));
@@ -130,6 +149,7 @@ export default withRouter(
       setStatus: status => dispatch(setStatus(status)),
       batchActions: (first, second) => dispatch(batchActions(first, second)),
       initSetDeliveryProcess: payload => dispatch(initSetDeliveryProcess(payload)),
+      initSetOrderProcess: payload => dispatch(initSetOrderProcess(payload)),
     })
   )(DeliveryAccept)
 );
