@@ -40,9 +40,9 @@ const Delivery = ({ detail, coords }) => (
         <div className="title">배달지</div>
         <div className="content">
           {`${detail.getIn(['order', 'od_b_addr1'])}, ${detail.getIn(['order', 'od_b_addr2'])}`}
-          <div className="info">
+          {/*<div className="info">
             {coords.distance}km | <span className="alert">{coords.duration}분</span> 소요
-          </div>
+          </div>*/}
         </div>
       </li>
       <Payment request={detail.getIn(['order', 'od_b_message'])} />

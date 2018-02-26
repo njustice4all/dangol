@@ -49,10 +49,10 @@ const ItemDelivery = ({ goDetail, order, shopCoords, status, pathname }: Props) 
         </div>
         <div className="right-wrapper">
           <div className="address">{order.get('address')}</div>
-          <div className="info">
+          {/*<div className="info">
             <span className="icon mark">{coords.distance}km</span> |{' '}
             <span className="alert">{coords.duration}분</span> 소요
-          </div>
+          </div>*/}
           <div className="comment">{order.get('request')}</div>
         </div>
         <SideButton status={status} />
