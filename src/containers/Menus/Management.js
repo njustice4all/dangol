@@ -79,6 +79,13 @@ class Management extends Component {
             부관리자 등록 +
           </div>
         </div>
+        <div className="btn-wrapper" style={{ paddingTop: 0 }}>
+          <div
+            className="btn big"
+            onClick={() => this.props.history.push('/menus/management/addReseller')}>
+            리셀러 등록 +
+          </div>
+        </div>
       </div>
     );
   }

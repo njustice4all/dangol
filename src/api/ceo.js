@@ -230,8 +230,7 @@ export const apiSetManager = payload => {
         userId: payload.userId,
         userPw: payload.userPw,
         userName: payload.userName,
-        // TODO: userRole ceo/manager/reseller 명시해야함
-        userRole: 'manager',
+        userRole: payload.userRole,
       },
       success: result => {
         resolve(result);

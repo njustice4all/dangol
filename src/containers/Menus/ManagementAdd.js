@@ -5,7 +5,7 @@ import { initSetManager } from '../../actions/ceo';
 
 class ManagementAdd extends Component {
   _onPress = () => {
-    const { id, secret, initSetManager } = this.props;
+    const { id, secret, initSetManager, reseller } = this.props;
     const payload = {
       id,
       secret,
@@ -15,7 +15,11 @@ class ManagementAdd extends Component {
       userRole: '',
     };
 
-    initSetManager(payload);
+    if (reseller) {
+      initSetManager({ ...payload, userRole: 'reseller' });
+    } else {
+      initSetManager(payload);
+    }
   };
 
   render() {

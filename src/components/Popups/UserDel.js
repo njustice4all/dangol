@@ -8,7 +8,7 @@ class UserDel extends Component {
   onConfirm = () => {
     const { id, secret, member, closePopup, initDeleteManager } = this.props;
 
-    initDeleteManager({ id, secret, member: '' });
+    initDeleteManager({ id, secret, member });
     closePopup('deleteUser');
   };
 

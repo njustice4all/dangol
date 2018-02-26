@@ -252,7 +252,10 @@ export const initGetManagers = payload => async dispatch => {
     if (!result.success) {
       dispatch(getManagersError({ error: true }));
     } else {
-      dispatch(getManagersSuccess(JSON.parse(response)));
+      const result = JSON.parse(response);
+      const exceptCeo = result.users.filter(user => user.role !== 'ceo');
+
+      dispatch(getManagersSuccess({ users: exceptCeo }));
     }
   } catch (error) {
     console.error(error);

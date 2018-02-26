@@ -91,6 +91,11 @@ class App extends Component {
             <Route exact path="/menus/management/add" component={ManagementAdd} />
             <Route
               exact
+              path="/menus/management/addReseller"
+              render={props => <ManagementAdd {...props} reseller />}
+            />
+            <Route
+              exact
               path="/menus/management/:member"
               render={props => <ManagementAdd {...props} edit />}
             />
