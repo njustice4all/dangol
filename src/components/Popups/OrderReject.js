@@ -47,13 +47,41 @@ class OrderReject extends Component {
 
   onRejectAcceptButtonPress = () => {
     const { options } = this.state;
-    const { batchActions, setStatus, closePopup, history } = this.props;
+    const {
+      lists,
+      processLists,
+      currentIdx,
+      sessionId,
+      siteId,
+      orderNo,
+      closePopup,
+      history,
+      pathname,
+      initSetOrderCancel,
+    } = this.props;
 
+    const type = pathname.split('/')[2];
     const result = options.filter(option => option.selected);
 
     if (result.length > 0) {
-      const payloads = { status: 'reject', option: result[0].id };
-      batchActions(setStatus(payloads), closePopup('reject'));
+      const results = [];
+      const option = result[0].name;
+      let index = null;
+
+      if (type === 'reception') {
+        index = lists.findIndex(list => list.getIn(['data', 'idx']) === currentIdx + '');
+        lists
+          .getIn([index, 'data', 'product'])
+          .forEach(product => results.push(product.get('idx')));
+      } else {
+        index = processLists.findIndex(list => list.getIn(['data', 'idx']) === currentIdx + '');
+        processLists
+          .getIn([index, 'data', 'product'])
+          .forEach(product => results.push(product.get('idx')));
+      }
+
+      initSetOrderCancel({ results, sessionId, siteId, orderNo, option });
+      this.onCancelButtonPress();
       history.push('/order/complete');
     } else {
       this.setState(prevState => ({ error: true }));
@@ -100,10 +128,12 @@ export default withRouter(
   connect(
     state => ({
       lists: state.getIn(['order', 'lists']),
+      processLists: state.getIn(['order', 'processLists']),
       currentIdx: state.getIn(['order', 'detail', 'order', 'idx']),
       orderNo: state.getIn(['order', 'detail', 'order', 'order_no']),
       sessionId: state.getIn(['auth', 'session']),
       siteId: state.getIn(['auth', 'siteId']),
+      pathname: state.get('router').location.pathname,
     }),
     dispatch => ({
       closePopup: ui => dispatch(closePopup(ui)),

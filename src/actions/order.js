@@ -187,9 +187,8 @@ export const initSetDeliveryProcess = payload => async dispatch => {
   }
 };
 
-// FIXME:
 /**
- * 주물을 거절함...
+ * 주문을 거절함...
  */
 const setOrderCancel = () => ({ type: 'order/SET_ORDER_CANCEL' });
 const setOrderCancelSuccess = payload => ({ type: 'order/SET_ORDER_CANCEL_SUCCESS', payload });

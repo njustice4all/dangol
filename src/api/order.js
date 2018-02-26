@@ -124,7 +124,7 @@ export const apiGetOrderComplete = payload => {
   const newData = {
     ...DATA,
     siteId: payload.siteId,
-    search: { ...DATA.search, orderState: 'deliveryDone' },
+    search: { ...DATA.search, orderState: ['deliveryDone', 'cancelDonePay'] },
   };
 
   return new Promise((resolve, reject) => {
@@ -205,7 +205,6 @@ export const apiSetOrderComplete = payload => {
   });
 };
 
-// FIXME:
 /**
  * 배달주문을 처리중 상태로...
  */
@@ -235,7 +234,6 @@ export const apiSetDeliveryProcess = payload => {
   });
 };
 
-// FIXME:
 /**
  * 주문을 거절함
  */
@@ -250,10 +248,11 @@ export const apiSetOrderCancel = payload => {
         keyWord: 'SetOrderListDetail',
         idx: payload.results,
         data: {
-          state: 'deliveryPrepare',
+          state: 'cancelDonePay',
           sub_state: '',
         },
         orderNo: payload.orderNo,
+        option: payload.option,
       },
       success: result => {
         resolve(result);
