@@ -1,10 +1,26 @@
-// FIXME:
-
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { push } from 'react-router-redux';
 
+import { initGetManagers, initSetManager } from '../../actions/ceo';
+
 class EditAdmin extends Component {
+  componentDidMount = () => {
+    const { initGetManagers, id, secret } = this.props;
+    if (secret) {
+      initGetManagers({ id, secret, ceo: true });
+    }
+  };
+
+  componentWillReceiveProps = nextProps => {
+    const { initGetManagers } = this.props;
+
+    if (nextProps.secret !== this.props.secret) {
+      const { id, secret } = nextProps;
+      initGetManagers({ id, secret, ceo: true });
+    }
+  };
+
   _onLogout = () => {
     const { logout, navigateTo } = this.props;
     logout();
@@ -12,17 +28,28 @@ class EditAdmin extends Component {
   };
 
   _onModify = () => {
-    console.log('저장하고 reception으로 가야함', this.pw.value);
+    const { id, secret, initSetManager, managers, navigateTo } = this.props;
+    const payload = {
+      id,
+      secret,
+      userId: managers.getIn([0, 'id']),
+      userPw: this.pw.value,
+    };
+
+    initSetManager(payload);
+    navigateTo('/order/reception');
   };
 
   render() {
+    const { managers } = this.props;
+
     return (
       <div className="body">
         <div className="input-wrapper">
           <div style={{ fontSize: '20px', color: '#fe931f', marginBottom: '20px' }}>
-            김홍주 사장님
+            {managers.getIn([0, 'name'])}
           </div>
-          <div style={{ fontSize: '20px' }}>KIMATY01</div>
+          <div style={{ fontSize: '20px' }}>{managers.getIn([0, 'id'])}</div>
           <input type="password" placeholder="비밀번호" ref={pw => (this.pw = pw)} />
         </div>
         <div className="btn-wrapper">
@@ -40,7 +67,16 @@ class EditAdmin extends Component {
   }
 }
 
-export default connect(null, dispatch => ({
-  logout: () => dispatch({ type: 'auth/LOGOUT' }),
-  navigateTo: route => dispatch(push(route)),
-}))(EditAdmin);
+export default connect(
+  state => ({
+    id: state.getIn(['auth', 'id']),
+    secret: state.getIn(['auth', 'secret']),
+    managers: state.getIn(['ceo', 'managers']),
+  }),
+  dispatch => ({
+    logout: () => dispatch({ type: 'auth/LOGOUT' }),
+    navigateTo: route => dispatch(push(route)),
+    initGetManagers: payload => dispatch(initGetManagers(payload)),
+    initSetManager: payload => dispatch(initSetManager(payload)),
+  })
+)(EditAdmin);

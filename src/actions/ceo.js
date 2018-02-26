@@ -253,9 +253,15 @@ export const initGetManagers = payload => async dispatch => {
       dispatch(getManagersError({ error: true }));
     } else {
       const result = JSON.parse(response);
-      const exceptCeo = result.users.filter(user => user.role !== 'ceo');
 
-      dispatch(getManagersSuccess({ users: exceptCeo }));
+      let users = null;
+      if (payload.ceo) {
+        users = result.users.filter(user => user.role === 'ceo');
+      } else {
+        users = result.users.filter(user => user.role !== 'ceo');
+      }
+
+      dispatch(getManagersSuccess({ users }));
     }
   } catch (error) {
     console.error(error);

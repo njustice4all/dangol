@@ -14,8 +14,10 @@ class Signin extends Component {
   // FIXME:
   onLoginButtonPress = () => {
     const { initSignin, locationChange } = this.props;
+    const id = this.id.value;
+    const pw = this.pw.value;
 
-    initSignin({ id: 'tiba', pw: 'test1234' }).then(value => {
+    initSignin({ id, pw }).then(value => {
       if (value.redirect) {
         locationChange('/menus/admin');
       }

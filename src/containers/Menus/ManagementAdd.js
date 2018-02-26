@@ -1,25 +1,35 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { push } from 'react-router-redux';
 
 import { initSetManager } from '../../actions/ceo';
 
 class ManagementAdd extends Component {
   _onPress = () => {
-    const { id, secret, initSetManager, reseller } = this.props;
+    const {
+      id,
+      secret,
+      initSetManager,
+      reseller,
+      match: { params: { member } },
+      edit,
+      managers,
+      navigateTo,
+    } = this.props;
+    const manager = managers.filter(manager => manager.get('id') === member);
+    const data = manager.toJS();
+
     const payload = {
       id,
       secret,
       userId: this.id.value,
       userPw: this.pw.value,
       userName: this.name.value,
-      userRole: '',
+      userRole: edit ? data[0].role : reseller ? 'reseller' : 'manager',
     };
 
-    if (reseller) {
-      initSetManager({ ...payload, userRole: 'reseller' });
-    } else {
-      initSetManager(payload);
-    }
+    initSetManager(payload);
+    navigateTo('/menus/management');
   };
 
   render() {
@@ -80,5 +90,6 @@ export default connect(
   }),
   dispatch => ({
     initSetManager: payload => dispatch(initSetManager(payload)),
+    navigateTo: route => dispatch(push(route)),
   })
 )(ManagementAdd);

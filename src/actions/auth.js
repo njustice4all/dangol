@@ -38,11 +38,13 @@ export const initSignin = user => async dispatch => {
 
   if (result.msg !== 'ok') {
     dispatch(reqSigninError(errors));
+    return { redirect: false };
   } else {
     dispatch(reqSigninSuccess({ ...result }, user));
     dispatch(initGetCoords(info));
     if (result.first === '1') {
       return { redirect: true };
     }
+    return { redirect: false };
   }
 };
