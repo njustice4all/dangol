@@ -43,7 +43,7 @@ export const initSignin = user => async dispatch => {
     dispatch(reqSigninSuccess({ ...result }, user));
     dispatch(initGetCoords(info));
     if (result.first === '1') {
-      return { redirect: true };
+      return { redirect: true, role: result.role };
     }
     return { redirect: false };
   }

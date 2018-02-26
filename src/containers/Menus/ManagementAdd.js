@@ -2,9 +2,31 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { push } from 'react-router-redux';
 
-import { initSetManager } from '../../actions/ceo';
+import { initGetManagers, initSetManager } from '../../actions/ceo';
 
 class ManagementAdd extends Component {
+  state = { id: '', name: '' };
+
+  componentDidMount = () => {
+    const { initGetManagers, id, secret } = this.props;
+    initGetManagers({ id, secret });
+  };
+
+  componentWillReceiveProps = nextProps => {
+    const { id, match: { params: { member } } } = this.props;
+    if (nextProps.managers.size !== this.props.managers.size) {
+      const manager = nextProps.managers.filter(manager => manager.get('id') === id).get(0);
+      this.setState(prevState => ({ id: manager.get('id'), name: manager.get('name') }));
+      return;
+    }
+
+    const manager = this.props.managers.filter(manager => manager.get('id') === member).get(0);
+
+    if (manager) {
+      this.setState(prevState => ({ id: manager.get('id'), name: manager.get('name') }));
+    }
+  };
+
   _onPress = () => {
     const {
       id,
@@ -32,7 +54,13 @@ class ManagementAdd extends Component {
     navigateTo('/menus/management');
   };
 
+  _setValue = type => e => {
+    e.persist();
+    this.setState(prevState => ({ [type]: e.target.value }));
+  };
+
   render() {
+    const { id, name } = this.state;
     const { match: { params: { member } }, edit, managers } = this.props;
     const manager = managers.filter(manager => manager.get('id') === member);
     const data = manager.toJS();
@@ -45,13 +73,14 @@ class ManagementAdd extends Component {
               type="text"
               placeholder="부관리자명"
               ref={name => (this.name = name)}
-              defaultValue={data[0] && data[0].name}
+              value={name}
+              onChange={this._setValue('name')}
             />
             <input
               type="text"
               placeholder="아이디"
               ref={id => (this.id = id)}
-              defaultValue={data[0] && data[0].id}
+              value={id}
               disabled
             />
             <input type="password" placeholder="비밀번호" ref={pw => (this.pw = pw)} />
@@ -89,6 +118,7 @@ export default connect(
     secret: state.getIn(['auth', 'secret']),
   }),
   dispatch => ({
+    initGetManagers: payload => dispatch(initGetManagers(payload)),
     initSetManager: payload => dispatch(initSetManager(payload)),
     navigateTo: route => dispatch(push(route)),
   })

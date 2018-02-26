@@ -28,9 +28,7 @@ const getInfo = (state, action) => {
     mutator
       .set('secret', action.info.secret)
       .set('role', action.info.role)
-      // FIXME: 테스트용
-      .set('first', '0')
-      // .set('first', action.info.first)
+      .set('first', action.info.first)
       .set('session', action.info.sessId)
       .set('siteId', action.info.siteId)
       .set('id', action.user.id)

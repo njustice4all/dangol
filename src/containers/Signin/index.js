@@ -11,18 +11,24 @@ class Signin extends Component {
     }
   };
 
-  // FIXME:
   onLoginButtonPress = () => {
     const { initSignin, locationChange } = this.props;
     const id = this.id.value;
     const pw = this.pw.value;
 
-    initSignin({ id, pw }).then(value => {
-      if (value.redirect) {
-        locationChange('/menus/admin');
-      }
-    });
-    // this.props.initSignin({ id: this.id.value, pw: this.pw.value });
+    try {
+      initSignin({ id, pw }).then(value => {
+        if (value.redirect) {
+          if (value.role === 'manager' || value.role === 'reseller') {
+            locationChange(`/menus/management/${id}`);
+          } else {
+            locationChange('/menus/admin');
+          }
+        }
+      });
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   render() {

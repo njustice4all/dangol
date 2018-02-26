@@ -46,7 +46,7 @@ class SideMenu extends Component {
   };
 
   render() {
-    const { open, order, shop, siteId, auth, role } = this.props;
+    const { open, order, shop, siteId, auth, role, session } = this.props;
 
     return (
       <div className={cx('sidemenu', { active: open })}>
@@ -59,7 +59,7 @@ class SideMenu extends Component {
                     src={`${ATY_URI}/aty_image_view.php?siteId=${siteId}&iID=${shop.getIn([
                       'mainImage',
                       0,
-                    ])}&thumb=1`}
+                    ])}&sessId=${session}&thumb=1`}
                     alt=""
                     style={{ width: '100%', height: '100%', objectFit: 'cover' }}
                   />
