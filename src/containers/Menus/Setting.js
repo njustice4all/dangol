@@ -6,6 +6,7 @@ import { connect } from 'react-redux';
 type Props = {
   version: string,
   history: Object,
+  role: string,
 };
 
 type ContentProps = {
@@ -29,17 +30,19 @@ class Setting extends Component<Props> {
   };
 
   render() {
-    const { version } = this.props;
+    const { version, role } = this.props;
 
     return (
       <div className="body">
         <Content title="소리설정" content="신규 주문 접수 알림" />
         <Content title="앱 정보" content={`버전정보 ${version}`} />
-        <Content
-          title="앱 계정 설정"
-          content="사장님 계정 정보"
-          onPress={() => this.props.history.push('/menus/admin')}
-        />
+        {role === 'ceo' ? (
+          <Content
+            title="앱 계정 설정"
+            content="사장님 계정 정보"
+            onPress={() => this.props.history.push('/menus/admin')}
+          />
+        ) : null}
       </div>
     );
   }
@@ -47,4 +50,5 @@ class Setting extends Component<Props> {
 
 export default connect(state => ({
   version: state.getIn(['setting', 'version']),
+  role: state.getIn(['auth', 'role']),
 }))(Setting);

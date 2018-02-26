@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { push } from 'react-router-redux';
 
-import { setDeliveryStop } from '../../actions/setting';
+import { initGetPauseOrder, initSetPauseOrder } from '../../actions/setting';
 
 const styles = {
   btnWrapper: {
@@ -14,18 +15,59 @@ const styles = {
 };
 
 class StopDelivery extends Component {
-  constructor(props) {
-    super(props);
+  state = { isStop: false, time: { start: '', end: '' } };
 
-    this.state = { isStop: props.delivery.get('isStop'), time: props.delivery.get('time') };
-  }
+  componentDidMount = () => {
+    const { initGetPauseOrder, siteId, delivery } = this.props;
+    initGetPauseOrder({
+      siteId,
+      lists: ['deliveryStopFlag', 'deliveryStopStart', 'deliveryStopEnd'],
+    });
+
+    this.setState(prevState => ({
+      isStop: delivery.get('isStop'),
+      time: {
+        start: delivery.getIn(['time', 'start']),
+        end: delivery.getIn(['time', 'end']),
+      },
+    }));
+  };
+
+  componentWillReceiveProps = nextProps => {
+    this.setState(prevState => ({
+      isStop: nextProps.delivery.get('isStop'),
+      time: {
+        start: nextProps.delivery.getIn(['time', 'start']),
+        end: nextProps.delivery.getIn(['time', 'end']),
+      },
+    }));
+  };
 
   _toggle = () => this.setState(prevState => ({ isStop: !prevState.isStop }));
 
-  _onPress = () => this.props.setDeliveryStop(this.state);
+  _onPress = () => {
+    const { navigateTo, initSetPauseOrder, siteId } = this.props;
+    const { isStop, time } = this.state;
+
+    initSetPauseOrder({
+      siteId,
+      data: {
+        deliveryStopFlag: isStop ? '1' : '0',
+        deliveryStopStart: time.start,
+        deliveryStopEnd: time.end,
+      },
+    });
+
+    navigateTo('/order/reception');
+  };
+
+  setTime = type => e => {
+    e.persist();
+    this.setState(prevState => ({ time: { ...prevState.time, [type]: e.target.value } }));
+  };
 
   render() {
-    const { isStop } = this.state;
+    const { isStop, time } = this.state;
 
     return (
       <div className="body">
@@ -43,7 +85,23 @@ class StopDelivery extends Component {
               {isStop ? (
                 <div className="tr">
                   <div className="title">중단시간</div>
-                  <div className="content">12:00 ~ 24:00</div>
+                  <div className="content">
+                    <div style={{ display: 'flex' }}>
+                      <input
+                        type="text"
+                        style={{ width: '70px', fontSize: '18px' }}
+                        value={time.start}
+                        onChange={this.setTime('start')}
+                      />
+                      <span style={{ marginRight: '25px', paddingTop: '3px' }}> ~ </span>
+                      <input
+                        type="text"
+                        style={{ width: '70px', fontSize: '18px' }}
+                        value={time.end}
+                        onChange={this.setTime('end')}
+                      />
+                    </div>
+                  </div>
                 </div>
               ) : null}
             </div>
@@ -78,8 +136,11 @@ class StopDelivery extends Component {
 export default connect(
   state => ({
     delivery: state.getIn(['setting', 'delivery']),
+    siteId: state.getIn(['auth', 'siteId']),
   }),
   dispatch => ({
-    setDeliveryStop: (isStop, time) => dispatch(setDeliveryStop(isStop, time)),
+    initGetPauseOrder: payload => dispatch(initGetPauseOrder(payload)),
+    initSetPauseOrder: payload => dispatch(initSetPauseOrder(payload)),
+    navigateTo: route => dispatch(push(route)),
   })
 )(StopDelivery);

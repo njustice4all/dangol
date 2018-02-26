@@ -263,3 +263,51 @@ export const apiSetOrderCancel = payload => {
     });
   });
 };
+
+/**
+ * 배달주문 중단상태
+ */
+export const apiGetPauseOrder = payload => {
+  return new Promise((resolve, reject) => {
+    $.ajax({
+      type: 'POST',
+      url: ATY_URI + '/aty_convert_basic.php',
+      data: {
+        siteId: payload.siteId,
+        keyWord: 'GetBasicItem',
+        shop: 1,
+        data: payload.lists,
+      },
+      success: result => {
+        resolve(result);
+      },
+      error: error => {
+        reject(error);
+      },
+    });
+  });
+};
+
+/**
+ * 배달주문 중단
+ */
+export const apiSetPauseOrder = payload => {
+  return new Promise((resolve, reject) => {
+    $.ajax({
+      type: 'POST',
+      url: ATY_URI + '/aty_convert_basic.php',
+      data: {
+        siteId: payload.siteId,
+        keyWord: 'SetBasicItem',
+        shop: 1,
+        data: payload.data,
+      },
+      success: result => {
+        resolve(result);
+      },
+      error: error => {
+        reject(error);
+      },
+    });
+  });
+};

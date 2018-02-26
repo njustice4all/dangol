@@ -17,7 +17,7 @@ class Signin extends Component {
     const pw = this.pw.value;
 
     try {
-      initSignin({ id, pw }).then(value => {
+      initSignin({ id: 'tiba', pw: 'test1234' }).then(value => {
         if (value.redirect) {
           if (value.role === 'manager' || value.role === 'reseller') {
             locationChange(`/menus/management/${id}`);
