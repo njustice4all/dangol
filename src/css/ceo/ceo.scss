@@ -715,7 +715,7 @@ input {
   // border-radius: 10px;
   .product-header {
     display: flex;
-    padding: 19px;
+    padding: 10px;
     background: $color-theme;
     margin-bottom: 5px;
     // border-top-left-radius: 10px;
@@ -880,7 +880,8 @@ input {
     background-color: #f3f3f3;
     padding: 8px;
     color: $color-font-default;
-    max-height: 275px;
+    max-height: 210px;
+    // max-height: 275px;
     overflow-y: scroll;
     .options {
       margin: 5px 0;

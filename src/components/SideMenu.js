@@ -36,9 +36,9 @@ class SideMenu extends Component {
   onFranchiseModify = () => {
     window.postMessage(
       JSON.stringify({
-        type: 'link/OPEN_EXTERNAL_LINK',
+        type: 'redux/action',
         payload: {
-          uri: 'http://192.168.10.53:3001/franchise/setShop/1',
+          type: 'ceo/NAVIGATE_TO_SHOP',
         },
       }),
       '*'
@@ -94,7 +94,7 @@ class SideMenu extends Component {
                   <div className="content-wrapper">
                     {/*<div className="title" onClick={this.onFranchiseModify}>*/}
                     {role === 'ceo' ? (
-                      <div className="title" onClick={this._onPress('/ceo/shop')}>
+                      <div className="title" onClick={this.onFranchiseModify}>
                         업소 정보 수정
                       </div>
                     ) : null}

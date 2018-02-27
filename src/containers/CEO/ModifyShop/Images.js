@@ -40,7 +40,7 @@ class AddImageButton extends Component {
   }
 }
 
-const ShopImage = ({ preview, image, deleteImageByIndex, index, siteId }) => {
+const ShopImage = ({ preview, image, deleteImageByIndex, index, siteId, session }) => {
   if (preview) {
     return (
       <div className="images" style={{ verticalAlign: 'top' }}>
@@ -57,7 +57,10 @@ const ShopImage = ({ preview, image, deleteImageByIndex, index, siteId }) => {
       <span className="btn-delete" onClick={deleteImageByIndex(index)}>
         <img src="/img/icon06.png" alt="" />
       </span>
-      <img src={`${ATY_URI}/aty_image_view.php?siteId=${siteId}&iID=${image}&thumb=1`} alt="" />
+      <img
+        src={`${ATY_URI}/aty_image_view.php?siteId=${siteId}&iID=${image}&sessId=${session}&thumb=1`}
+        alt=""
+      />
     </div>
   );
 };
@@ -72,6 +75,7 @@ class Images extends Component {
       deleteImageByIndex,
       userId,
       siteId,
+      session,
     } = this.props;
 
     return (
@@ -88,6 +92,7 @@ class Images extends Component {
               index={index}
               deleteImageByIndex={deleteImageByIndex}
               siteId={siteId}
+              session={session}
             />
           ))}
           {preview.size > 0
@@ -98,6 +103,7 @@ class Images extends Component {
                   index={index}
                   deleteImageByIndex={deleteImageByIndex}
                   siteId={siteId}
+                  session={session}
                   preview
                 />
               ))
@@ -111,4 +117,5 @@ class Images extends Component {
 export default connect(state => ({
   userId: state.getIn(['auth', 'siteUserId']),
   siteId: state.getIn(['auth', 'siteId']),
+  session: state.getIn(['auth', 'session']),
 }))(Images);

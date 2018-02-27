@@ -206,7 +206,7 @@ class ProductInputModal extends Component {
 
   render() {
     const { preview, productDetail } = this.state;
-    const { togglePopup, isNew, idx, siteId, userId } = this.props;
+    const { togglePopup, isNew, idx, siteId, userId, session } = this.props;
 
     const info = productDetail && productDetail.get('info');
     const sellInfo = productDetail && productDetail.get('sellinfo');
@@ -243,6 +243,7 @@ class ProductInputModal extends Component {
                       index={i}
                       deleteImageByIndex={this.deleteImageByIndex}
                       siteId={siteId}
+                      session={session}
                     />
                   ))
                 : null}

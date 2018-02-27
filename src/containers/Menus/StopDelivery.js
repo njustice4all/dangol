@@ -24,6 +24,11 @@ class StopDelivery extends Component {
       lists: ['deliveryStopFlag', 'deliveryStopStart', 'deliveryStopEnd'],
     });
 
+    /**
+     * set pause order에서 바꾼값으로 state를 변경하기때문에
+     * get pause order에서 얻어온값이 현재 state와 같다
+     * componentWillReceiveProps가 실행이 안되기 때문에 did mount에서 state변경함
+     */
     this.setState(prevState => ({
       isStop: delivery.get('isStop'),
       time: {

@@ -11,6 +11,7 @@ const StateRecord = Record({
   siteUserId: '',
   role: 'ceo',
   first: '1',
+  topic: '',
   coords: new Map({
     lat: '',
     lng: '',
@@ -34,6 +35,24 @@ const getInfo = (state, action) => {
       .set('id', action.user.id)
       .set('siteName', action.info.siteName)
       .set('siteUserId', action.info.siteUserId)
+      .set('topic', action.info.topic)
+      .set('isFetching', false)
+      .setIn(['status', 'login'], true)
+  );
+};
+
+const setAuthFromMobile = (state, action) => {
+  return state.withMutations(mutator =>
+    mutator
+      .set('secret', action.payload.secret)
+      .set('role', action.payload.role)
+      .set('first', action.payload.first)
+      .set('session', action.payload.sessId)
+      .set('siteId', action.payload.siteId)
+      // .set('id', action.user.id)
+      .set('siteName', action.payload.siteName)
+      .set('siteUserId', action.payload.siteUserId)
+      .set('topic', action.payload.topic)
       .set('isFetching', false)
       .setIn(['status', 'login'], true)
   );
@@ -68,6 +87,8 @@ export const auth = (state = new StateRecord(), action) => {
     case 'auth/AUTO_LOGIN':
       console.log('need auto login');
       return state;
+    case 'auth/SET_AUTH_FROM_MOBILE':
+      return setAuthFromMobile(state, action);
     default:
       return state;
   }

@@ -27,11 +27,11 @@ class App extends Component {
 
     document.addEventListener('message', this.onMessage);
     // FIXME: autologin logic here
-    initSignin({ id: 'tiba', pw: 'test1234' }).then(value => {
-      // if (value.redirect) {
-      //   locationChange('/menus/admin');
-      // }
-    });
+    // initSignin({ id: 'tiba', pw: 'test1234' }).then(value => {
+    //   // if (value.redirect) {
+    //   //   locationChange('/menus/admin');
+    //   // }
+    // });
   };
 
   componentWillUnmount = () => {
@@ -61,10 +61,15 @@ class App extends Component {
     const routes = getClassNameByRoutes(router.location, status);
     const pathname = router.location.pathname;
 
+    const hideHeader =
+      pathname === '/ceo/shop' ||
+      pathname === '/ceo/products' ||
+      pathname.split('/').includes('terms');
+
     return (
       <PopupController>
         <div className={routes.classname}>
-          <Header customProps={routes} />
+          {hideHeader ? null : <Header customProps={routes} />}
           {sideMenu ? (
             <div id="sidemenu-overlay" onClick={() => this.props.closePopup('sideMenu')} />
           ) : null}
