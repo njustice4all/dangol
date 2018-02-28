@@ -20,7 +20,7 @@ class Signin extends Component {
     const pw = this.pw.value;
 
     try {
-      initSignin({ id: 'tiba', pw: 'test1234', autoLogin }).then(value => {
+      initSignin({ id, pw, autoLogin }).then(value => {
         if (value.redirect) {
           if (value.role === 'manager' || value.role === 'reseller') {
             locationChange(`/menus/management/${id}`);
@@ -54,9 +54,9 @@ class Signin extends Component {
             textAlign: 'right',
             paddingRight: '20px',
           }}>
-          {/*<label>
+          <label>
             자동 로그인 <input type="checkbox" checked={autoLogin} onChange={this.handleCheck} />
-          </label>*/}
+          </label>
         </span>
         <div className="btn-wrapper">
           <div className="btn big" onClick={this.onLoginButtonPress}>

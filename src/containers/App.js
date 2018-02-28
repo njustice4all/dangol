@@ -32,17 +32,24 @@ class App extends Component {
     //   //   locationChange('/menus/admin');
     //   // }
     // });
+    try {
+      const user = JSON.parse(localStorage.getItem('user'));
+      if (user) {
+        initSignin({ id: user.id, pw: user.pw, autoLogin: user.autoLogin });
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  componentWillReceiveProps = nextProps => {
+    // console.log('app', nextProps);
   };
 
   componentWillUnmount = () => {
     document.removeEventListener('message', this.onMessage);
   };
 
-  /**
-   * TODO: 모바일앱에서 local message받으면 postmessage가 push/RECEIVE_MESSAGE 이런 형태로 구현해야함
-   * 그럼 fromMobile(msg.payload)로 액션 발생하고
-   * reducer에서 해당 메세지 받으면... 아마도 ui가 팝업 되어야 함
-   */
   onMessage = event => {
     const {
       locationChange,
@@ -129,7 +136,6 @@ export default withRouter(
       router: state.get('router'),
       sideMenu: state.getIn(['ui', 'sideMenu']),
       status: state.getIn(['order', 'detail', 'orderDetail', 'state']),
-      // status: state.getIn(['order', 'detail', 'order', 'status']),
       session: state.getIn(['auth', 'session']),
       siteId: state.getIn(['auth', 'siteId']),
       auth: state.get('auth'),

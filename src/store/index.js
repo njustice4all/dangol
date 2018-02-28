@@ -28,13 +28,17 @@ const reduxRouterMiddleware = routerMiddleware(history);
 
 // action to mobile app
 const watchWebActions = store => next => action => {
-  window.postMessage(
-    JSON.stringify({
-      type: 'redux/action',
-      payload: action,
-    }),
-    '*'
-  );
+  // TODO: 마음에안듬...
+  // sign success만 delay줄것인가? 아니면 다른 해결책이 있나
+  setTimeout(() => {
+    window.postMessage(
+      JSON.stringify({
+        type: 'redux/action',
+        payload: action,
+      }),
+      '*'
+    );
+  }, 300);
   return next(action);
 };
 

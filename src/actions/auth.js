@@ -44,6 +44,11 @@ export const initSignin = user => async dispatch => {
     // user.autoLogin 경우 result.session저장?
     dispatch(reqSigninSuccess({ ...result }, user));
     dispatch(initGetCoords(info));
+    if (user.autoLogin) {
+      console.log('id/pw 저장', user);
+      localStorage.setItem('user', JSON.stringify(user));
+    }
+
     if (result.first === '1') {
       return { redirect: true, role: result.role };
     }
