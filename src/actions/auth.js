@@ -40,6 +40,8 @@ export const initSignin = user => async dispatch => {
     dispatch(reqSigninError(errors));
     return { redirect: false };
   } else {
+    // TODO:
+    // user.autoLogin 경우 result.session저장?
     dispatch(reqSigninSuccess({ ...result }, user));
     dispatch(initGetCoords(info));
     if (result.first === '1') {

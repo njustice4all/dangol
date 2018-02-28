@@ -41,6 +41,16 @@ class AddImageButton extends Component {
 }
 
 const ShopImage = ({ preview, image, deleteImageByIndex, index, siteId, session }) => {
+  const src =
+    ATY_URI +
+    '/aty_image_view.php?siteId=' +
+    siteId +
+    '&sessId=' +
+    session +
+    '&iID=' +
+    image +
+    '&thumb=1';
+
   if (preview) {
     return (
       <div className="images" style={{ verticalAlign: 'top' }}>
@@ -57,10 +67,7 @@ const ShopImage = ({ preview, image, deleteImageByIndex, index, siteId, session 
       <span className="btn-delete" onClick={deleteImageByIndex(index)}>
         <img src="/img/icon06.png" alt="" />
       </span>
-      <img
-        src={`${ATY_URI}/aty_image_view.php?siteId=${siteId}&iID=${image}&sessId=${session}&thumb=1`}
-        alt=""
-      />
+      <img src={src} alt="" />
     </div>
   );
 };

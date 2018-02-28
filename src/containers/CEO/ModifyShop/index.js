@@ -49,8 +49,19 @@ class ModifyShop extends Component {
   };
 
   componentDidMount = () => {
-    const { initGetShopInfo, session, siteId } = this.props;
-    if (session) {
+    let { initGetShopInfo, session, siteId } = this.props;
+    const params = new URLSearchParams(this.props.location.search);
+
+    if (params.get('siteId')) {
+      siteId = params.get('siteId');
+      this.props.setRequired({
+        siteId: params.get('siteId'),
+        userId: params.get('userId'),
+        session: params.get('session'),
+      });
+    }
+
+    if (session || params.get('siteId')) {
       initGetShopInfo({ session, siteId }).then(shop => {
         this.setState(prevState => ({
           images: fromJS(shop.mainImage[0] === '' ? [] : shop.mainImage),
@@ -241,7 +252,7 @@ class ModifyShop extends Component {
       preview,
       openDay,
     } = this.state;
-    const { navigateTo } = this.props;
+    const { navigateTo, auth } = this.props;
 
     return (
       <div className="ceo">
@@ -313,5 +324,6 @@ export default connect(
     navigateTo: route => () => dispatch(push(route)),
     initUploadImage: payload => dispatch(initUploadImage(payload)),
     initSetShop: payload => dispatch(initSetShop(payload)),
+    setRequired: payload => dispatch({ type: 'auth/SET_REQUIRED', payload }),
   })
 )(ModifyShop);

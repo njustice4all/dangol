@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { push } from 'react-router-redux';
 
 import { initSignin } from '../actions/auth';
-import { closePopup } from '../actions/ui';
+import { closePopup, openPopup } from '../actions/ui';
 
 import { Header, SideMenu } from '../components';
 import PopupController from './PopupController';
@@ -44,13 +44,21 @@ class App extends Component {
    * reducer에서 해당 메세지 받으면... 아마도 ui가 팝업 되어야 함
    */
   onMessage = event => {
-    const { locationChange, fromMobile, session, siteId, initFetchOrderLists } = this.props;
+    const {
+      locationChange,
+      fromMobile,
+      session,
+      siteId,
+      initFetchOrderLists,
+      openPopup,
+    } = this.props;
     const msg = JSON.parse(event.data);
 
     if (msg.type === '@@router/LOCATION_CHANGE') {
       locationChange(msg.payload.route);
     } else if (msg.type === 'firebase/MESSAGE_RECEIVED') {
       initFetchOrderLists({ session, siteId });
+      openPopup('newOrder');
     } else {
       fromMobile(msg.payload);
     }
@@ -128,6 +136,7 @@ export default withRouter(
     }),
     dispatch => ({
       closePopup: ui => dispatch(closePopup(ui)),
+      openPopup: ui => dispatch(openPopup(ui)),
       locationChange: pathname => dispatch(push(pathname)),
       fromMobile: action => dispatch(action),
       initSignin: user => dispatch(initSignin(user)),

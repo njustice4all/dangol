@@ -89,6 +89,11 @@ export const auth = (state = new StateRecord(), action) => {
       return state;
     case 'auth/SET_AUTH_FROM_MOBILE':
       return setAuthFromMobile(state, action);
+    case 'auth/SET_REQUIRED':
+      return state
+        .set('siteId', action.payload.siteId)
+        .set('siteUserId', action.payload.userId)
+        .set('session', action.payload.session);
     default:
       return state;
   }

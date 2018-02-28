@@ -10,6 +10,7 @@ const StateRecord = Record({
   sideMenu: false, // 사이드메뉴
   isPop: false, // 팝업 오픈시 true
   deleteUser: false,
+  newOrder: false,
   payload: '',
 });
 
