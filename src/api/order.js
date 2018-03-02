@@ -36,10 +36,36 @@ const DATA = {
   },
   order: {
     name: 'order_date',
-    sort: '0',
+    sort: '1',
   },
-  limit: 20,
+  limit: 10,
   page: 1,
+};
+
+/**
+ * 주문 더 불러오기
+ */
+export const apiFetchOrderMore = payload => {
+  const newData = {
+    ...DATA,
+    siteId: payload.siteId,
+    page: payload.page,
+    search: { ...DATA.search, orderState: payload.type },
+  };
+
+  return new Promise((resolve, reject) => {
+    $.ajax({
+      type: 'POST',
+      url: ATY_URI + '/aty_convert_order.php',
+      data: newData,
+      success: result => {
+        resolve(result);
+      },
+      error: () => {
+        reject(new Error());
+      },
+    });
+  });
 };
 
 /**
@@ -51,7 +77,11 @@ export const apiGetOrderLists = payload => {
   //   headers,
   //   body: Converter.getFormData(data),
   // });
-  const newData = { ...DATA, siteId: payload.siteId };
+  const newData = {
+    ...DATA,
+    siteId: payload.siteId,
+    search: { ...DATA.search, orderState: 'payDone' },
+  };
 
   return new Promise((resolve, reject) => {
     $.ajax({

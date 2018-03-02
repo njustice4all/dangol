@@ -44,7 +44,7 @@ class OrderDetail extends Component {
     }
 
     return (
-      <div className="body">
+      <div className="body" style={{ height: 'calc(100% - 114px)', overflow: 'scroll' }}>
         <Order detail={detail} />
         <Customer detail={detail} shopCoords={shopCoords} />
         <Products detail={detail} />

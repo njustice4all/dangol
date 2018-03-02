@@ -7,7 +7,10 @@ export const apiReqLogin = user => {
     $.ajax({
       type: 'POST',
       url: LOGIN,
-      data: user,
+      data: {
+        id: user.id,
+        pw: user.pw,
+      },
       success: result => {
         resolve(result);
       },

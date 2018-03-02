@@ -19,15 +19,37 @@ const StateRecord = Record({
     error: false,
     msg: '',
   }),
+  orderListsObj: {
+    maxPage: '',
+    currentPage: '',
+  },
+  processListsObj: {
+    maxPage: '',
+    currentPage: '',
+  },
+  doneListsObj: {
+    maxPage: '',
+    currentPage: '',
+  },
 });
 
 const getNewLists = (state, action) => {
-  return state.withMutations(s => s.set('isFetching', false).set('lists', fromJS(action.lists)));
+  const pages = fromJS(action.pages);
+  return state.withMutations(mutator =>
+    mutator
+      .set('isFetching', false)
+      .set('lists', fromJS(action.lists))
+      .set('orderListsObj', pages)
+  );
 };
 
 const getProcessLists = (state, action) => {
+  const pages = fromJS(action.pages);
   return state.withMutations(mutator =>
-    mutator.set('isFetching', false).set('processLists', fromJS(action.payload))
+    mutator
+      .set('isFetching', false)
+      .set('processLists', fromJS(action.payload))
+      .set('processListsObj', pages)
   );
 };
 
@@ -45,8 +67,12 @@ const _setStatus = (state, action) => {
 };
 
 const getDoneLists = (state, action) => {
-  return state.withMutations(s =>
-    s.set('isFetching', false).set('doneLists', fromJS(action.payload))
+  const pages = fromJS(action.pages);
+  return state.withMutations(mutator =>
+    mutator
+      .set('isFetching', false)
+      .set('doneLists', fromJS(action.payload))
+      .set('doneListsObj', pages)
   );
 };
 
@@ -64,6 +90,30 @@ const setCoords = (state, action) => {
   return state.withMutations(mutator => mutator.set('coords', coords).set('isFetching', false));
 };
 
+const fetchOrderMore = (state, action) => {
+  const pages = fromJS(action.pages);
+  const more = fromJS(action.payload.lists);
+
+  if (action.payload.type === 'complete') {
+    // 주문완료
+    return state.withMutations(mutator =>
+      mutator.update('doneLists', doneLists => doneLists.push(...more)).set('doneListsObj', pages)
+    );
+  } else if (action.payload.type === 'payDone') {
+    // 주문대기
+    return state.withMutations(mutator =>
+      mutator.update('lists', orderLists => orderLists.push(...more)).set('orderListsObj', pages)
+    );
+  } else {
+    // 진행중
+    return state.withMutations(mutator =>
+      mutator
+        .update('processLists', processLists => processLists.push(...more))
+        .set('processListsObj', pages)
+    );
+  }
+};
+
 export const order = (state = new StateRecord(), action) => {
   switch (action.type) {
     case 'order/FETCH_ORDER_LISTS':
@@ -74,6 +124,7 @@ export const order = (state = new StateRecord(), action) => {
     case 'order/SET_ORDER_COMPLETE':
     case 'order/SET_DELIVERY_PROCESS':
     case 'order/GET_COORDS':
+    case 'order/GET_ORDER_MORE':
       return state.set('isFetching', true);
 
     case 'order/FETCH_ORDER_LISTS_SUCCESS':
@@ -100,6 +151,9 @@ export const order = (state = new StateRecord(), action) => {
     case 'order/SET_DELIVERY_PROCESS_SUCCESS':
       return state;
 
+    case 'order/GET_ORDER_MORE_SUCCESS':
+      return fetchOrderMore(state, action);
+
     case 'order/FETCH_ORDER_LISTS_ERROR':
     case 'order/FETCH_ORDER_DETAIL_ERROR':
     case 'order/FETCH_PROCESS_DONE_ERROR':
@@ -108,6 +162,7 @@ export const order = (state = new StateRecord(), action) => {
     case 'order/SET_ORDER_COMPLETE_ERROR':
     case 'order/SET_DELIVERY_PROCESS_ERROR':
     case 'order/GET_COORDS_ERROR':
+    case 'order/GET_ORDER_MORE_ERROR':
       return errorOnFetching(state, action);
 
     case 'order/SET_STATUS':

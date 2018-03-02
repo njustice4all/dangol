@@ -24,50 +24,46 @@ class Convert {
 
     if (payDone) {
       const newLists = lists.filter(list => list.product[0].state === 'payDone');
-      return newLists
-        .map(list => {
-          if (list.od_b_addr1) {
-            // TODO:
-            // const coords = new Promise(resolve => resolve(getCoords(list.od_b_addr1)));
-            // coords.then(value => console.log(value));
-          }
+      return newLists.map(list => {
+        if (list.od_b_addr1) {
+          // TODO:
+          // const coords = new Promise(resolve => resolve(getCoords(list.od_b_addr1)));
+          // coords.then(value => console.log(value));
+        }
 
-          return {
-            no: list.order_no,
-            date: list.order_date,
-            type: list.sub_state,
-            address: `${list.od_b_addr1}, ${list.od_b_addr2}`,
-            distance: '',
-            takeTime: '',
-            coords: {
-              lat: null,
-              lng: null,
-            },
-            request: list.od_b_message,
-            tableNo: list.table_idx,
-            data: { ...list },
-          };
-        })
-        .reverse();
+        return {
+          no: list.order_no,
+          date: list.order_date,
+          type: list.sub_state,
+          address: `${list.od_b_addr1}, ${list.od_b_addr2}`,
+          distance: '',
+          takeTime: '',
+          coords: {
+            lat: null,
+            lng: null,
+          },
+          request: list.od_b_message,
+          tableNo: list.table_idx,
+          data: { ...list },
+        };
+      });
     }
 
-    return lists
-      .map(list => ({
-        no: list.order_no,
-        date: list.order_date,
-        type: list.sub_state,
-        address: `${list.od_b_addr1}, ${list.od_b_addr2}`,
-        distance: '',
-        takeTime: '',
-        coords: {
-          lat: null,
-          lng: null,
-        },
-        request: list.od_b_message,
-        tableNo: list.table_idx,
-        data: { ...list },
-      }))
-      .reverse();
+    return lists.map(list => ({
+      no: list.order_no,
+      date: list.order_date,
+      type: list.sub_state,
+      address: `${list.od_b_addr1}, ${list.od_b_addr2}`,
+      distance: '',
+      takeTime: '',
+      coords: {
+        lat: null,
+        lng: null,
+      },
+      request: list.od_b_message,
+      tableNo: list.table_idx,
+      data: { ...list },
+    }));
   };
 
   getDetail = payload => {

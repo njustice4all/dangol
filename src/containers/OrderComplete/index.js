@@ -4,7 +4,7 @@ import { push } from 'react-router-redux';
 
 import { ItemDelivery, ItemTable, ItemPackage } from '../../components';
 
-import { initFetchProcessDone } from '../../actions/order';
+import { initFetchProcessDone, fetchOrderMore } from '../../actions/order';
 
 class OrderComplete extends Component {
   componentDidMount = () => {
@@ -27,12 +27,34 @@ class OrderComplete extends Component {
     this.props.locationChange(`/order/complete/${no}`);
   };
 
+  _onScroll = () => {
+    const { fetchOrderMore, siteId, order } = this.props;
+    const endPosition = this.scroll.scrollHeight - this.scroll.clientHeight;
+
+    const type = ['deliveryDone', 'cancelDonePay'];
+
+    const currentPage = order.getIn(['doneListsObj', 'currentPage']);
+    const maxPage = order.getIn(['doneListsObj', 'maxPage']);
+
+    if (currentPage === maxPage) {
+      return;
+    }
+
+    if (endPosition === this.scroll.scrollTop) {
+      fetchOrderMore({ siteId, type, page: currentPage + 1 });
+    }
+  };
+
   render() {
     const { doneLists, coords, router, order } = this.props;
     const pathname = router.location.pathname.split('/order/')[1];
 
     return (
-      <div className="body">
+      <div
+        className="body"
+        style={{ height: 'calc(100% - 96px)', overflow: 'scroll' }}
+        onScroll={this._onScroll}
+        ref={scroll => (this.scroll = scroll)}>
         {/*<div className="bodyHeader">2018-02-07</div>*/}
         <ul className="list-items">
           {doneLists.map((order, index) => {
@@ -87,5 +109,6 @@ export default connect(
   dispatch => ({
     initFetchProcessDone: payload => dispatch(initFetchProcessDone(payload)),
     locationChange: pathname => dispatch(push(pathname)),
+    fetchOrderMore: payload => dispatch(fetchOrderMore(payload)),
   })
 )(OrderComplete);

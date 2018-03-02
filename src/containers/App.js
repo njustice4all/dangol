@@ -23,27 +23,26 @@ import getClassNameByRoutes from '../utils/getClassNameByRoutes';
 
 class App extends Component {
   componentDidMount = () => {
+    document.addEventListener('message', this.onMessage);
+
     const { locationChange, initSignin } = this.props;
 
-    document.addEventListener('message', this.onMessage);
-    // FIXME: autologin logic here
-    // initSignin({ id: 'tiba', pw: 'test1234' }).then(value => {
-    //   // if (value.redirect) {
-    //   //   locationChange('/menus/admin');
-    //   // }
-    // });
     try {
       const user = JSON.parse(localStorage.getItem('user'));
       if (user) {
-        initSignin({ id: user.id, pw: user.pw, autoLogin: user.autoLogin });
+        initSignin({ id: user.id, pw: user.pw, autoLogin: user.autoLogin }).then(value => {
+          if (value.redirect) {
+            if (value.role === 'manager' || value.role === 'reseller') {
+              locationChange(`/menus/management/${id}`);
+            } else {
+              locationChange('/menus/admin');
+            }
+          }
+        });
       }
     } catch (error) {
       console.error(error);
     }
-  };
-
-  componentWillReceiveProps = nextProps => {
-    // console.log('app', nextProps);
   };
 
   componentWillUnmount = () => {
@@ -83,7 +82,7 @@ class App extends Component {
 
     return (
       <PopupController>
-        <div className={routes.classname}>
+        <div className={routes.classname} style={{ height: '100%' }}>
           {hideHeader ? null : <Header customProps={routes} />}
           {sideMenu ? (
             <div id="sidemenu-overlay" onClick={() => this.props.closePopup('sideMenu')} />

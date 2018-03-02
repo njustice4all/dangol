@@ -36,22 +36,24 @@ export const initSignin = user => async dispatch => {
   const response = await apiReqLogin(user);
   const result = JSON.parse(response);
 
-  if (result.msg !== 'ok') {
-    dispatch(reqSigninError(errors));
-    return { redirect: false };
-  } else {
-    // TODO:
-    // user.autoLogin 경우 result.session저장?
-    dispatch(reqSigninSuccess({ ...result }, user));
-    dispatch(initGetCoords(info));
-    if (user.autoLogin) {
-      console.log('id/pw 저장', user);
-      localStorage.setItem('user', JSON.stringify(user));
-    }
+  try {
+    if (result.msg !== 'ok') {
+      dispatch(reqSigninError(errors));
+      return { redirect: false };
+    } else {
+      dispatch(reqSigninSuccess({ ...result }, user));
+      dispatch(initGetCoords(info));
 
-    if (result.first === '1') {
-      return { redirect: true, role: result.role };
+      if (user.autoLogin) {
+        localStorage.setItem('user', JSON.stringify(user));
+      }
+
+      if (result.first === '1') {
+        return { redirect: true, role: result.role };
+      }
+      return { redirect: false };
     }
-    return { redirect: false };
+  } catch (error) {
+    console.error(error);
   }
 };

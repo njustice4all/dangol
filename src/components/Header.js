@@ -99,8 +99,15 @@ class Header extends Component<Props> {
   };
 
   _goBack = () => {
-    // this.props.history.goBack();
-    this.props.locationChange('/order/reception');
+    const { router: { location: { pathname } }, locationChange, history: { goBack } } = this.props;
+    if (pathname.split('/').includes('management')) {
+      goBack();
+      return;
+    }
+
+    goBack();
+
+    // locationChange('/order/reception');
   };
 
   openSideMenu = () => {
@@ -149,7 +156,6 @@ export default withRouter(
       router: state.get('router'),
       order: state.getIn(['order', 'detail', 'order']),
       status: state.getIn(['order', 'detail', 'orderDetail', 'state']),
-      // status: state.getIn(['order', 'detail', 'order', 'status']),
       detail: state.getIn(['order', 'detail']),
       first: state.getIn(['auth', 'first']),
     }),

@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { push } from 'react-router-redux';
 
-import { initFetchOrderLists } from '../../actions/order';
+import { initFetchOrderLists, fetchOrderMore } from '../../actions/order';
 
 import { ItemDelivery, ItemTable, ItemPackage } from '../../components';
 
@@ -27,12 +27,34 @@ class OrderReception extends Component {
     this.props.locationChange(`/order/reception/${no}`);
   };
 
+  _onScroll = () => {
+    const { fetchOrderMore, siteId, order } = this.props;
+    const endPosition = this.scroll.scrollHeight - this.scroll.clientHeight;
+
+    const type = 'payDone';
+
+    const currentPage = order.getIn(['orderListsObj', 'currentPage']);
+    const maxPage = order.getIn(['orderListsObj', 'maxPage']);
+
+    if (currentPage === maxPage) {
+      return;
+    }
+
+    if (endPosition === this.scroll.scrollTop) {
+      fetchOrderMore({ siteId, type, page: currentPage + 1 });
+    }
+  };
+
   render() {
     const { order, coords, router } = this.props;
     const pathname = router.location.pathname.split('/order/')[1];
 
     return (
-      <div className="body">
+      <div
+        className="body"
+        style={{ height: 'calc(100% - 96px)', overflow: 'scroll' }}
+        onScroll={this._onScroll}
+        ref={scroll => (this.scroll = scroll)}>
         {/*<div className="bodyHeader">2018-02-07</div>*/}
         <ul className="list-items">
           {order.get('lists').map((order, index) => {
@@ -83,5 +105,6 @@ export default connect(
   dispatch => ({
     initFetchOrderLists: payload => dispatch(initFetchOrderLists(payload)),
     locationChange: pathname => dispatch(push(pathname)),
+    fetchOrderMore: payload => dispatch(fetchOrderMore(payload)),
   })
 )(OrderReception);

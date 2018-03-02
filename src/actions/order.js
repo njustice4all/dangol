@@ -7,6 +7,7 @@ import {
   apiSetOrderComplete,
   apiSetDeliveryProcess,
   apiSetOrderCancel,
+  apiFetchOrderMore,
 } from '../api/order';
 import apiGetCoords from '../api/coords';
 import Converter from '../utils/Converter';
@@ -27,7 +28,11 @@ export const setStatus = payloads => ({
  * 주문접수 목록 가져옴
  */
 const fetchOrderLists = () => ({ type: 'order/FETCH_ORDER_LISTS' });
-const fetchOrderListsSuccess = lists => ({ type: 'order/FETCH_ORDER_LISTS_SUCCESS', lists });
+const fetchOrderListsSuccess = (lists, pages) => ({
+  type: 'order/FETCH_ORDER_LISTS_SUCCESS',
+  lists,
+  pages,
+});
 const fetchOrderListsError = errors => ({ type: 'order/FETCH_ORDER_LISTS_ERROR', errors });
 
 export const initFetchOrderLists = payload => async dispatch => {
@@ -39,7 +44,12 @@ export const initFetchOrderLists = payload => async dispatch => {
     if (!response) {
       dispatch(fetchOrderListsError(error));
     } else {
-      dispatch(fetchOrderListsSuccess(Converter.listsToState(response.list, 'payDone')));
+      dispatch(
+        fetchOrderListsSuccess(Converter.listsToState(response.list, 'payDone'), {
+          currentPage: parseInt(response.curPage, 10),
+          maxPage: response.maxPage,
+        })
+      );
     }
   } catch (error) {
     console.error(error);
@@ -73,9 +83,10 @@ export const initFetchOrderDetail = payload => async dispatch => {
  * 주문 처리중 목록
  */
 const fetchOrderProcess = () => ({ type: 'order/FETCH_ORDER_PROCESS' });
-const fetchOrderProcessSuccess = payload => ({
+const fetchOrderProcessSuccess = (payload, pages) => ({
   type: 'order/FETCH_ORDER_PROCESS_SUCCESS',
   payload,
+  pages,
 });
 const fetchOrderProcessError = error => ({ type: 'order/FETCH_ORDER_PROCESS_ERROR', error });
 
@@ -88,7 +99,12 @@ export const initFetchOrderProcess = payload => async dispatch => {
     if (!response) {
       dispatch(fetchOrderProcessError(error));
     } else {
-      dispatch(fetchOrderProcessSuccess(Converter.listsToState(response.list)));
+      dispatch(
+        fetchOrderProcessSuccess(Converter.listsToState(response.list), {
+          currentPage: parseInt(response.curPage, 10),
+          maxPage: response.maxPage,
+        })
+      );
     }
   } catch (error) {
     console.error(error);
@@ -122,7 +138,11 @@ export const initSetOrderProcess = payload => async dispatch => {
  * 주문 처리 완료 목록
  */
 const fetchProcessDone = () => ({ type: 'order/FETCH_PROCESS_DONE' });
-const fetchProcessDoneSuccess = payload => ({ type: 'order/FETCH_PROCESS_DONE_SUCCESS', payload });
+const fetchProcessDoneSuccess = (payload, pages) => ({
+  type: 'order/FETCH_PROCESS_DONE_SUCCESS',
+  payload,
+  pages,
+});
 const fetchProcessDoneError = errors => ({ type: 'order/FETCH_PROCESS_DONE_ERROR', errors });
 
 export const initFetchProcessDone = payload => async dispatch => {
@@ -134,7 +154,12 @@ export const initFetchProcessDone = payload => async dispatch => {
     if (!response) {
       dispatch(fetchProcessDoneError(error));
     } else {
-      dispatch(fetchProcessDoneSuccess(Converter.listsToState(response.list)));
+      dispatch(
+        fetchProcessDoneSuccess(Converter.listsToState(response.list), {
+          currentPage: parseInt(response.curPage, 10),
+          maxPage: response.maxPage,
+        })
+      );
     }
   } catch (error) {
     console.error(error);
@@ -235,5 +260,43 @@ export const initGetCoords = info => async dispatch => {
     }
   } catch (error) {
     dispatch(getCoordsError(error));
+  }
+};
+
+/**
+ * 주문 더 불러오기
+ */
+const getOrderMore = () => ({ type: 'order/GET_ORDER_MORE' });
+const getOrderMoreSuccess = (payload, pages) => ({
+  type: 'order/GET_ORDER_MORE_SUCCESS',
+  payload,
+  pages,
+});
+const getOrderMoreError = error => ({ type: 'order/GET_ORDER_MORE_ERROR', error });
+
+export const fetchOrderMore = payload => async dispatch => {
+  dispatch(getOrderMore());
+
+  const response = await apiFetchOrderMore(payload);
+
+  try {
+    if (!response) {
+      dispatch(getOrderMoreError({ error: true }));
+    } else {
+      dispatch(
+        getOrderMoreSuccess(
+          {
+            lists: Converter.listsToState(response.list),
+            type: payload.type,
+          },
+          {
+            currentPage: parseInt(response.curPage, 10),
+            maxPage: response.maxPage,
+          }
+        )
+      );
+    }
+  } catch (error) {
+    console.error(error);
   }
 };
