@@ -12,10 +12,11 @@ import ButtonFooter from './ButtonFooter';
 import { Loading } from '../../components';
 
 import getCoords from '../../utils/getCoords';
+import getPayment from '../../utils/getPayment';
 
 class OrderDetail extends Component {
   componentDidMount = () => {
-    const { initFetchOrderDetail, lists, match, session, siteId } = this.props;
+    const { initFetchOrderDetail, match, session, siteId } = this.props;
     const no = match.params.no;
 
     initFetchOrderDetail({ session, siteId, no });
@@ -37,18 +38,38 @@ class OrderDetail extends Component {
   };
 
   render() {
-    const { detail, shopCoords, isComplete, isProgress, isFetching } = this.props;
+    const {
+      detail,
+      shopCoords,
+      isComplete,
+      isProgress,
+      isFetching,
+      processLists,
+      pathname,
+    } = this.props;
+
+    const no = detail.getIn(['order', 'order_no']);
+    const type = getPayment(processLists, no);
+    let donePayment = false;
+
+    if (type === 'mobile' && isProgress) {
+      donePayment = true;
+    }
 
     if (isFetching) {
       return <Loading />;
     }
 
+    const isReception = pathname.split('/').includes('reception');
+
     return (
-      <div className="body" style={{ height: 'calc(100% - 114px)', overflow: 'scroll' }}>
+      <div
+        className="body"
+        style={{ height: `calc(100% - ${isReception ? '114' : '125'}px)`, overflow: 'scroll' }}>
         <Order detail={detail} />
         <Customer detail={detail} shopCoords={shopCoords} />
         <Products detail={detail} />
-        <ButtonFooter isComplete={isComplete} isProgress={isProgress} />
+        <ButtonFooter isComplete={isComplete} isProgress={isProgress} donePayment={donePayment} />
       </div>
     );
   }
@@ -57,11 +78,13 @@ class OrderDetail extends Component {
 export default connect(
   state => ({
     lists: state.getIn(['order', 'lists']),
+    processLists: state.getIn(['order', 'processLists']),
     detail: state.getIn(['order', 'detail']),
     shopCoords: state.getIn(['auth', 'coords']),
     session: state.getIn(['auth', 'session']),
     siteId: state.getIn(['auth', 'siteId']),
     isFetching: state.getIn(['order', 'isFetching']),
+    pathname: state.get('router').location.pathname,
   }),
   dispatch => ({
     initFetchOrderDetail: payload => dispatch(initFetchOrderDetail(payload)),

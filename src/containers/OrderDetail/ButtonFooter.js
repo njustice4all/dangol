@@ -37,6 +37,19 @@ class ButtonFooter extends Component {
       );
     }
 
+    if (this.props.donePayment) {
+      return (
+        <div className="btn-wrapper">
+          <div
+            className="btn big"
+            style={{ backgroundColor: '#505050' }}
+            onClick={() => console.log('환불 처리완료 팝업')}>
+            환불 처리완료
+          </div>
+        </div>
+      );
+    }
+
     return (
       <div className="btn-wrapper">
         <div className="btn small" onClick={() => this.props.openPopup('reject')}>

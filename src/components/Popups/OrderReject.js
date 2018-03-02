@@ -67,20 +67,28 @@ class OrderReject extends Component {
       const results = [];
       const option = result[0].name;
       let index = null;
+      let payment = null;
 
       if (type === 'reception') {
         index = lists.findIndex(list => list.getIn(['data', 'idx']) === currentIdx + '');
         lists
           .getIn([index, 'data', 'product'])
           .forEach(product => results.push(product.get('idx')));
+        payment = lists.getIn([index, 'data', 'app_btn']);
       } else {
         index = processLists.findIndex(list => list.getIn(['data', 'idx']) === currentIdx + '');
         processLists
           .getIn([index, 'data', 'product'])
           .forEach(product => results.push(product.get('idx')));
+        payment = processLists.getIn([index, 'data', 'app_btn']);
       }
 
-      initSetOrderCancel({ results, sessionId, siteId, orderNo, option });
+      let paid = true;
+      if (payment === 'counter' || payment === 'meetPay') {
+        paid = false;
+      }
+
+      initSetOrderCancel({ results, sessionId, siteId, orderNo, option, paid });
       this.onCancelButtonPress();
       history.push('/order/complete');
     } else {

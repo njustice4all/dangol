@@ -129,7 +129,7 @@ export const apiGetOrderProcess = payload => {
   const newData = {
     ...DATA,
     siteId: payload.siteId,
-    search: { ...DATA.search, orderState: 'deliveryPrepare' },
+    search: { ...DATA.search, orderState: ['deliveryPrepare', 'cancelDoing'] },
   };
 
   return new Promise((resolve, reject) => {
@@ -154,7 +154,7 @@ export const apiGetOrderComplete = payload => {
   const newData = {
     ...DATA,
     siteId: payload.siteId,
-    search: { ...DATA.search, orderState: ['deliveryDone', 'cancelDonePay'] },
+    search: { ...DATA.search, orderState: ['deliveryDone', 'cancelDonePay', 'cancelDoneFree'] },
   };
 
   return new Promise((resolve, reject) => {
@@ -268,6 +268,14 @@ export const apiSetDeliveryProcess = payload => {
  * 주문을 거절함
  */
 export const apiSetOrderCancel = payload => {
+  const protoType = { sub_state: '', state: 'cancelDonePay' };
+  let data = null;
+  if (payload.paid) {
+    data = { ...protoType, state: 'cancelDoing' };
+  } else {
+    data = { ...protoType };
+  }
+
   return new Promise((resolve, reject) => {
     $.ajax({
       type: 'POST',
@@ -277,10 +285,7 @@ export const apiSetOrderCancel = payload => {
         sessId: payload.sessionId,
         keyWord: 'SetOrderListDetail',
         idx: payload.results,
-        data: {
-          state: 'cancelDonePay',
-          sub_state: '',
-        },
+        data,
         orderNo: payload.orderNo,
         option: payload.option,
       },

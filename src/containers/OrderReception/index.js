@@ -65,6 +65,7 @@ class OrderReception extends Component {
                   order={order}
                   key={`order-${index}`}
                   pathname={pathname}
+                  isReception
                 />
               );
             } else if (order.get('type') === 'package') {
@@ -74,6 +75,7 @@ class OrderReception extends Component {
                   order={order}
                   key={`order-${index}`}
                   pathname={pathname}
+                  isReception
                 />
               );
             } else {
@@ -84,6 +86,7 @@ class OrderReception extends Component {
                   key={`order-${index}`}
                   shopCoords={coords}
                   pathname={pathname}
+                  isReception
                 />
               );
             }

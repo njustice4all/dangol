@@ -11,7 +11,7 @@ type route = {
   title: string,
 };
 
-export default (routeObject: routeObject, status: string): route => {
+export default (routeObject: routeObject, status: string, payment: string): route => {
   switch (routeObject.pathname) {
     case '/':
       return { classname: 'order-manage-wrapper login', title: '로그인' };
@@ -73,6 +73,17 @@ export default (routeObject: routeObject, status: string): route => {
         if (routeObject.pathname.split('/order/')[1].split('/')[0] === 'complete') {
           return {
             classname: `orderDetail ${status === 'deliveryDone' ? 'done' : 'done cancel'}`,
+            title: '주문상세',
+            detail: true,
+          };
+        } else if (
+          routeObject.pathname.split('/').includes('progress') &&
+          routeObject.pathname.split('/').length > 3
+        ) {
+          return {
+            classname: `orderDetail ${
+              payment === 'counter' || payment === 'meetPay' ? 'done' : 'done cancel'
+            }`,
             title: '주문상세',
             detail: true,
           };

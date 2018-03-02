@@ -136,6 +136,16 @@ body {
   }
 }
 
+.label.progress.delivery {
+  background-color: #ff9184 !important;
+}
+.label.progress.order {
+  background-color: #55d0fd !important;
+}
+.label.progress.package {
+  background-color: #07e049 !important;
+}
+
 .btn-close {
   width: 25px;
   height: 25px;

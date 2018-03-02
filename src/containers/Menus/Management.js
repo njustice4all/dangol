@@ -31,6 +31,7 @@ class Management extends Component {
     if (secret) {
       initGetManagers({ id, secret });
     }
+    // alert(`secret - ${secret}`);
   };
 
   componentWillReceiveProps = nextProps => {

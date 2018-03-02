@@ -1,4 +1,20 @@
-export default (pathname, status) => {
+// @flow
+import type { Map } from 'immutable';
+
+export default (
+  pathname: string,
+  status: Map<string, any>,
+  isProgress: boolean,
+  payment: string
+): string => {
+  if (isProgress) {
+    if (payment === 'counter' || payment === 'meetPay') {
+      return 'content-wrapper done';
+    } else {
+      return 'content-wrapper done cancel';
+    }
+  }
+
   if (!status) return 'content-wrapper';
 
   // switch (status) {

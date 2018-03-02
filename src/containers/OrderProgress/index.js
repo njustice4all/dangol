@@ -66,6 +66,7 @@ class OrderProgress extends Component {
                   key={`order-${index}`}
                   shopCoords={coords}
                   pathname={pathname}
+                  isProgress
                 />
               );
             } else if (order.get('type') === 'order') {
@@ -75,6 +76,7 @@ class OrderProgress extends Component {
                   order={order}
                   key={`order-${index}`}
                   pathname={pathname}
+                  isProgress
                 />
               );
             } else {
@@ -84,6 +86,7 @@ class OrderProgress extends Component {
                   order={order}
                   key={`order-${index}`}
                   pathname={pathname}
+                  isProgress
                 />
               );
             }

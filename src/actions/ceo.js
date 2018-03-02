@@ -250,16 +250,16 @@ export const initGetManagers = payload => async dispatch => {
 
   try {
     if (!result.success) {
-      dispatch(getManagersError({ error: true }));
+      dispatch(getManagersError(result));
     } else {
       const result = JSON.parse(response);
 
-      let users = null;
-      if (payload.ceo) {
-        users = result.users.filter(user => user.role === 'ceo');
-      } else {
-        users = result.users.filter(user => user.role !== 'ceo');
-      }
+      const users = result.users.filter(user => {
+        if (payload.ceo) {
+          return user.role === 'ceo';
+        }
+        return user.role !== 'ceo';
+      });
 
       dispatch(getManagersSuccess({ users }));
     }

@@ -20,6 +20,7 @@ import { StopDelivery, Setting, Management, ManagementAdd, EditAdmin } from './M
 
 import { initFetchOrderLists } from '../actions/order';
 import getClassNameByRoutes from '../utils/getClassNameByRoutes';
+import getPayment from '../utils/getPayment';
 
 class App extends Component {
   componentDidMount = () => {
@@ -71,8 +72,11 @@ class App extends Component {
   };
 
   render() {
-    const { sideMenu, status, router, siteId, auth } = this.props;
-    const routes = getClassNameByRoutes(router.location, status);
+    const { sideMenu, status, router, siteId, auth, detail, processLists } = this.props;
+
+    const no = detail.getIn(['order', 'order_no']);
+    const payment = getPayment(processLists, no);
+    const routes = getClassNameByRoutes(router.location, status, payment);
     const pathname = router.location.pathname;
 
     const hideHeader =
@@ -138,6 +142,8 @@ export default withRouter(
       session: state.getIn(['auth', 'session']),
       siteId: state.getIn(['auth', 'siteId']),
       auth: state.get('auth'),
+      detail: state.getIn(['order', 'detail']),
+      processLists: state.getIn(['order', 'processLists']),
     }),
     dispatch => ({
       closePopup: ui => dispatch(closePopup(ui)),

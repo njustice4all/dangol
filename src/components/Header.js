@@ -5,8 +5,11 @@ import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { push } from 'react-router-redux';
 import cx from 'classnames';
+import type { List, Map } from 'immutable';
 
 import { openPopup } from '../actions/ui';
+
+import getPayment from '../utils/getPayment';
 
 type Props = {
   customProps: Object,
@@ -18,6 +21,7 @@ type Props = {
   history: Object,
   openPopup: string => void,
   first: string,
+  processLists: List<Map<string, any>>,
 };
 
 const ButtonOpenSideMenu = ({ openSideMenu }) => {
@@ -81,10 +85,23 @@ const OrderType = ({ type, date }) => {
   );
 };
 
-const OrderComplete = ({ isComplete, status }) => {
+const OrderComplete = ({ isComplete, isProgress, status, payment }) => {
+  if (isProgress) {
+    let text = '주문처리중';
+    if (payment === 'mobile') {
+      text = '취소처리중';
+    }
+
+    return (
+      <div className="comment" style={{ color: 'white' }}>
+        {text}
+      </div>
+    );
+  }
+
   if (isComplete) {
     return (
-      <div className="comment">
+      <div className="comment" style={{ color: 'white' }}>
         {status === 'deliveryDone' ? '완료된 주문입니다.' : '취소된 주문입니다.'}
       </div>
     );
@@ -115,7 +132,7 @@ class Header extends Component<Props> {
   };
 
   render() {
-    const { customProps, router, order, status, detail, first } = this.props;
+    const { customProps, router, order, status, detail, first, processLists } = this.props;
 
     let isComplete = false;
     if (
@@ -123,6 +140,14 @@ class Header extends Component<Props> {
       customProps.classname === 'orderDetail done cancel'
     ) {
       isComplete = true;
+    }
+
+    const no = detail.getIn(['order', 'order_no']);
+    const type = getPayment(processLists, no);
+    const pathname = router.location.pathname;
+    let isProgress = false;
+    if (pathname.split('/').includes('progress') && pathname.split('/').length > 3) {
+      isProgress = true;
     }
 
     return (
@@ -141,7 +166,12 @@ class Header extends Component<Props> {
           />
         )}
         {customProps.buttonClose ? <div className="btn-close" onClick={this._goBack} /> : null}
-        <OrderComplete isComplete={isComplete} status={status} />
+        <OrderComplete
+          isComplete={isComplete}
+          status={status}
+          isProgress={isProgress}
+          payment={type}
+        />
         {customProps.buttonOpenSideMenu && (
           <TabMenu handleRoutes={this.handleRoutes} path={router.location.pathname} />
         )}
@@ -158,6 +188,7 @@ export default withRouter(
       status: state.getIn(['order', 'detail', 'orderDetail', 'state']),
       detail: state.getIn(['order', 'detail']),
       first: state.getIn(['auth', 'first']),
+      processLists: state.getIn(['order', 'processLists']),
     }),
     dispatch => ({
       openPopup: ui => dispatch(openPopup(ui)),
