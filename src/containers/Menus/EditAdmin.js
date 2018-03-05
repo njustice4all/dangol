@@ -6,10 +6,11 @@ import { initGetManagers, initSetManager } from '../../actions/ceo';
 
 class EditAdmin extends Component {
   componentDidMount = () => {
-    const { initGetManagers, id, secret } = this.props;
-    if (secret) {
-      initGetManagers({ id, secret, ceo: true });
-    }
+    const { initGetManagers, id, secret, managers } = this.props;
+    // console.log(id, managers.toJS());
+    // if (secret) {
+    //   initGetManagers({ id, secret, ceo: true });
+    // }
   };
 
   componentWillReceiveProps = nextProps => {
@@ -41,15 +42,16 @@ class EditAdmin extends Component {
   };
 
   render() {
-    const { managers } = this.props;
+    const { managers, id } = this.props;
+    const manager = managers.filter(manager => manager.get('id') === id);
 
     return (
       <div className="body">
         <div className="input-wrapper">
           <div style={{ fontSize: '20px', color: '#fe931f', marginBottom: '20px' }}>
-            {managers.getIn([0, 'name'])}
+            {manager.getIn([0, 'name'])}
           </div>
-          <div style={{ fontSize: '20px' }}>{managers.getIn([0, 'id'])}</div>
+          <div style={{ fontSize: '20px' }}>{manager.getIn([0, 'id'])}</div>
           <input type="password" placeholder="비밀번호" ref={pw => (this.pw = pw)} />
         </div>
         <div className="btn-wrapper">

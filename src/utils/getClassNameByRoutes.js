@@ -32,7 +32,7 @@ export default (routeObject: routeObject, status: string, payment: string): rout
     case '/menus/admin':
       return {
         classname: 'order-manage-wrapper add',
-        title: '사장님 계정 정보 수정',
+        title: '계정 정보 수정',
         goBack: true,
       };
     case '/ceo/shop':

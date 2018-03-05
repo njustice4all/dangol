@@ -257,6 +257,8 @@ export const initGetManagers = payload => async dispatch => {
       const users = result.users.filter(user => {
         if (payload.ceo) {
           return user.role === 'ceo';
+        } else if (payload.getAll) {
+          return user;
         }
         return user.role !== 'ceo';
       });

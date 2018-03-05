@@ -31,18 +31,24 @@ class Setting extends Component<Props> {
 
   render() {
     const { version, role } = this.props;
+    let content = role === 'ceo' ? '사장님 계정 정보' : '내 계정 정보';
 
     return (
       <div className="body">
         <Content title="소리설정" content="신규 주문 접수 알림" />
         <Content title="앱 정보" content={`버전정보 ${version}`} />
-        {role === 'ceo' ? (
+        {/*role === 'ceo' ? (
           <Content
             title="앱 계정 설정"
             content="사장님 계정 정보"
             onPress={() => this.props.history.push('/menus/admin')}
           />
-        ) : null}
+        ) : null*/}
+        <Content
+          title="앱 계정 설정"
+          content={content}
+          onPress={() => this.props.history.push('/menus/admin')}
+        />
       </div>
     );
   }

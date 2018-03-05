@@ -51,7 +51,7 @@ export const initSignin = user => async dispatch => {
        * diff secret이라고 나옴
        * webview에서 동일 secret날리는거 확인했음
        */
-      dispatch(initGetManagers({ id: user.id, secret: result.secret }));
+      dispatch(initGetManagers({ id: user.id, secret: result.secret, getAll: true }));
 
       if (user.autoLogin) {
         localStorage.setItem('user', JSON.stringify(user));
