@@ -37,6 +37,7 @@ class ManagementAdd extends Component {
       edit,
       managers,
       navigateTo,
+      first,
     } = this.props;
     const manager = managers.filter(manager => manager.get('id') === member);
     const data = manager.toJS();
@@ -51,7 +52,12 @@ class ManagementAdd extends Component {
     };
 
     initSetManager(payload);
-    navigateTo('/menus/management');
+
+    if (first === '1') {
+      navigateTo('/order/reception');
+    } else {
+      navigateTo('/menus/management');
+    }
   };
 
   _setValue = type => e => {
@@ -116,6 +122,7 @@ export default connect(
     managers: state.getIn(['ceo', 'managers']),
     id: state.getIn(['auth', 'id']),
     secret: state.getIn(['auth', 'secret']),
+    first: state.getIn(['auth', 'first']),
   }),
   dispatch => ({
     initGetManagers: payload => dispatch(initGetManagers(payload)),

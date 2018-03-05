@@ -127,6 +127,11 @@ class Header extends Component<Props> {
     // locationChange('/order/reception');
   };
 
+  _closePage = () => {
+    const { locationChange } = this.props;
+    locationChange('/order/reception');
+  };
+
   openSideMenu = () => {
     this.props.openPopup('sideMenu');
   };
@@ -165,7 +170,7 @@ class Header extends Component<Props> {
             date={detail.getIn(['order', 'order_date'])}
           />
         )}
-        {customProps.buttonClose ? <div className="btn-close" onClick={this._goBack} /> : null}
+        {customProps.buttonClose ? <div className="btn-close" onClick={this._closePage} /> : null}
         <OrderComplete
           isComplete={isComplete}
           status={status}

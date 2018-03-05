@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { push } from 'react-router-redux';
 
 import { initSignin } from '../../actions/auth';
+import { Loading } from '../../components';
 
 class Signin extends Component {
   state = { autoLogin: false };
@@ -41,6 +42,11 @@ class Signin extends Component {
 
   render() {
     const { autoLogin } = this.state;
+    const { isFetching } = this.props;
+
+    if (isFetching) {
+      return <Loading />;
+    }
 
     return (
       <div className="body">
@@ -71,6 +77,7 @@ class Signin extends Component {
 export default connect(
   state => ({
     login: state.getIn(['auth', 'status', 'login']),
+    isFetching: state.getIn(['auth', 'isFetching']),
   }),
   dispatch => ({
     initSignin: user => dispatch(initSignin(user)),

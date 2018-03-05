@@ -4,7 +4,7 @@ import { push } from 'react-router-redux';
 
 import { initFetchOrderLists, fetchOrderMore } from '../../actions/order';
 
-import { ItemDelivery, ItemTable, ItemPackage } from '../../components';
+import { ItemDelivery, ItemTable, ItemPackage, Loading } from '../../components';
 
 class OrderReception extends Component {
   componentDidMount = () => {
@@ -46,8 +46,12 @@ class OrderReception extends Component {
   };
 
   render() {
-    const { order, coords, router } = this.props;
+    const { order, coords, router, isFetching } = this.props;
     const pathname = router.location.pathname.split('/order/')[1];
+
+    if (isFetching) {
+      return <Loading />;
+    }
 
     return (
       <div
@@ -104,6 +108,7 @@ export default connect(
     router: state.get('router'),
     session: state.getIn(['auth', 'session']),
     siteId: state.getIn(['auth', 'siteId']),
+    isFetching: state.getIn(['order', 'isFetching']),
   }),
   dispatch => ({
     initFetchOrderLists: payload => dispatch(initFetchOrderLists(payload)),
