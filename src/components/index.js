@@ -5,3 +5,4 @@ export { default as ItemPackage } from './ItemPackage';
 export { default as ItemTable } from './ItemTable';
 export { default as Loading } from './Loading';
 export { default as TermsNavigator } from './TermsNavigator';
+export { default as EmptyOrder } from './EmptyOrder';

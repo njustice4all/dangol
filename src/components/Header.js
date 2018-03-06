@@ -122,9 +122,9 @@ class Header extends Component<Props> {
       return;
     }
 
-    goBack();
+    // goBack();
 
-    // locationChange('/order/reception');
+    locationChange('/order/reception');
   };
 
   _closePage = () => {

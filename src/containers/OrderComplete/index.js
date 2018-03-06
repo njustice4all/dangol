@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { push } from 'react-router-redux';
 
-import { ItemDelivery, ItemTable, ItemPackage } from '../../components';
+import { ItemDelivery, ItemTable, ItemPackage, Loading, EmptyOrder } from '../../components';
 
 import { initFetchProcessDone, fetchOrderMore } from '../../actions/order';
 
@@ -46,8 +46,12 @@ class OrderComplete extends Component {
   };
 
   render() {
-    const { doneLists, coords, router, order } = this.props;
+    const { doneLists, coords, router, order, isFetching } = this.props;
     const pathname = router.location.pathname.split('/order/')[1];
+
+    if (isFetching) {
+      return <Loading />;
+    }
 
     return (
       <div
@@ -55,7 +59,7 @@ class OrderComplete extends Component {
         style={{ height: 'calc(100% - 96px)', overflow: 'scroll' }}
         onScroll={this._onScroll}
         ref={scroll => (this.scroll = scroll)}>
-        {/*<div className="bodyHeader">2018-02-07</div>*/}
+        {order.get('lists').size === 0 ? <EmptyOrder title="완료된 주문" /> : null}
         <ul className="list-items">
           {doneLists.map((order, index) => {
             if (order.get('type') === 'delivery') {
@@ -105,6 +109,7 @@ export default connect(
     router: state.get('router'),
     session: state.getIn(['auth', 'session']),
     siteId: state.getIn(['auth', 'siteId']),
+    isFetching: state.getIn(['order', 'isFetching']),
   }),
   dispatch => ({
     initFetchProcessDone: payload => dispatch(initFetchProcessDone(payload)),

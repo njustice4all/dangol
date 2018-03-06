@@ -4,7 +4,7 @@ import { push } from 'react-router-redux';
 
 import { initFetchOrderLists, fetchOrderMore } from '../../actions/order';
 
-import { ItemDelivery, ItemTable, ItemPackage, Loading } from '../../components';
+import { ItemDelivery, ItemTable, ItemPackage, Loading, EmptyOrder } from '../../components';
 
 class OrderReception extends Component {
   componentDidMount = () => {
@@ -59,7 +59,7 @@ class OrderReception extends Component {
         style={{ height: 'calc(100% - 96px)', overflow: 'scroll' }}
         onScroll={this._onScroll}
         ref={scroll => (this.scroll = scroll)}>
-        {/*<div className="bodyHeader">2018-02-07</div>*/}
+        {order.get('lists').size === 0 ? <EmptyOrder title="접수된 주문" /> : null}
         <ul className="list-items">
           {order.get('lists').map((order, index) => {
             if (order.get('type') === 'order') {

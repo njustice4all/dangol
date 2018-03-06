@@ -8,9 +8,9 @@ class EditAdmin extends Component {
   componentDidMount = () => {
     const { initGetManagers, id, secret, managers } = this.props;
     // console.log(id, managers.toJS());
-    // if (secret) {
-    //   initGetManagers({ id, secret, ceo: true });
-    // }
+    if (secret) {
+      initGetManagers({ id, secret, ceo: true });
+    }
   };
 
   componentWillReceiveProps = nextProps => {
