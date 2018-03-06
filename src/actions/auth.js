@@ -45,13 +45,6 @@ export const initSignin = user => async dispatch => {
     } else {
       dispatch(reqSigninSuccess({ ...result }, user));
       dispatch(initGetCoords(info));
-      /**
-       * FIXME:
-       * autologin하고 업소정보수정 페이지 방문후 업소 부관리자 페이지 방문하면 안나오는거 방지함
-       * diff secret이라고 나옴
-       * webview에서 동일 secret날리는거 확인했음
-       */
-      dispatch(initGetManagers({ id: user.id, secret: result.secret, getAll: true }));
 
       if (user.autoLogin) {
         localStorage.setItem('user', JSON.stringify(user));

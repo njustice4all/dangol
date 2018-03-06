@@ -26,7 +26,11 @@ class App extends Component {
   componentDidMount = () => {
     document.addEventListener('message', this.onMessage);
 
-    const { locationChange, initSignin } = this.props;
+    const { locationChange, initSignin, location: { search } } = this.props;
+    const params = new URLSearchParams(search);
+    if (params.get('siteId')) {
+      return;
+    }
 
     try {
       const user = JSON.parse(localStorage.getItem('user'));
@@ -144,6 +148,7 @@ export default withRouter(
       auth: state.get('auth'),
       detail: state.getIn(['order', 'detail']),
       processLists: state.getIn(['order', 'processLists']),
+      login: state.getIn(['auth', 'status', 'login']),
     }),
     dispatch => ({
       closePopup: ui => dispatch(closePopup(ui)),
@@ -152,6 +157,7 @@ export default withRouter(
       fromMobile: action => dispatch(action),
       initSignin: user => dispatch(initSignin(user)),
       initFetchOrderLists: payload => dispatch(initFetchOrderLists(payload)),
+      initialize: info => dispatch({ type: 'app/INITIALIZE', info }),
     })
   )(App)
 );
