@@ -29,7 +29,11 @@ class Management extends Component {
   componentDidMount = () => {
     const { initGetManagers, id, secret } = this.props;
     if (secret) {
-      initGetManagers({ id, secret });
+      initGetManagers({ id, secret }).then(result => {
+        if (!result.success) {
+          this._onLogout();
+        }
+      });
     }
     // alert(`secret - ${secret}`);
   };
@@ -39,7 +43,11 @@ class Management extends Component {
 
     if (nextProps.secret !== this.props.secret) {
       const { id, secret } = nextProps;
-      initGetManagers({ id, secret });
+      initGetManagers({ id, secret }).then(result => {
+        if (!result.success) {
+          this._onLogout();
+        }
+      });
     }
   };
 
@@ -51,6 +59,12 @@ class Management extends Component {
     e.stopPropagation();
     const { openPopup } = this.props;
     openPopup('deleteUser', member);
+  };
+
+  _onLogout = () => {
+    const { logout, navigateTo } = this.props;
+    logout();
+    navigateTo('/');
   };
 
   render() {
@@ -99,6 +113,7 @@ export default connect(
     managers: state.getIn(['ceo', 'managers']),
   }),
   dispatch => ({
+    logout: () => dispatch({ type: 'auth/LOGOUT' }),
     initGetManagers: payload => dispatch(initGetManagers(payload)),
     navigateTo: route => dispatch(push(route)),
     openPopup: (ui, payload) => dispatch(openPopup(ui, payload)),

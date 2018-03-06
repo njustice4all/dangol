@@ -9,7 +9,11 @@ class EditAdmin extends Component {
     const { initGetManagers, id, secret, managers } = this.props;
     // console.log(id, managers.toJS());
     if (secret) {
-      initGetManagers({ id, secret, ceo: true });
+      initGetManagers({ id, secret, ceo: true }).then(result => {
+        if (!result.success) {
+          this._onLogout();
+        }
+      });
     }
   };
 
@@ -18,7 +22,11 @@ class EditAdmin extends Component {
 
     if (nextProps.secret !== this.props.secret) {
       const { id, secret } = nextProps;
-      initGetManagers({ id, secret, ceo: true });
+      initGetManagers({ id, secret, ceo: true }).then(result => {
+        if (!result.success) {
+          this._onLogout();
+        }
+      });
     }
   };
 

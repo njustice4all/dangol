@@ -251,6 +251,9 @@ export const initGetManagers = payload => async dispatch => {
   try {
     if (!result.success) {
       dispatch(getManagersError(result));
+      if (result.reason === 'diff secret') {
+        return { success: false };
+      }
     } else {
       const result = JSON.parse(response);
 
@@ -264,9 +267,11 @@ export const initGetManagers = payload => async dispatch => {
       });
 
       dispatch(getManagersSuccess({ users }));
+      return { success: true };
     }
   } catch (error) {
     console.error(error);
+    return { success: false };
   }
 };
 

@@ -9,7 +9,11 @@ class ManagementAdd extends Component {
 
   componentDidMount = () => {
     const { initGetManagers, id, secret } = this.props;
-    initGetManagers({ id, secret });
+    initGetManagers({ id, secret }).then(result => {
+      if (!result.success) {
+        this._onLogout();
+      }
+    });
   };
 
   componentWillReceiveProps = nextProps => {
@@ -63,6 +67,12 @@ class ManagementAdd extends Component {
   _setValue = type => e => {
     e.persist();
     this.setState(prevState => ({ [type]: e.target.value }));
+  };
+
+  _onLogout = () => {
+    const { logout, navigateTo } = this.props;
+    logout();
+    navigateTo('/');
   };
 
   render() {
@@ -125,6 +135,7 @@ export default connect(
     first: state.getIn(['auth', 'first']),
   }),
   dispatch => ({
+    logout: () => dispatch({ type: 'auth/LOGOUT' }),
     initGetManagers: payload => dispatch(initGetManagers(payload)),
     initSetManager: payload => dispatch(initSetManager(payload)),
     navigateTo: route => dispatch(push(route)),
