@@ -62,6 +62,7 @@ class App extends Component {
       siteId,
       initFetchOrderLists,
       openPopup,
+      history,
     } = this.props;
     const msg = JSON.parse(event.data);
 
@@ -70,6 +71,8 @@ class App extends Component {
     } else if (msg.type === 'firebase/MESSAGE_RECEIVED') {
       initFetchOrderLists({ session, siteId });
       openPopup('newOrder');
+    } else if (msg.type === '@@router/GO_BACK') {
+      history.goBack();
     } else {
       fromMobile(msg.payload);
     }

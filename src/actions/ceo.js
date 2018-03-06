@@ -27,6 +27,10 @@ const getShopError = error => ({ type: 'ceo/GET_SHOP_ERROR', error });
 export const initGetShopInfo = payload => async dispatch => {
   dispatch(getShop());
 
+  if (!payload.siteId) {
+    return;
+  }
+
   const response = await apiGetShopInfo(payload);
 
   try {
@@ -251,9 +255,7 @@ export const initGetManagers = payload => async dispatch => {
   try {
     if (!result.success) {
       dispatch(getManagersError(result));
-      if (result.reason === 'diff secret') {
-        return { success: false };
-      }
+      return { success: false };
     } else {
       const result = JSON.parse(response);
 
