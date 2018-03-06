@@ -43,6 +43,7 @@ class SideMenu extends Component {
       }),
       '*'
     );
+    this.props.closePopup('sideMenu');
   };
 
   render() {
