@@ -64,8 +64,19 @@ const getProductsSuccess = (state, action) => {
 };
 
 const getProductDetail = (state, action) => {
+  let payload = action.payload;
+  if (!action.payload.stock.option_control.main) {
+    payload = {
+      ...action.payload,
+      stock: {
+        ...action.payload.stock,
+        option_control: { ...action.payload.stock.option_control, main: [] },
+      },
+    };
+  }
+
   return state.withMutations(mutator =>
-    mutator.set('productDetail', fromJS(action.payload)).setIn(['status', 'isFetching'], false)
+    mutator.set('productDetail', fromJS(payload)).setIn(['status', 'isFetching'], false)
   );
 };
 

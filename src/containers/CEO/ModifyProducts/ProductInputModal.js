@@ -183,6 +183,7 @@ class ProductInputModal extends Component {
           .toJS(),
         idx,
         productDetail,
+        siteId,
       });
       return;
     }
