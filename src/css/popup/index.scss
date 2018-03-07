@@ -29,9 +29,33 @@
       width: 50px;
     }
   }
+  .popup-image-wrapper.order-process {
+    padding: 58px 41px;
+    .popup-text {
+      font-size: 26px;
+    }
+    .popup-text.order-process {
+      font-size: 29px;
+      span {
+        font-size: 29px;
+        color: #fe931f;
+      }
+    }
+  }
+  .popup-image-wrapper.refund {
+    padding: 60px 30px;
+  }
   .popup-btn-wrapper {
     display: flex;
     font-size: 18px;
+    .popup-btn-solo {
+      padding: 15px;
+      width: 100%;
+      background-color: #fe931f;
+      color: #fff;
+      border-bottom-left-radius: 5px;
+      border-bottom-right-radius: 5px;
+    }
     .popup-btn {
       padding: 15px;
       width: 40%;

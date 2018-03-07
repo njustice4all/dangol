@@ -59,7 +59,7 @@ class OrderComplete extends Component {
         style={{ height: 'calc(100% - 96px)', overflow: 'scroll' }}
         onScroll={this._onScroll}
         ref={scroll => (this.scroll = scroll)}>
-        {order.get('lists').size === 0 ? <EmptyOrder title="완료된 주문" /> : null}
+        {order.get('doneLists').size === 0 ? <EmptyOrder title="완료된 주문" /> : null}
         <ul className="list-items">
           {doneLists.map((order, index) => {
             if (order.get('type') === 'delivery') {

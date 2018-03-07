@@ -5,3 +5,4 @@ export { default as OrderAccept } from './OrderAccept';
 export { default as OrderComplete } from './OrderComplete';
 export { default as DeleteProduct } from './DeleteProduct';
 export { default as NewOrder } from './NewOrder';
+export { default as Refund } from './Refund';

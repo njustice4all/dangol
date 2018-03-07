@@ -43,7 +43,7 @@ class ButtonFooter extends Component {
           <div
             className="btn big"
             style={{ backgroundColor: '#505050' }}
-            onClick={() => console.log('환불 처리완료 팝업')}>
+            onClick={() => openPopup('refund')}>
             환불 처리완료
           </div>
         </div>

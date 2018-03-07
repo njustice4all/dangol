@@ -4,17 +4,27 @@ const styles = {
   containers: {
     fontSize: '30px',
     textAlign: 'center',
-    marginTop: '25%',
+    marginTop: '80px',
     color: '#505050',
   },
   highlights: {
     color: '#fe931f',
   },
+  iconWrapper: {
+    marginBottom: '45px',
+    img: {
+      width: '68px',
+    },
+  },
 };
 
 const EmptyOrder = ({ title }) => (
   <div style={styles.containers}>
-    <span style={styles.highlights}>{title}</span>이 없어요!
+    <div style={styles.iconWrapper}>
+      <img src="/img/logo-color.svg" style={styles.iconWrapper.img} />
+    </div>
+    {title}이
+    <span style={styles.highlights}> 없어요.</span>
   </div>
 );
 

@@ -8,6 +8,7 @@ import {
   OrderAccept,
   UserDel,
   NewOrder,
+  Refund,
 } from '../components/Popups';
 
 class PopupController extends Component {
@@ -35,6 +36,8 @@ class PopupController extends Component {
       return <UserDel />;
     } else if (type.newOrder) {
       return <NewOrder orderType={orderType} />;
+    } else if (type.refund) {
+      return <Refund />;
     }
   };
 

@@ -11,6 +11,7 @@ const StateRecord = Record({
   isPop: false, // 팝업 오픈시 true
   deleteUser: false,
   newOrder: false,
+  refund: false,
   payload: '',
   orderType: 'delivery',
 });

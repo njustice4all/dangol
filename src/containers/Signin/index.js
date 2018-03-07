@@ -53,7 +53,7 @@ class Signin extends Component {
         <div className="login-greeting-wrapper">
           <div className="login-logo">
             <div className="logo-background">
-              <img src="/img/test.svg" />
+              <img src="/img/logo.svg" />
             </div>
           </div>
           <div className="login-text">

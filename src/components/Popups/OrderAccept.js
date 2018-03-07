@@ -31,11 +31,21 @@ class OrderAccept extends Component {
     return (
       <div className="popup-container">
         <div className="popup-wrapper">
-          <div className="popup-image-wrapper">
-            <img src="/img/accept.png" />
+          <div className="popup-image-wrapper order-process">
+            <img src="/img/accept.svg" style={{ width: '65px' }} />
+            <div className="popup-text-wrapper">
+              <p className="popup-text order-process">
+                주문이 <span className="popup-text-highlight accept">접수처리</span>
+              </p>
+              <p className="popup-text" style={{ marginTop: '10px' }}>
+                되었습니다.
+              </p>
+            </div>
           </div>
-          <div className="popup-btn-wrapper" onClick={this._onPress}>
-            확인
+          <div className="popup-btn-wrapper">
+            <div className="popup-btn-solo" onClick={this._onPress}>
+              확인
+            </div>
           </div>
         </div>
       </div>

@@ -59,7 +59,7 @@ class OrderProgress extends Component {
         style={{ height: 'calc(100% - 96px)', overflow: 'scroll' }}
         onScroll={this._onScroll}
         ref={scroll => (this.scroll = scroll)}>
-        {order.get('lists').size === 0 ? <EmptyOrder title="처리중인 주문" /> : null}
+        {order.get('processLists').size === 0 ? <EmptyOrder title="처리중인 주문" /> : null}
         <ul className="list-items">
           {lists.map((order, index) => {
             if (order.get('type') === 'delivery') {
