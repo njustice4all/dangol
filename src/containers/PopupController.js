@@ -21,7 +21,7 @@ class PopupController extends Component {
   };
 
   _renderPopup = type => {
-    const { member } = this.props;
+    const { orderType } = this.props;
 
     if (type.reject) {
       return <OrderReject />;
@@ -34,7 +34,7 @@ class PopupController extends Component {
     } else if (type.deleteUser) {
       return <UserDel />;
     } else if (type.newOrder) {
-      return <NewOrder />;
+      return <NewOrder orderType={orderType} />;
     }
   };
 
@@ -50,14 +50,7 @@ class PopupController extends Component {
   }
 }
 
-export default connect(
-  state => ({
-    ui: state.get('ui'),
-    // member: state.getIn(['ui', 'payload']),
-    // id: state.getIn(['auth', 'id']),
-    // secret: state.getIn(['auth', 'secret']),
-  })
-  // dispatch => ({
-  //   closePopup: ui => dispatch(closePopup(ui)),
-  // })
-)(PopupController);
+export default connect(state => ({
+  ui: state.get('ui'),
+  orderType: state.getIn(['ui', 'orderType']),
+}))(PopupController);

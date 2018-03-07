@@ -19,6 +19,7 @@ import Terms from './Terms';
 import { StopDelivery, Setting, Management, ManagementAdd, EditAdmin } from './Menus';
 
 import { initFetchOrderLists } from '../actions/order';
+import { initGetShopInfo } from '../actions/ceo';
 import getClassNameByRoutes from '../utils/getClassNameByRoutes';
 import getPayment from '../utils/getPayment';
 
@@ -63,6 +64,7 @@ class App extends Component {
       initFetchOrderLists,
       openPopup,
       history,
+      initGetShopInfo,
     } = this.props;
     const msg = JSON.parse(event.data);
 
@@ -70,9 +72,11 @@ class App extends Component {
       locationChange(msg.payload.route);
     } else if (msg.type === 'firebase/MESSAGE_RECEIVED') {
       initFetchOrderLists({ session, siteId });
-      openPopup('newOrder');
+      openPopup('newOrder', null, msg.order);
     } else if (msg.type === '@@router/GO_BACK') {
       history.goBack();
+    } else if (msg.type === 'web/GET_MEMBERS') {
+      initGetShopInfo({ siteId: msg.payload });
     } else {
       fromMobile(msg.payload);
     }
@@ -89,6 +93,7 @@ class App extends Component {
     const hideHeader =
       pathname === '/ceo/shop' ||
       pathname === '/ceo/products' ||
+      pathname === '/' ||
       pathname.split('/').includes('terms');
 
     return (
@@ -161,6 +166,7 @@ export default withRouter(
       initSignin: user => dispatch(initSignin(user)),
       initFetchOrderLists: payload => dispatch(initFetchOrderLists(payload)),
       initialize: info => dispatch({ type: 'app/INITIALIZE', info }),
+      initGetShopInfo: payload => dispatch(initGetShopInfo(payload)),
     })
   )(App)
 );

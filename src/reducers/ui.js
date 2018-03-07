@@ -12,6 +12,7 @@ const StateRecord = Record({
   deleteUser: false,
   newOrder: false,
   payload: '',
+  orderType: 'delivery',
 });
 
 const _openPopup = (state, action) => {
@@ -21,6 +22,13 @@ const _openPopup = (state, action) => {
         .set(action.ui, true)
         .set('isPop', true)
         .set('payload', action.payload)
+    );
+  } else if (action.order) {
+    return state.withMutations(s =>
+      s
+        .set(action.ui, true)
+        .set('isPop', true)
+        .set('orderType', action.order)
     );
   }
 

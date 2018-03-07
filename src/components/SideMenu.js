@@ -93,7 +93,6 @@ class SideMenu extends Component {
                 </li>
                 <li className="list-item sub">
                   <div className="content-wrapper">
-                    {/*<div className="title" onClick={this.onFranchiseModify}>*/}
                     {role === 'manager' ? null : (
                       <div className="title" onClick={this.onFranchiseModify}>
                         업소 정보 수정

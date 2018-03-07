@@ -50,6 +50,18 @@ class Signin extends Component {
 
     return (
       <div className="body">
+        <div className="login-greeting-wrapper">
+          <div className="login-logo">
+            <div className="logo-background">
+              <img src="/img/test.svg" />
+            </div>
+          </div>
+          <div className="login-text">
+            <div>
+              단골<span className="text-bold">사장님</span>
+            </div>
+          </div>
+        </div>
         <div className="input-wrapper">
           <input type="text" placeholder="아이디" ref={id => (this.id = id)} />
           <input type="password" placeholder="비밀번호" ref={pw => (this.pw = pw)} />
@@ -65,7 +77,10 @@ class Signin extends Component {
           </label>
         </span>
         <div className="btn-wrapper">
-          <div className="btn big" onClick={this.onLoginButtonPress}>
+          <div
+            className="btn big"
+            onClick={this.onLoginButtonPress}
+            style={{ fontWeight: 'normal' }}>
             로그인
           </div>
         </div>
