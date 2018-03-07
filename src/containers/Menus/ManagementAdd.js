@@ -5,7 +5,7 @@ import { push } from 'react-router-redux';
 import { initGetManagers, initSetManager } from '../../actions/ceo';
 
 class ManagementAdd extends Component {
-  state = { id: '', name: '' };
+  state = { id: '', name: '', duplicate: false };
 
   componentDidMount = () => {
     const { initGetManagers, id, secret } = this.props;
@@ -31,6 +31,18 @@ class ManagementAdd extends Component {
     }
   };
 
+  checkDuplicate = (managers, ceoId, userId) => {
+    if (ceoId === userId) return true;
+
+    const duplicate = managers.filter(manager => manager.get('id') === userId);
+
+    if (duplicate.size !== 0) {
+      return true;
+    } else {
+      return false;
+    }
+  };
+
   _onPress = () => {
     const {
       id,
@@ -42,25 +54,33 @@ class ManagementAdd extends Component {
       managers,
       navigateTo,
       first,
+      ceoId,
     } = this.props;
-    const manager = managers.filter(manager => manager.get('id') === member);
-    const data = manager.toJS();
 
-    const payload = {
-      id,
-      secret,
-      userId: this.id.value,
-      userPw: this.pw.value,
-      userName: this.name.value,
-      userRole: edit ? data[0].role : reseller ? 'reseller' : 'manager',
-    };
+    const duplicate = this.checkDuplicate(managers, ceoId, this.id.value);
 
-    initSetManager(payload);
-
-    if (first === '1') {
-      navigateTo('/order/reception');
+    if (duplicate) {
+      this.setState(prevState => ({ duplicate: true }));
     } else {
-      navigateTo('/menus/management');
+      const manager = managers.filter(manager => manager.get('id') === member);
+      const data = manager.toJS();
+
+      const payload = {
+        id,
+        secret,
+        userId: this.id.value,
+        userPw: this.pw.value,
+        userName: this.name.value,
+        userRole: edit ? data[0].role : reseller ? 'reseller' : 'manager',
+      };
+
+      initSetManager(payload);
+
+      if (first === '1') {
+        navigateTo('/order/reception');
+      } else {
+        navigateTo('/menus/management');
+      }
     }
   };
 
@@ -76,7 +96,7 @@ class ManagementAdd extends Component {
   };
 
   render() {
-    const { id, name } = this.state;
+    const { id, name, duplicate } = this.state;
     const { match: { params: { member } }, edit, managers } = this.props;
     const manager = managers.filter(manager => manager.get('id') === member);
     const data = manager.toJS();
@@ -114,7 +134,21 @@ class ManagementAdd extends Component {
       <div className="body">
         <div className="input-wrapper">
           <input type="text" placeholder="부관리자명" ref={name => (this.name = name)} />
-          <input type="text" placeholder="아이디" ref={id => (this.id = id)} />
+          <div style={{ position: 'relative' }}>
+            <input type="text" placeholder="아이디" ref={id => (this.id = id)} />
+            {duplicate ? (
+              <span
+                style={{
+                  color: 'red',
+                  fontSize: '12px',
+                  position: 'absolute',
+                  top: '18px',
+                  right: 0,
+                }}>
+                아이디 중복
+              </span>
+            ) : null}
+          </div>
           <input type="password" placeholder="비밀번호" ref={pw => (this.pw = pw)} />
         </div>
         <div className="btn-wrapper">
@@ -133,6 +167,7 @@ export default connect(
     id: state.getIn(['auth', 'id']),
     secret: state.getIn(['auth', 'secret']),
     first: state.getIn(['auth', 'first']),
+    ceoId: state.getIn(['auth', 'id']),
   }),
   dispatch => ({
     logout: () => dispatch({ type: 'auth/LOGOUT' }),
