@@ -58,13 +58,13 @@
     }
     .popup-btn {
       padding: 15px;
-      width: 40%;
+      width: 100px;
       color: #fff;
       background-color: #505050;
       border-bottom-left-radius: 5px;
     }
     .popup-btn.right {
-      width: 60%;
+      flex: 1;
       background-color: #fe931f;
       border-bottom-left-radius: 0;
       border-bottom-right-radius: 5px;
