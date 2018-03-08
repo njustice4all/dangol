@@ -25,12 +25,6 @@ const StateRecord = Record({
 });
 
 const getInfo = (state, action) => {
-  let topic = action.info.topic;
-
-  if (action.info.topic.split('/').includes('topics')) {
-    topic = action.info.topic.split('/topics/')[1];
-  }
-
   return state.withMutations(mutator =>
     mutator
       .set('secret', action.info.secret)
@@ -41,19 +35,13 @@ const getInfo = (state, action) => {
       .set('id', action.user.id)
       .set('siteName', action.info.siteName)
       .set('siteUserId', action.info.siteUserId)
-      .set('topic', topic)
+      .set('topic', action.info.topic)
       .set('isFetching', false)
       .setIn(['status', 'login'], true)
   );
 };
 
 const setAuthFromMobile = (state, action) => {
-  let topic = action.info.topic;
-
-  if (action.info.topic.split('/').includes('topics')) {
-    topic = action.info.topic.split('/topics/')[1];
-  }
-
   return state.withMutations(mutator =>
     mutator
       .set('secret', action.payload.secret)
@@ -64,7 +52,7 @@ const setAuthFromMobile = (state, action) => {
       // .set('id', action.user.id)
       .set('siteName', action.payload.siteName)
       .set('siteUserId', action.payload.siteUserId)
-      .set('topic', topic)
+      .set('topic', action.info.topic)
       .set('isFetching', false)
       .setIn(['status', 'login'], true)
   );

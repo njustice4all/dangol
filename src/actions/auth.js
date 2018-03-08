@@ -43,7 +43,12 @@ export const initSignin = user => async dispatch => {
       dispatch(reqSigninError(errors));
       return { redirect: false };
     } else {
-      dispatch(reqSigninSuccess({ ...result }, user));
+      let topic = result.topic;
+      if (result.topic.split('/').includes('topics')) {
+        topic = result.topic.split('/topics/')[1];
+      }
+
+      dispatch(reqSigninSuccess({ ...result, topic }, user));
       dispatch(initGetCoords(info));
 
       if (user.autoLogin) {
