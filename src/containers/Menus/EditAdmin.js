@@ -37,13 +37,17 @@ class EditAdmin extends Component {
   };
 
   _onModify = () => {
-    const { id, secret, initSetManager, managers, navigateTo } = this.props;
+    const { id, secret, initSetManager, managers, navigateTo, first, setFirst } = this.props;
     const payload = {
       id,
       secret,
       userId: managers.getIn([0, 'id']),
       userPw: this.pw.value,
     };
+
+    if (first === '1') {
+      setFirst();
+    }
 
     initSetManager(payload);
     navigateTo('/order/reception');
@@ -80,6 +84,7 @@ class EditAdmin extends Component {
 export default connect(
   state => ({
     id: state.getIn(['auth', 'id']),
+    first: state.getIn(['auth', 'first']),
     secret: state.getIn(['auth', 'secret']),
     managers: state.getIn(['ceo', 'managers']),
   }),
@@ -88,5 +93,6 @@ export default connect(
     navigateTo: route => dispatch(push(route)),
     initGetManagers: payload => dispatch(initGetManagers(payload)),
     initSetManager: payload => dispatch(initSetManager(payload)),
+    setFirst: () => dispatch({ type: 'auth/SET_FIRST' }),
   })
 )(EditAdmin);
