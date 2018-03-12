@@ -46,9 +46,9 @@ const Info = ({
           </div>
           <div className="input__content" style={{ height: '35px' }}>
             <select
+              className="input__content__select"
               value={category}
-              onChange={e => handleCategory(e.target.value)}
-              style={{ borderRadius: '0px', backgroundColor: 'white', paddingLeft: '5px' }}>
+              onChange={e => handleCategory(e.target.value)}>
               <option default>카페/한식/중식/일식....</option>
               <option value="cafe">카페</option>
               <option value="korean">한식</option>
@@ -89,7 +89,7 @@ const Info = ({
           <div className="input__content">
             <textarea
               className="input__content__field"
-              style={{ border: '1px solid #dfdfdf', resize: 'none' }}
+              style={{ resize: 'none' }}
               rows="4"
               value={description}
               placeholder="사장님 가맹점만의 특별한 매력을 소개해주세요"
@@ -234,7 +234,7 @@ const Info = ({
         </div>
         <div className="input__box" style={{ marginTop: '20px' }}>
           <div className="input__title" />
-          <div className="input__content">
+          <div className="input__content" style={{ marginTop: '5px' }}>
             <div className="input-register-menu">
               <div className="input-register-items" onClick={navigateTo('/ceo/terms/use')}>
                 <span>약관 및 개인정보 수정</span>

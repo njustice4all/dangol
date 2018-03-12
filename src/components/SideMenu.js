@@ -10,6 +10,8 @@ import { initGetShopInfo } from '../actions/ceo';
 import { ATY_URI } from '../constants';
 
 class SideMenu extends Component {
+  state = { modifyShop: false, management: false, stopOrder: false, setting: false, faq: false };
+
   componentDidMount = () => {
     const { initGetShopInfo, siteId } = this.props;
     if (siteId) {
@@ -46,15 +48,24 @@ class SideMenu extends Component {
     this.props.closePopup('sideMenu');
   };
 
+  _onTouchStart = name => () => {
+    this.setState(prevState => ({ [name]: true }));
+  };
+
+  _onTouchEnd = name => () => {
+    this.setState(prevState => ({ [name]: false }));
+  };
+
   render() {
     const { open, order, shop, siteId, auth, role, session } = this.props;
+    const { modifyShop, management, stopOrder, setting, faq } = this.state;
 
     return (
       <div className={cx('sidemenu', { active: open })}>
         <div className="menu-wrapper active">
           <div className="header">
             <div className="logo-wrapper">
-              <div className="image" style={{ overflow: 'hidden' }}>
+              <div className="image" style={{ overflow: 'hidden', marginTop: '24px' }}>
                 {shop.size > 0 ? (
                   <img
                     src={`${ATY_URI}/aty_image_view.php?siteId=${siteId}&iID=${shop.getIn([
@@ -74,7 +85,11 @@ class SideMenu extends Component {
             <div className="btn-wrapper">
               <div className="btn">
                 <div className="icon notice">
-                  <div className="count">{order.get('lists').size}</div>
+                  <div
+                    className="count"
+                    style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                    <span>{order.get('lists').size}</span>
+                  </div>
                 </div>
               </div>
               <div className="btn" onClick={this.goSetting}>
@@ -94,22 +109,37 @@ class SideMenu extends Component {
                 <li className="list-item sub">
                   <div className="content-wrapper">
                     {role === 'manager' ? null : (
-                      <div className="title" onClick={this.onFranchiseModify}>
+                      <div
+                        className={cx('title', { selected: modifyShop })}
+                        onClick={this._onPress('/ceo/shop')}
+                        onTouchStart={this._onTouchStart('modifyShop')}
+                        onTouchEnd={this._onTouchEnd('modifyShop')}>
                         업소 정보 수정
                       </div>
                     )}
                     {role === 'ceo' ? (
-                      <div className="title" onClick={this._onPress('/menus/management')}>
+                      <div
+                        className={cx('title', { selected: management })}
+                        onClick={this._onPress('/menus/management')}
+                        onTouchStart={this._onTouchStart('management')}
+                        onTouchEnd={this._onTouchEnd('management')}>
                         업소 부관리자 관리
                       </div>
                     ) : null}
-                    <div className="title" onClick={this._onPress('/menus/delivery')}>
+                    <div
+                      className={cx('title', { selected: stopOrder })}
+                      onClick={this._onPress('/menus/delivery')}
+                      onTouchStart={this._onTouchStart('stopOrder')}
+                      onTouchEnd={this._onTouchEnd('stopOrder')}>
                       배달 주문 임시 중단
                     </div>
                     {/*<div className="title">업소 통계</div>*/}
                   </div>
                 </li>
-                <li className="list-item selected">
+                <li
+                  className={cx('list-item', { selected: setting })}
+                  onTouchStart={this._onTouchStart('setting')}
+                  onTouchEnd={this._onTouchEnd('setting')}>
                   <div className="content-wrapper">
                     <div className="icon setup" />
                     <div className="title" onClick={this._onPress('/menus/setting')}>
@@ -117,7 +147,10 @@ class SideMenu extends Component {
                     </div>
                   </div>
                 </li>
-                <li className="list-item">
+                <li
+                  className={cx('list-item', { selected: faq })}
+                  onTouchStart={this._onTouchStart('faq')}
+                  onTouchEnd={this._onTouchEnd('faq')}>
                   <div className="content-wrapper">
                     <div className="icon custom" />
                     <div className="title">고객센터</div>

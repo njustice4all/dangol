@@ -274,7 +274,7 @@ class ProductInputModal extends Component {
                   ref={name => (this.name = name)}
                 />
               </div>
-              <div className="row-wrapper" style={{ marginTop: '8px', position: 'relative' }}>
+              <div className="row-wrapper" style={{ marginTop: '3px', position: 'relative' }}>
                 <span className="row-title">가격</span>
                 <input
                   type="number"
@@ -285,7 +285,7 @@ class ProductInputModal extends Component {
                 />
                 <span id="currency">원</span>
               </div>
-              <div className="row-wrapper" style={{ marginTop: '8px', position: 'relative' }}>
+              <div className="row-wrapper" style={{ marginTop: '3px', position: 'relative' }}>
                 <span className="row-title">설명</span>
                 <input
                   type="text"

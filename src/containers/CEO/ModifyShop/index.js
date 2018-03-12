@@ -256,7 +256,9 @@ class ModifyShop extends Component {
 
     return (
       <div className="ceo">
-        <div className="container" style={{ paddingTop: 0, color: '#5f5f5f' }}>
+        <div
+          className="container"
+          style={{ paddingTop: 0, paddingBottom: '5px', color: '#5f5f5f' }}>
           <Navigator />
           {/*franchise.getIn(['status', 'isFetching']) ? <Loading /> : null*/}
           <div

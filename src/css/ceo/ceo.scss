@@ -114,7 +114,7 @@ input {
 
   .popup-wrapper {
     background-color: white;
-    width: 270px;
+    width: 280px;
     min-height: 180px;
     display: flex;
     flex-direction: column;
@@ -420,7 +420,7 @@ input {
   padding: 0 8px;
 
   .input__box {
-    padding: 5px 0;
+    padding: 2px 0;
 
     .input__title {
       display: inline-block;
@@ -438,10 +438,25 @@ input {
       display: inline-block;
       width: 80%;
 
+      .input__content__select {
+        border-radius: 0px;
+        background-color: white;
+        padding-left: 5px;
+        outline: none;
+      }
+
+      .input__content__select:focus {
+        border: 1px solid $color-theme;
+      }
+
       .input__content__field {
         width: 100%;
         padding: 5px 10px;
         border: 1px solid $color-border;
+      }
+
+      .input__content__field:focus {
+        border-color: $color-theme;
       }
 
       select {
@@ -464,7 +479,7 @@ input {
     align-items: center;
     width: calc(20% - 4px);
     height: 50px;
-    border: 2px solid $color-border;
+    border: 1px solid $color-border;
     border-radius: 5px;
   }
 
@@ -507,11 +522,15 @@ input {
 }
 
 .default__form {
-  margin-top: 10px;
+  margin-top: 3px;
   border: 1px solid $color-border;
   width: 100%;
   padding: 5px 10px;
   height: 35px;
+}
+
+.default__form:focus {
+  border-color: $color-theme;
 }
 
 /**
@@ -650,7 +669,7 @@ input {
   .buttons {
     flex: 1;
     text-align: center;
-    padding: 10px;
+    padding: 15px;
     background-color: #4f4f4f;
     color: white;
   }
@@ -688,7 +707,7 @@ input {
     input {
       border: 1px solid $color-border;
       width: calc(100% - 30px);
-      padding: 5px;
+      padding: 7px 5px;
       font-size: 13px;
       color: $color-font-default;
       font-weight: normal;
@@ -776,7 +795,7 @@ input {
       }
       .description {
         font-size: 14px;
-        color: $color-theme;
+        color: #505050;
       }
       .button-detail {
         margin-left: 5px;
@@ -839,6 +858,10 @@ input {
   align-items: center;
   font-size: 15px;
 
+  input:focus {
+    border: 1px solid $color-theme;
+  }
+
   .row-title {
     margin-right: 5px;
     width: 39px;
@@ -877,11 +900,9 @@ input {
     width: 100%;
   }
   .option-wrapper {
-    background-color: #f3f3f3;
     padding: 8px;
     color: $color-font-default;
-    max-height: 210px;
-    // max-height: 275px;
+    max-height: 260px;
     overflow-y: scroll;
     .options {
       margin: 5px 0;
@@ -890,19 +911,19 @@ input {
       border: 1px solid #cccccc;
       padding: 9px;
       .option-title-wrapper {
-        margin-bottom: 5px;
+        margin-bottom: 3px;
         display: flex;
         align-items: center;
         input {
           display: inline-block;
           width: calc(100% - 80px);
-          border-color: #fe931f;
+          // border-color: #fe931f;
         }
       }
       .options-property {
         display: flex;
         align-items: center;
-        margin-bottom: 5px;
+        margin-bottom: 3px;
       }
       .options-property:last-child {
         margin-bottom: 0;
@@ -1339,7 +1360,7 @@ input {
   display: flex;
   .navigator-buttons {
     flex: 1;
-    padding: 11px 0 10px 0;
+    padding: 16px 0 15px 0;
     text-align: center;
     font-size: 14px;
     border-bottom: 1px solid #cecece;
@@ -1348,7 +1369,7 @@ input {
   .navigator-buttons.on {
     color: #fe931f;
     border-bottom: 2px solid #fe931f;
-    padding-bottom: 9px;
+    padding-bottom: 14px;
   }
 }
 

@@ -1,10 +1,20 @@
 import React from 'react';
 
 const styles = {
+  wrapper: {
+    position: 'fixed',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    top: 0,
+    right: 0,
+    bottom: 0,
+    left: 0,
+    zIndex: '-1',
+  },
   containers: {
     fontSize: '30px',
     textAlign: 'center',
-    marginTop: '80px',
     color: '#505050',
   },
   highlights: {
@@ -19,12 +29,14 @@ const styles = {
 };
 
 const EmptyOrder = ({ title }) => (
-  <div style={styles.containers}>
-    <div style={styles.iconWrapper}>
-      <img src="/img/logo-color.svg" style={styles.iconWrapper.img} />
+  <div style={styles.wrapper}>
+    <div style={styles.containers}>
+      <div style={styles.iconWrapper}>
+        <img src="/img/logo-color.svg" style={styles.iconWrapper.img} />
+      </div>
+      {title}이
+      <span style={styles.highlights}> 없어요.</span>
     </div>
-    {title}이
-    <span style={styles.highlights}> 없어요.</span>
   </div>
 );
 

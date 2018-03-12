@@ -15,13 +15,11 @@ class OptionWrapper extends Component {
 
     return (
       <div className="row-wrapper options" style={{ position: 'relative' }}>
-        <div className="option-wrapper">
+        <div className="option-wrapper" style={{ paddingTop: 0 }}>
           {options.map((option, index) => (
             <div className="options" key={`options-${index}`}>
               <div className="option-title-wrapper">
-                <div
-                  className="option-name"
-                  style={{ display: 'inline-block', color: '#fe931f', width: '65px' }}>
+                <div className="option-name" style={{ display: 'inline-block', width: '65px' }}>
                   옵션명
                 </div>
                 <input

@@ -89,14 +89,16 @@ class Management extends Component {
             </div>
           </li>
         </ul>
-        <div className="btn-wrapper">
-          <div className="btn big" onClick={() => this.props.history.push('/menus/management/add')}>
-            부관리자 등록 +
-          </div>
-        </div>
-        <div className="btn-wrapper" style={{ paddingTop: 0 }}>
+        <div className="btn-wrapper" style={{ display: 'flex' }}>
           <div
             className="btn big"
+            style={{ flex: '1' }}
+            onClick={() => this.props.history.push('/menus/management/add')}>
+            부관리자 등록 +
+          </div>
+          <div
+            className="btn big"
+            style={{ flex: '1', marginLeft: '10px' }}
             onClick={() => this.props.history.push('/menus/management/addReseller')}>
             리셀러 등록 +
           </div>

@@ -66,13 +66,14 @@ class EditAdmin extends Component {
           <div style={{ fontSize: '20px' }}>{manager.getIn([0, 'id'])}</div>
           <input type="password" placeholder="비밀번호" ref={pw => (this.pw = pw)} />
         </div>
-        <div className="btn-wrapper">
-          <div className="btn big" onClick={this._onModify}>
-            정보 수정
+        <div className="btn-wrapper" style={{ display: 'flex' }}>
+          <div className="btn big" onClick={this._onModify} style={{ flex: '1' }}>
+            비밀번호 변경
           </div>
-        </div>
-        <div className="btn-wrapper">
-          <div className="btn big" onClick={this._onLogout}>
+          <div
+            className="btn big"
+            onClick={this._onLogout}
+            style={{ flex: '1', marginLeft: '10px', backgroundColor: '#505050' }}>
             로그아웃
           </div>
         </div>

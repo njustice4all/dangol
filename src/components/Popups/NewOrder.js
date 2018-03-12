@@ -28,7 +28,7 @@ class NewOrder extends Component {
                 <span className={`popup-text-highlight ${orderType}`}>{name}</span>
                 <span>주문</span>이
               </p>
-              <p className="popup-text" style={{ marginTop: '10px' }}>
+              <p className="popup-text" style={{ marginTop: '5px' }}>
                 접수되었습니다.
               </p>
             </div>

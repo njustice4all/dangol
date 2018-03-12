@@ -26,12 +26,12 @@ export default class Product extends Component {
           </div>
           <div className="product__form__wrapper">
             <div className="contents-row">
-              <p>{product.get('name')}</p>
+              <p style={{ color: '#fe931f' }}>{product.get('name')}</p>
             </div>
             <div className="contents-row">
               <p className="price">
                 {product.get('price')}
-                <span style={{ marginLeft: '5px' }}>원</span>
+                <span>원</span>
               </p>
               <span className="button-detail">수정</span>
               <span className="button-detail remove" onClick={removeProduct(product.get('idx'))}>

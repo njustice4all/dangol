@@ -46,6 +46,7 @@ const Option = ({ option }) => {
 
 const Products = ({ detail }) => {
   let options = detail.getIn(['orderDetail', 'product', 'option', 'list']);
+  console.log(detail.toJS());
   if (options && !options.getIn([0, 'idx'])) {
     options = [];
   }
