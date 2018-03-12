@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 
+import Converter from '../../../utils/Converter';
 import { ATY_URI } from '../../../constants';
 
 const ProductImage = ({ product, siteId }) => {
@@ -30,7 +31,7 @@ export default class Product extends Component {
             </div>
             <div className="contents-row">
               <p className="price">
-                {product.get('price')}
+                {Converter.numberWithCommas(product.get('price'))}
                 <span>원</span>
               </p>
               <span className="button-detail">수정</span>

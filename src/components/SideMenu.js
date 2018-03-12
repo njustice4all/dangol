@@ -88,7 +88,7 @@ class SideMenu extends Component {
                   <div
                     className="count"
                     style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                    <span>{order.get('lists').size}</span>
+                    <span style={{ paddingTop: '4px' }}>{order.get('lists').size}</span>
                   </div>
                 </div>
               </div>
@@ -111,7 +111,7 @@ class SideMenu extends Component {
                     {role === 'manager' ? null : (
                       <div
                         className={cx('drawer-title', { selected: modifyShop })}
-                        onClick={this._onPress('/ceo/shop')}
+                        onClick={this.onFranchiseModify}
                         onTouchStart={this._onTouchStart('modifyShop')}
                         onTouchEnd={this._onTouchEnd('modifyShop')}>
                         업소 정보 수정

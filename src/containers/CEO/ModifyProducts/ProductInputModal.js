@@ -229,7 +229,7 @@ class ProductInputModal extends Component {
             <h3>상품 수정</h3>
           </header>
           <div className="wrapper-padding">
-            <div className="image__wrapper" style={{ maxWidth: `${window.innerWidth - 32}px` }}>
+            <div className="image__wrapper" style={{ maxWidth: '100%' }}>
               <ButtonAddImage
                 idx={idx}
                 _onChangePreview={this._onChangePreview}
@@ -305,14 +305,14 @@ class ProductInputModal extends Component {
               _onDeleteProperty={this._onDeleteProperty}
               _onChangeOptionName={this._onChangeOptionName}
             />
-            <div className="button-normal">
-              <span className="button button-left" onClick={togglePopup(null, 'close', isNew)}>
-                취 소
-              </span>
-              <span className="button button-right" onClick={this.onConfirm(isNew)}>
-                확 인
-              </span>
-            </div>
+          </div>
+          <div className="button-normal">
+            <span className="button button-left" onClick={togglePopup(null, 'close', isNew)}>
+              취 소
+            </span>
+            <span className="button button-right" onClick={this.onConfirm(isNew)}>
+              확 인
+            </span>
           </div>
         </div>
       </div>
