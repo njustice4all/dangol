@@ -7,7 +7,9 @@ const ProductImage = ({ image, preview, index, deleteImageByIndex, siteId, sessi
     return (
       <div className="images products" style={{ verticalAlign: 'top' }}>
         <span className="btn-delete" onClick={deleteImageByIndex(index, true)}>
-          <img src="/img/icon06.png" alt="" />
+          <div className="delete-wrapper">
+            <img src="/img/cancel.svg" alt="" />
+          </div>
         </span>
         <img className="img-cover" src={image.get('base64')} alt="" />
       </div>
@@ -17,7 +19,9 @@ const ProductImage = ({ image, preview, index, deleteImageByIndex, siteId, sessi
   return (
     <div className="images products" style={{ verticalAlign: 'top' }}>
       <span className="btn-delete" onClick={deleteImageByIndex(index)}>
-        <img src="/img/icon06.png" alt="" />
+        <div className="delete-wrapper">
+          <img src="/img/cancel.svg" alt="" />
+        </div>
       </span>
       <img
         className="img-cover"

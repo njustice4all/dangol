@@ -28,7 +28,7 @@ class OptionWrapper extends Component {
                   onChange={_onChangeOptionName(index)}
                 />
                 <div className="button-delete" onClick={_onDeleteOption(index)}>
-                  <img src="/img/icon-close.png" alt="" />
+                  <img src="/img/cancel-black.svg" alt="" />
                 </div>
               </div>
               {option.get('list').map((list, i) => {
@@ -62,10 +62,10 @@ class OptionWrapper extends Component {
                         plus: option.get('list').size - 1 === i ? true : false,
                       })}>
                       <span id="minus" onClick={_onDeleteProperty(index, i)}>
-                        <img src="/img/minus.png" />
+                        <img src="/img/delete.svg" />
                       </span>
                       <span id="plus" onClick={_onAddProperty(index)}>
-                        <img src="/img/plus.png" />
+                        <img src="/img/add.svg" />
                       </span>
                     </div>
                   </div>

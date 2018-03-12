@@ -15,7 +15,7 @@ const Row = ({ name, id, password, header, deleteMember, goEdit }) => (
       {id}
       {header ? null : (
         <span style={{ position: 'absolute', right: '10px' }} onClick={deleteMember(id)}>
-          <img src="/img/remove.png" style={{ width: '17px' }} />
+          <img src="/img/delete.svg" style={{ width: '17px' }} />
         </span>
       )}
     </div>

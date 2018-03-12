@@ -72,7 +72,8 @@ export const initFetchOrderDetail = payload => async dispatch => {
     if (!response) {
       dispatch(fetchOrderDetailError(error));
     } else {
-      dispatch(fetchOrderDetailSuccess(Converter.getDetail(response)));
+      dispatch(fetchOrderDetailSuccess(response));
+      // dispatch(fetchOrderDetailSuccess(Converter.getDetail(response)));
     }
   } catch (error) {
     console.error(error);

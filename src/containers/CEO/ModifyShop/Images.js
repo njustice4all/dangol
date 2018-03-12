@@ -55,7 +55,9 @@ const ShopImage = ({ preview, image, deleteImageByIndex, index, siteId, session 
     return (
       <div className="images" style={{ verticalAlign: 'top' }}>
         <span className="btn-delete" onClick={deleteImageByIndex(index, true)}>
-          <img src="/img/icon06.png" alt="" />
+          <div className="delete-wrapper">
+            <img src="/img/cancel.svg" alt="" />
+          </div>
         </span>
         <img src={image.get('base64')} alt="" />
       </div>
@@ -65,7 +67,9 @@ const ShopImage = ({ preview, image, deleteImageByIndex, index, siteId, session 
   return (
     <div className="images" style={{ verticalAlign: 'top' }}>
       <span className="btn-delete" onClick={deleteImageByIndex(index)}>
-        <img src="/img/icon06.png" alt="" />
+        <div className="delete-wrapper">
+          <img src="/img/cancel.svg" alt="" />
+        </div>
       </span>
       <img src={src} alt="" />
     </div>

@@ -115,7 +115,9 @@ class ModifyProducts extends Component {
           <div>
             <div style={{ padding: '10px' }}>
               <div className="btn__add-product" onClick={this.addProduct}>
-                <span id="icon-plus">+</span>
+                <span style={{ paddingRight: '5px' }}>
+                  <img src="/img/add-product.svg" />
+                </span>
                 <span>판매상품 추가</span>
               </div>
             </div>

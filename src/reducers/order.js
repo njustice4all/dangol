@@ -4,12 +4,13 @@ const StateRecord = Record({
   lists: new List(),
   doneLists: new List(),
   processLists: List(),
-  detail: fromJS({
-    order: {},
-    orderDetail: {},
-    process: 'pending',
-    option: '',
-  }),
+  detail: List(),
+  // detail: fromJS({
+  //   order: {},
+  //   orderDetail: {},
+  //   process: 'pending',
+  //   option: '',
+  // }),
   coords: {
     lat: null,
     lng: null,
@@ -79,8 +80,9 @@ const getDoneLists = (state, action) => {
 const getOrderDetailSuccess = (state, action) => {
   return state.withMutations(mutator =>
     mutator
-      .setIn(['detail', 'order'], fromJS(action.order.order))
-      .setIn(['detail', 'orderDetail'], fromJS(action.order.orderDetail))
+      // .setIn(['detail', 'order'], fromJS(action.order.order))
+      // .setIn(['detail', 'orderDetail'], fromJS(action.order.orderDetail))
+      .set('detail', fromJS(action.order))
       .set('isFetching', false)
   );
 };

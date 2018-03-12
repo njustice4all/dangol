@@ -382,6 +382,19 @@ input {
     right: 0;
     width: 19px;
     height: 19px;
+    .delete-wrapper {
+      background-color: rgba(0, 0, 0, 0.7);
+      width: 19px;
+      height: 19px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      img {
+        width: 15px;
+        height: 15px;
+        object-fit: none;
+      }
+    }
   }
 
   label {
@@ -910,6 +923,7 @@ input {
       background-color: #f3f3f3;
       border: 1px solid #cccccc;
       padding: 9px;
+      padding-right: 5px;
       .option-title-wrapper {
         margin-bottom: 3px;
         display: flex;
@@ -965,11 +979,11 @@ input {
       .option-input-control {
         width: 37px;
         display: flex;
-        padding-left: 4px;
+        padding-left: 2px;
         span {
           flex: 1;
           img {
-            width: 15px;
+            width: 17px;
           }
         }
         #plus {

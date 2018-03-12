@@ -218,7 +218,7 @@ const Info = ({
                     onClick={() => handleCheck(value.get('index'))}>
                     <div style={{ display: 'flex', flexDirection: 'column' }}>
                       <img
-                        src={`${value.get('src')}${value.get('isChecked') ? '_on' : ''}.png`}
+                        src={`${value.get('src')}${value.get('isChecked') ? '_on' : ''}.svg`}
                         alt=""
                       />
                       <p style={{ textAlign: 'center', fontSize: '12px' }}>{value.get('title')}</p>
