@@ -63,9 +63,9 @@ class SideMenu extends Component {
     return (
       <div className={cx('sidemenu', { active: open })}>
         <div className="menu-wrapper active">
-          <div className="header">
-            <div className="logo-wrapper">
-              <div className="image" style={{ overflow: 'hidden', marginTop: '24px' }}>
+          <div className="drawer-header">
+            <div className="drawer-logo-wrapper">
+              <div className="drawer-image" style={{ overflow: 'hidden', marginTop: '24px' }}>
                 {shop.size > 0 ? (
                   <img
                     src={`${ATY_URI}/aty_image_view.php?siteId=${siteId}&iID=${shop.getIn([
@@ -78,7 +78,7 @@ class SideMenu extends Component {
                 ) : null}
               </div>
             </div>
-            <div className="title">{shop.get('name')}</div>
+            <div className="drawer-title">{shop.get('name')}</div>
             {/*<div className="sub-title">
               <span className="name">홍길동사장님</span> 안녕하세요.
             </div>*/}
@@ -99,18 +99,18 @@ class SideMenu extends Component {
           </div>
           <div className="body">
             <div className="list-wrapper">
-              <ul className="list-items">
-                <li className="list-item">
-                  <div className="content-wrapper">
+              <ul className="drawer-list-items">
+                <li className="drawer-list-item">
+                  <div className="drawer-content-wrapper">
                     <div className="icon shop" />
-                    <div className="title">업소 운영관리</div>
+                    <div className="drawer-title">업소 운영관리</div>
                   </div>
                 </li>
-                <li className="list-item sub">
-                  <div className="content-wrapper">
+                <li className="drawer-list-item sub">
+                  <div className="drawer-content-wrapper">
                     {role === 'manager' ? null : (
                       <div
-                        className={cx('title', { selected: modifyShop })}
+                        className={cx('drawer-title', { selected: modifyShop })}
                         onClick={this._onPress('/ceo/shop')}
                         onTouchStart={this._onTouchStart('modifyShop')}
                         onTouchEnd={this._onTouchEnd('modifyShop')}>
@@ -119,7 +119,7 @@ class SideMenu extends Component {
                     )}
                     {role === 'ceo' ? (
                       <div
-                        className={cx('title', { selected: management })}
+                        className={cx('drawer-title', { selected: management })}
                         onClick={this._onPress('/menus/management')}
                         onTouchStart={this._onTouchStart('management')}
                         onTouchEnd={this._onTouchEnd('management')}>
@@ -127,7 +127,7 @@ class SideMenu extends Component {
                       </div>
                     ) : null}
                     <div
-                      className={cx('title', { selected: stopOrder })}
+                      className={cx('drawer-title', { selected: stopOrder })}
                       onClick={this._onPress('/menus/delivery')}
                       onTouchStart={this._onTouchStart('stopOrder')}
                       onTouchEnd={this._onTouchEnd('stopOrder')}>
@@ -137,23 +137,23 @@ class SideMenu extends Component {
                   </div>
                 </li>
                 <li
-                  className={cx('list-item', { selected: setting })}
+                  className={cx('drawer-list-item', { selected: setting })}
                   onTouchStart={this._onTouchStart('setting')}
                   onTouchEnd={this._onTouchEnd('setting')}>
-                  <div className="content-wrapper">
+                  <div className="drawer-content-wrapper">
                     <div className="icon setup" />
-                    <div className="title" onClick={this._onPress('/menus/setting')}>
+                    <div className="drawer-title" onClick={this._onPress('/menus/setting')}>
                       설정
                     </div>
                   </div>
                 </li>
                 <li
-                  className={cx('list-item', { selected: faq })}
+                  className={cx('drawer-list-item', { selected: faq })}
                   onTouchStart={this._onTouchStart('faq')}
                   onTouchEnd={this._onTouchEnd('faq')}>
-                  <div className="content-wrapper">
+                  <div className="drawer-content-wrapper">
                     <div className="icon custom" />
-                    <div className="title">고객센터</div>
+                    <div className="drawer-title">고객센터</div>
                   </div>
                 </li>
                 {/*<li className="list-item sub">
