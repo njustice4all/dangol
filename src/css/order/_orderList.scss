@@ -91,6 +91,9 @@
         div {
           box-sizing: border-box;
         }
+        .left-wrapper {
+          padding: 10px;
+        }
         .label {
           background: #ababab;
         }
@@ -104,6 +107,9 @@
           padding: 7px;
         }
         &.cancel {
+          .left-wrapper {
+            padding: 10px;
+          }
           background: #f3f3f3;
           .right-btn {
             background: #ababab;
