@@ -46,17 +46,17 @@ const ButtonBack = ({ goBack, first }) => {
 const TabMenu = ({ path, handleRoutes }) => (
   <div className="tabmenu item3">
     <ul>
-      <li className={cx({ active: path === '/order/reception' ? true : false })}>
+      <li className={cx('tab', { active: path === '/order/reception' ? true : false })}>
         <div onClick={handleRoutes('/order/reception')}>
           주문접수{/*<span className="count">12</span>*/}
         </div>
       </li>
-      <li className={cx({ active: path === '/order/progress' ? true : false })}>
+      <li className={cx('tab', { active: path === '/order/progress' ? true : false })}>
         <div onClick={handleRoutes('/order/progress')}>
           처리중{/*<span className="count">4</span>*/}
         </div>
       </li>
-      <li className={cx({ active: path === '/order/complete' ? true : false })}>
+      <li className={cx('tab', { active: path === '/order/complete' ? true : false })}>
         <div onClick={handleRoutes('/order/complete')}>처리완료</div>
       </li>
     </ul>

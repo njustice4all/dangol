@@ -32,12 +32,11 @@ const Product = ({ detail, head }) => {
   );
 };
 
-const Option = ({ option }) => {
-  console.log(option.toJS());
+const Option = ({ option, options }) => {
   return (
     <li className="list-item">
       <div className="table">
-        <div className="subject">{option.get('name')}</div>
+        <div className="subject">{options ? option.get('option2') : option.get('name')}</div>
         <div className="qnt">{option.get('quantity')}</div>
         <div className="price">{Converter.numberWithCommas(option.get('price'))}원</div>
         {/*<div className="subject">{option.get('option2')}</div>
@@ -63,10 +62,16 @@ const Products = ({ detail }) => {
       <div className="content-title">주문상품정보</div>
       <ul className="list-items">
         <Product head />
-        <Product detail={detail} />
+        {/*<Product detail={detail} />*/}
         {/*options && options.map((option, i) => <Option option={option} key={`option-${i}`} />)*/}
         {orderDetails &&
           orderDetails.map((detail, i) => <Option option={detail} key={`option-${i}`} />)}
+        {orderDetails &&
+          orderDetails.map((value, i) => {
+            return value
+              .getIn(['product', 'option', 'list'])
+              .map((option, i) => <Option option={option} key={`options-${i}`} options />);
+          })}
         <li className="list-item">
           <div className="table total">
             <div className="subject">총 주문금액</div>

@@ -95,6 +95,15 @@ body {
   }
 }
 
+.tab {
+  border-bottom: 1px solid #cecece;
+  padding-top: 1px !important;
+}
+
+.tab.active {
+  border-bottom: none;
+}
+
 .label {
   border-radius: 15px;
   text-align: center;

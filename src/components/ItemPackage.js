@@ -50,7 +50,10 @@ const ItemPackage = ({ goDetail, order, status, pathname, isProgress, isReceptio
         <div className="right-wrapper">
           <div className="orderinfo">
             {/*<span className="alert">{order.get('pickupAfter')}</span> 후 픽업*/}
-            <span className="alert">포장주문</span> 입니다
+            <span className="alert" style={{ color: '#000' }}>
+              포장주문
+            </span>{' '}
+            입니다
           </div>
           <div className="comment">{order.get('request')}</div>
         </div>
