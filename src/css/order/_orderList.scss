@@ -18,26 +18,21 @@
     .content-wrapper {
       overflow: hidden;
       width: 100%;
-      padding: 10px 10px 10px 0;
+      padding: 10px;
       line-height: 18px;
-      display: table;
+      display: flex;
       .left-wrapper {
-        // display: table-cell;
-        // width: 38%;
-        // text-align: center;
-        // vertical-align: middle;
-        // padding: 5px 0;
         padding: 0;
         display: flex;
         flex-direction: column;
-        width: 100%;
         justify-content: center;
         align-items: center;
       }
       .right-wrapper {
-        display: table-cell;
-        width: 62%;
-        padding-left: 10px;
+        display: flex;
+        flex: 1;
+        flex-direction: column;
+        padding-left: 20px;
         vertical-align: middle;
       }
       .orderno {
@@ -64,7 +59,7 @@
         padding-top: 5px;
       }
       .orderinfo {
-        padding: 26px 0 10px;
+        padding: 16px 0 10px;
         line-height: 18px;
         vertical-align: top;
         .alert {
@@ -97,20 +92,33 @@
         .label {
           background: #ababab;
         }
+        .right-wrapper {
+          padding-left: 10px;
+        }
+        .orderinfo {
+          padding: 26px 0 10px;
+        }
         .right-btn {
-          display: table-cell;
-          width: 20px;
-          text-align: center;
+          width: 25px;
           background: #fe931f;
-          vertical-align: middle;
           color: #fff;
           padding: 7px;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          writing-mode: vertical-rl;
         }
         &.cancel {
           .left-wrapper {
             padding: 10px;
           }
           background: #f3f3f3;
+          .right-wrapper {
+            padding-left: 10px;
+          }
+          .orderinfo {
+            padding: 26px 0 10px;
+          }
           .right-btn {
             background: #ababab;
           }
