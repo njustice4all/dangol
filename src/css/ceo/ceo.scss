@@ -921,6 +921,7 @@ input {
     color: $color-font-default;
     max-height: 100%;
     overflow-y: scroll;
+    -webkit-overflow-scrolling: touch;
     .options {
       margin: 5px 0;
       font-size: 13px;

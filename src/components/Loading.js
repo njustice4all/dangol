@@ -5,14 +5,15 @@ class Loading extends Component {
     return (
       <div
         style={{
-          position: 'absolute',
+          position: 'fixed',
           top: '0',
           left: '0',
           right: '0',
           bottom: '0',
           display: 'flex',
           alignItems: 'center',
-          background: 'rgba(0, 0, 0, 0.7)',
+          // background: 'rgba(0, 0, 0, 0.7)',
+          zIndex: 99,
         }}>
         <div className="spinner">
           <div className="double-bounce1" />

@@ -3,6 +3,7 @@
     @include headerStyle;
   }
   .body {
+    -webkit-overflow-scrolling: touch;
     .bodyHeader {
       text-align: center;
       line-height: 26px;
