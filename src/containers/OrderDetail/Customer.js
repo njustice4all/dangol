@@ -18,7 +18,9 @@ const CustomerInfo = ({ detail }) => {
         <div className="text" style={{ paddingTop: '8px' }}>
           {phone}
         </div>
-        <div className="btn call">전화하기</div>
+        <a href={`tel:${phone}`} className="btn call">
+          전화하기
+        </a>
       </div>
     </li>
   );

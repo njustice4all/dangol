@@ -227,7 +227,18 @@ class ModifyShop extends Component {
     navigateTo('/ceo/products')();
   };
 
-  handleCancel = () => this.props.history.push('/order/reception');
+  handleCancel = () => {
+    // this.props.history.push('/order/reception');
+    window.postMessage(
+      JSON.stringify({
+        type: 'redux/action',
+        payload: {
+          type: '@@router/GO_BACK',
+        },
+      }),
+      '*'
+    );
+  };
 
   setId = e => {
     e.persist();
@@ -258,7 +269,7 @@ class ModifyShop extends Component {
       <div className="ceo">
         <div
           className="container"
-          style={{ paddingTop: 0, paddingBottom: '5px', color: '#5f5f5f' }}>
+          style={{ paddingTop: 0, paddingBottom: '55px', color: '#5f5f5f' }}>
           <Navigator />
           {/*franchise.getIn(['status', 'isFetching']) ? <Loading /> : null*/}
           <div

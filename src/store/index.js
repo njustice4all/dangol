@@ -39,7 +39,7 @@ const watchWebActions = store => next => action => {
         }),
         '*'
       );
-    }, 500);
+    }, 700);
     return next(action);
   }
 
