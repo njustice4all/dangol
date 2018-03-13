@@ -96,22 +96,29 @@ const fetchOrderMore = (state, action) => {
   const pages = fromJS(action.pages);
   const more = fromJS(action.payload.lists);
 
-  if (action.payload.type === 'complete') {
+  if (action.payload.type.includes('deliveryDone')) {
     // 주문완료
     return state.withMutations(mutator =>
-      mutator.update('doneLists', doneLists => doneLists.push(...more)).set('doneListsObj', pages)
+      mutator
+        .update('doneLists', doneLists => doneLists.push(...more))
+        .set('doneListsObj', pages)
+        .set('isFetching', false)
     );
-  } else if (action.payload.type === 'payDone') {
-    // 주문대기
-    return state.withMutations(mutator =>
-      mutator.update('lists', orderLists => orderLists.push(...more)).set('orderListsObj', pages)
-    );
-  } else {
+  } else if (action.payload.type.includes('deliveryPrepare')) {
     // 진행중
     return state.withMutations(mutator =>
       mutator
         .update('processLists', processLists => processLists.push(...more))
         .set('processListsObj', pages)
+        .set('isFetching', false)
+    );
+  } else {
+    // 주문대기
+    return state.withMutations(mutator =>
+      mutator
+        .update('lists', orderLists => orderLists.push(...more))
+        .set('orderListsObj', pages)
+        .set('isFetching', false)
     );
   }
 };

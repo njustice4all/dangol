@@ -49,16 +49,13 @@ class OrderReception extends Component {
     const { order, coords, router, isFetching } = this.props;
     const pathname = router.location.pathname.split('/order/')[1];
 
-    if (isFetching) {
-      return <Loading />;
-    }
-
     return (
       <div
         className="body"
         style={{ height: 'calc(100% - 96px)', overflow: 'scroll' }}
         onScroll={this._onScroll}
         ref={scroll => (this.scroll = scroll)}>
+        {isFetching ? <Loading /> : null}
         {order.get('lists').size === 0 ? <EmptyOrder title="접수된 주문" /> : null}
         <ul className="list-items">
           {order.get('lists').map((order, index) => {

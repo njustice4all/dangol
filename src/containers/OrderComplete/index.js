@@ -31,7 +31,7 @@ class OrderComplete extends Component {
     const { fetchOrderMore, siteId, order } = this.props;
     const endPosition = this.scroll.scrollHeight - this.scroll.clientHeight;
 
-    const type = ['deliveryDone', 'cancelDonePay'];
+    const type = ['deliveryDone', 'cancelDonePay', 'cancelDoneFree'];
 
     const currentPage = order.getIn(['doneListsObj', 'currentPage']);
     const maxPage = order.getIn(['doneListsObj', 'maxPage']);
@@ -49,16 +49,13 @@ class OrderComplete extends Component {
     const { doneLists, coords, router, order, isFetching } = this.props;
     const pathname = router.location.pathname.split('/order/')[1];
 
-    if (isFetching) {
-      return <Loading />;
-    }
-
     return (
       <div
         className="body"
         style={{ height: 'calc(100% - 96px)', overflow: 'scroll' }}
         onScroll={this._onScroll}
         ref={scroll => (this.scroll = scroll)}>
+        {isFetching ? <Loading /> : null}
         {order.get('doneLists').size === 0 ? <EmptyOrder title="완료된 주문" /> : null}
         <ul className="list-items">
           {doneLists.map((order, index) => {

@@ -31,7 +31,7 @@ class OrderProgress extends Component {
     const { fetchOrderMore, siteId, order } = this.props;
     const endPosition = this.scroll.scrollHeight - this.scroll.clientHeight;
 
-    const type = 'deliveryPrepare';
+    const type = ['deliveryPrepare', 'cancelDoing'];
 
     const currentPage = order.getIn(['processListsObj', 'currentPage']);
     const maxPage = order.getIn(['processListsObj', 'maxPage']);
@@ -49,16 +49,13 @@ class OrderProgress extends Component {
     const { order, coords, router, lists, isFetching } = this.props;
     const pathname = router.location.pathname.split('/order/')[1];
 
-    if (isFetching) {
-      return <Loading />;
-    }
-
     return (
       <div
         className="body"
         style={{ height: 'calc(100% - 96px)', overflow: 'scroll' }}
         onScroll={this._onScroll}
         ref={scroll => (this.scroll = scroll)}>
+        {isFetching ? <Loading /> : null}
         {order.get('processLists').size === 0 ? <EmptyOrder title="처리중인 주문" /> : null}
         <ul className="list-items">
           {lists.map((order, index) => {

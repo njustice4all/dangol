@@ -12,7 +12,7 @@ class Loading extends Component {
           bottom: '0',
           display: 'flex',
           alignItems: 'center',
-          background: 'rgba(0, 0, 0, 0.4)',
+          background: 'rgba(0, 0, 0, 0.7)',
         }}>
         <div className="spinner">
           <div className="double-bounce1" />
