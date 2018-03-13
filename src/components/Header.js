@@ -117,7 +117,7 @@ class Header extends Component<Props> {
 
   _goBack = () => {
     const { router: { location: { pathname } }, locationChange, history: { goBack } } = this.props;
-    if (pathname.split('/').includes('management')) {
+    if (pathname.split('/').includes('management') || pathname.split('/').includes('order')) {
       goBack();
       return;
     }
@@ -190,7 +190,7 @@ export default withRouter(
     state => ({
       router: state.get('router'),
       order: state.getIn(['order', 'detail', 'order']),
-      status: state.getIn(['order', 'detail', 'orderDetail', 'state']),
+      status: state.getIn(['order', 'detail', 'orderDetail', 0, 'state']),
       detail: state.getIn(['order', 'detail']),
       first: state.getIn(['auth', 'first']),
       processLists: state.getIn(['order', 'processLists']),

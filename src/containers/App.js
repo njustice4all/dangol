@@ -150,7 +150,7 @@ export default withRouter(
     state => ({
       router: state.get('router'),
       sideMenu: state.getIn(['ui', 'sideMenu']),
-      status: state.getIn(['order', 'detail', 'orderDetail', 'state']),
+      status: state.getIn(['order', 'detail', 'orderDetail', 0, 'state']),
       session: state.getIn(['auth', 'session']),
       siteId: state.getIn(['auth', 'siteId']),
       auth: state.get('auth'),
