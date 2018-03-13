@@ -6,6 +6,7 @@ import cx from 'classnames';
 
 import { closePopup } from '../actions/ui';
 import { initGetShopInfo } from '../actions/ceo';
+import getMobileOperatingSystem from '../utils/getMobileOperatingSystem';
 
 import { ATY_URI } from '../constants';
 
@@ -59,6 +60,7 @@ class SideMenu extends Component {
   render() {
     const { open, order, shop, siteId, auth, role, session } = this.props;
     const { modifyShop, management, stopOrder, setting, faq } = this.state;
+    const os = getMobileOperatingSystem();
 
     return (
       <div className={cx('sidemenu', { active: open })}>
@@ -88,7 +90,9 @@ class SideMenu extends Component {
                   <div
                     className="count"
                     style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                    <span style={{ paddingTop: '4px' }}>{order.get('lists').size}</span>
+                    <span style={os === 'android' ? { paddingTop: '4px' } : { paddingTop: '2px' }}>
+                      {order.get('lists').size}
+                    </span>
                   </div>
                 </div>
               </div>
