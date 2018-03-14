@@ -3,11 +3,11 @@ import { connect } from 'react-redux';
 import { push } from 'react-router-redux';
 
 import { initGetManagers, initSetManager } from '../../actions/ceo';
+import { openPopup } from '../../actions/ui';
 
 class EditAdmin extends Component {
   componentDidMount = () => {
     const { initGetManagers, id, secret, managers } = this.props;
-    // console.log(id, managers.toJS());
     if (secret) {
       initGetManagers({ id, secret, ceo: true }).then(result => {
         if (!result.success) {
@@ -37,7 +37,22 @@ class EditAdmin extends Component {
   };
 
   _onModify = () => {
-    const { id, secret, initSetManager, managers, navigateTo, first, setFirst } = this.props;
+    const {
+      id,
+      secret,
+      initSetManager,
+      managers,
+      navigateTo,
+      first,
+      setFirst,
+      openPopup,
+    } = this.props;
+
+    if (this.pw.value.trim() === '') {
+      openPopup('fail');
+      return;
+    }
+
     const payload = {
       id,
       secret,
@@ -65,6 +80,11 @@ class EditAdmin extends Component {
           </div>
           <div style={{ fontSize: '20px' }}>{manager.getIn([0, 'id'])}</div>
           <input type="password" placeholder="비밀번호" ref={pw => (this.pw = pw)} />
+          {/*<input
+            type="password"
+            placeholder="비밀번호 확인"
+            ref={repeat => (this.repeat = repeat)}
+          />*/}
         </div>
         <div className="btn-wrapper" style={{ display: 'flex' }}>
           <div className="btn big" onClick={this._onModify} style={{ flex: '1' }}>
@@ -95,5 +115,6 @@ export default connect(
     initGetManagers: payload => dispatch(initGetManagers(payload)),
     initSetManager: payload => dispatch(initSetManager(payload)),
     setFirst: () => dispatch({ type: 'auth/SET_FIRST' }),
+    openPopup: ui => dispatch(openPopup(ui)),
   })
 )(EditAdmin);

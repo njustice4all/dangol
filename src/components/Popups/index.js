@@ -6,3 +6,4 @@ export { default as OrderComplete } from './OrderComplete';
 export { default as DeleteProduct } from './DeleteProduct';
 export { default as NewOrder } from './NewOrder';
 export { default as Refund } from './Refund';
+export { default as Fail } from './Fail';

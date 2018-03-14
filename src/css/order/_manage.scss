@@ -151,6 +151,9 @@
         background-color: #fff;
         color: #878787;
       }
+      input:focus {
+        border-bottom-color: #fe931f;
+      }
     }
   }
 }

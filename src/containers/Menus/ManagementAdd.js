@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { push } from 'react-router-redux';
 
 import { initGetManagers, initSetManager } from '../../actions/ceo';
+import { openPopup } from '../../actions/ui';
 
 class ManagementAdd extends Component {
   state = { id: '', name: '', duplicate: false };
@@ -43,6 +44,28 @@ class ManagementAdd extends Component {
     }
   };
 
+  validate = () => {
+    const { edit, openPopup } = this.props;
+
+    if (edit) {
+      if (this.name.value.trim() === '' || this.pw.value.trim() === '') {
+        openPopup('fail');
+        return true;
+      }
+      return false;
+    } else {
+      if (
+        this.name.value.trim() === '' ||
+        this.pw.value.trim() === '' ||
+        this.id.value.trim() === ''
+      ) {
+        openPopup('fail');
+        return true;
+      }
+      return false;
+    }
+  };
+
   _onPress = () => {
     const {
       id,
@@ -57,7 +80,14 @@ class ManagementAdd extends Component {
       ceoId,
     } = this.props;
 
-    const duplicate = this.checkDuplicate(managers, ceoId, this.id.value);
+    if (this.validate()) {
+      return;
+    }
+
+    let duplicate = this.checkDuplicate(managers, ceoId, this.id.value);
+    if (edit) {
+      duplicate = false;
+    }
 
     if (duplicate) {
       this.setState(prevState => ({ duplicate: true }));
@@ -174,5 +204,6 @@ export default connect(
     initGetManagers: payload => dispatch(initGetManagers(payload)),
     initSetManager: payload => dispatch(initSetManager(payload)),
     navigateTo: route => dispatch(push(route)),
+    openPopup: ui => dispatch(openPopup(ui)),
   })
 )(ManagementAdd);
