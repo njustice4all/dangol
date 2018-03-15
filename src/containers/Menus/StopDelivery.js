@@ -92,19 +92,27 @@ class StopDelivery extends Component {
                   <div className="title">중단시간</div>
                   <div className="content">
                     <div style={{ display: 'flex' }}>
-                      <input
-                        type="time"
-                        style={{ width: '50%', fontSize: '14px', textAlign: 'center' }}
-                        value={time.start}
-                        onChange={this.setTime('start')}
-                      />
-                      <span style={{ marginRight: '15px', paddingTop: '3px' }}> ~ </span>
-                      <input
-                        type="time"
-                        style={{ width: '50%', fontSize: '14px', textAlign: 'center' }}
-                        value={time.end}
-                        onChange={this.setTime('end')}
-                      />
+                      <label onClick={() => this.left.click()}>
+                        <input
+                          ref={left => (this.left = left)}
+                          type="time"
+                          style={{ position: 'absolute', width: '1px', height: '1px' }}
+                          value={time.start}
+                          onChange={this.setTime('start')}
+                        />
+                        {this.state.time.start}
+                      </label>
+                      <span style={{ margin: '0 15px' }}> ~ </span>
+                      <label onClick={() => this.right.click()}>
+                        <input
+                          ref={right => (this.right = right)}
+                          type="time"
+                          style={{ position: 'absolute', width: '1px', height: '1px' }}
+                          value={time.end}
+                          onChange={this.setTime('end')}
+                        />
+                        {this.state.time.end}
+                      </label>
                     </div>
                   </div>
                 </div>
