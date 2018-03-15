@@ -26,20 +26,6 @@ const Info = ({
     <div className="items" style={{ padding: '5px 8px', marginTop: '10px' }}>
       <h5 className="title__big">가맹점 정보</h5>
       <div className="info__wrapper">
-        {/*<div className="input__box">
-          <div className={classNames('input__title', { wrong: validateClass('description') })}>
-            아이디
-          </div>
-          <div className="input__content">
-            <input
-              style={{ margin: '0' }}
-              type="text"
-              className="default__form"
-              value="aty001"
-              disabled
-            />
-          </div>
-        </div>*/}
         <div className="input__box">
           <div className={classNames('input__title', { wrong: validateClass('category') })}>
             분류
@@ -74,7 +60,7 @@ const Info = ({
               type="text"
               style={{ height: '100%' }}
               className="input__content__field"
-              // placeholder="가게 이름을 입력하세요"
+              placeholder="가게 이름을 입력하세요"
               value={name}
               onChange={e => setStateByKey('name', e.target.value)}
             />

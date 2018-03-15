@@ -56,7 +56,7 @@ class ButtonFooter extends Component {
           거부
         </div>
         <div className="btn big" onClick={this._onPress}>
-          주문접수
+          {this.props.isProgress ? '주문완료' : '주문접수'}
         </div>
       </div>
     );

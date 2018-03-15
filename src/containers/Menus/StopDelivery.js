@@ -94,14 +94,14 @@ class StopDelivery extends Component {
                     <div style={{ display: 'flex' }}>
                       <input
                         type="time"
-                        style={{ width: '50%', fontSize: '14px' }}
+                        style={{ width: '50%', fontSize: '14px', textAlign: 'center' }}
                         value={time.start}
                         onChange={this.setTime('start')}
                       />
-                      <span style={{ margin: '0 10px', paddingTop: '3px' }}> ~ </span>
+                      <span style={{ marginRight: '15px', paddingTop: '3px' }}> ~ </span>
                       <input
                         type="time"
-                        style={{ width: '50%', fontSize: '14px' }}
+                        style={{ width: '50%', fontSize: '14px', textAlign: 'center' }}
                         value={time.end}
                         onChange={this.setTime('end')}
                       />

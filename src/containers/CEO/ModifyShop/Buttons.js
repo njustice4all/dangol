@@ -14,7 +14,7 @@ type Props = {
 
 const Buttons = ({ handleConfirm, handleCancel, errors, editMode }: Props) => {
   return (
-    <div style={{ position: 'fixed', bottom: '0', width: '100%', zIndex: '99' }}>
+    <div>
       <div className="survay__btn__confirm__wrapper">
         {getMobileOperatingSystem() === 'android' ? null : (
           <div className="buttons" onClick={handleCancel}>

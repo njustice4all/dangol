@@ -267,52 +267,51 @@ class ModifyShop extends Component {
 
     return (
       <div className="ceo">
-        <div
-          className="container"
-          style={{ paddingTop: 0, paddingBottom: '55px', color: '#5f5f5f' }}>
+        <div className="container shop" style={{ paddingTop: 0, color: '#5f5f5f', height: '100%' }}>
           <Navigator />
-          {/*franchise.getIn(['status', 'isFetching']) ? <Loading /> : null*/}
-          <div
-            className={classNames('overlay', { active: isOpenAddress })}
-            onClick={this.toggleAddress}
-          />
-          {isOpenAddress ? (
-            <Address setAddress={this.setAddress} toggleAddress={this.toggleAddress} />
-          ) : null}
-          <Images
-            preview={preview}
-            images={images}
-            editMode
-            onImageChange={this.onImageChange}
-            validateClass={this.validateClass}
-            deleteImageByIndex={this.deleteImageByIndex}
-          />
-          <div className="divider">
-            <div />
+          <div>
+            <div
+              className={classNames('overlay', { active: isOpenAddress })}
+              onClick={this.toggleAddress}
+            />
+            {isOpenAddress ? (
+              <Address setAddress={this.setAddress} toggleAddress={this.toggleAddress} />
+            ) : null}
+            <Images
+              preview={preview}
+              images={images}
+              editMode
+              onImageChange={this.onImageChange}
+              validateClass={this.validateClass}
+              deleteImageByIndex={this.deleteImageByIndex}
+            />
+            <div className="divider">
+              <div />
+            </div>
+            <Info
+              address={address}
+              possible={possible}
+              isOpenAddress={isOpenAddress}
+              name={name}
+              contact={contact}
+              openingHours={openingHours}
+              closeDays={closeDays}
+              description={description}
+              category={category}
+              initiate={this.initiate}
+              toggleAddress={this.toggleAddress}
+              handleCheck={this.handleCheck}
+              setStateByKey={this.setStateByKey}
+              handleDetailAddress={this.handleDetailAddress}
+              handleCategory={this.handleCategory}
+              validateClass={this.validateClass}
+              id={id}
+              setId={this.setId}
+              navigateTo={navigateTo}
+              permitNumber={permitNumber}
+              openDay={openDay}
+            />
           </div>
-          <Info
-            address={address}
-            possible={possible}
-            isOpenAddress={isOpenAddress}
-            name={name}
-            contact={contact}
-            openingHours={openingHours}
-            closeDays={closeDays}
-            description={description}
-            category={category}
-            initiate={this.initiate}
-            toggleAddress={this.toggleAddress}
-            handleCheck={this.handleCheck}
-            setStateByKey={this.setStateByKey}
-            handleDetailAddress={this.handleDetailAddress}
-            handleCategory={this.handleCategory}
-            validateClass={this.validateClass}
-            id={id}
-            setId={this.setId}
-            navigateTo={navigateTo}
-            permitNumber={permitNumber}
-            openDay={openDay}
-          />
         </div>
         <Buttons
           editMode

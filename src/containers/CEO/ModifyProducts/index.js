@@ -107,25 +107,26 @@ class ModifyProducts extends Component {
 
     return (
       <div
+        style={{ height: '100%' }}
         className={
           showInputModal ? 'product-container-wrapper disable' : 'product-container-wrapper'
         }>
         <Navigator />
-        <div className="container product">
-          <div>
-            <div style={{ padding: '10px' }}>
-              <div className="btn__add-product" onClick={this.addProduct}>
-                <span style={{ paddingRight: '5px' }}>
-                  <img src="/img/add-product.svg" />
-                </span>
-                <span>판매상품 추가</span>
-              </div>
-            </div>
-            <div className="divider">
-              <div />
-            </div>
-            {this.renderProducts()}
+        <div style={{ padding: '10px' }}>
+          <div className="btn__add-product" onClick={this.addProduct}>
+            <span style={{ paddingRight: '5px' }}>
+              <img src="/img/add-product.svg" />
+            </span>
+            <span>판매상품 추가</span>
           </div>
+        </div>
+        <div className="divider">
+          <div />
+        </div>
+        <div
+          className="container product"
+          style={{ minHeight: 'auto', height: 'calc(100% - 125px)', overflow: 'auto' }}>
+          {this.renderProducts()}
         </div>
         {showInputModal ? (
           <ProductInputModal idx={idx} isNew={this.state.isNew} togglePopup={this.togglePopup} />

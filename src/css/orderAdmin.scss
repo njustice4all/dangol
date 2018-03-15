@@ -54,6 +54,10 @@ textarea {
   border-radius: 0;
 }
 
+textarea {
+  resize: none;
+}
+
 input {
   -webkit-appearance: none;
   -webkit-border-radius: 0;
@@ -61,4 +65,11 @@ input {
 
 input[type='checkbox'] {
   -webkit-appearance: checkbox;
+}
+
+.body {
+  height: calc(100% - 96px);
+  overflow: auto;
+  // overflow-y: scroll;
+  -webkit-overflow-scrolling: touch;
 }

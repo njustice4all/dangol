@@ -21,6 +21,7 @@ import { StopDelivery, Setting, Management, ManagementAdd, EditAdmin } from './M
 import { initFetchOrderLists } from '../actions/order';
 import { initGetShopInfo } from '../actions/ceo';
 import getClassNameByRoutes from '../utils/getClassNameByRoutes';
+import calHeight from '../utils/calHeight';
 import getPayment from '../utils/getPayment';
 
 class App extends Component {
@@ -95,6 +96,8 @@ class App extends Component {
       pathname === '/ceo/products' ||
       pathname === '/' ||
       pathname.split('/').includes('terms');
+
+    calHeight(pathname);
 
     return (
       <PopupController>
