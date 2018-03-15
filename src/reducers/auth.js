@@ -32,7 +32,7 @@ const getInfo = (state, action) => {
       .set('first', action.info.first)
       .set('session', action.info.sessId)
       .set('siteId', action.info.siteId)
-      .set('id', action.user.id)
+      .set('id', action.user.id.toLowerCase())
       .set('siteName', action.info.siteName)
       .set('siteUserId', action.info.siteUserId)
       .set('topic', action.info.topic)

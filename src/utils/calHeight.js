@@ -5,8 +5,8 @@ export default pathname => {
 
   if (
     pathname.split('/').includes('terms') ||
-    pathname.split('/').includes('order') ||
-    pathname === '/ceo/products'
+    pathname.split('/').includes('order')
+    // pathname === '/ceo/products'
   ) {
     html[0].style.height = '100%';
     body[0].style.height = '100%';
