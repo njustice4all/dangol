@@ -57,7 +57,7 @@ class ManagementAdd extends Component {
       if (
         this.name.value.trim() === '' ||
         this.pw.value.trim() === '' ||
-        this.id.value.trim() === ''
+        this.id.value.toLowerCase().trim() === ''
       ) {
         openPopup('fail');
         return true;
@@ -84,7 +84,7 @@ class ManagementAdd extends Component {
       return;
     }
 
-    let duplicate = this.checkDuplicate(managers, ceoId, this.id.value);
+    let duplicate = this.checkDuplicate(managers, ceoId, this.id.value.toLowerCase());
     if (edit) {
       duplicate = false;
     }
@@ -98,7 +98,7 @@ class ManagementAdd extends Component {
       const payload = {
         id,
         secret,
-        userId: this.id.value,
+        userId: this.id.value.toLowerCase(),
         userPw: this.pw.value,
         userName: this.name.value,
         userRole: edit ? data[0].role : reseller ? 'reseller' : 'manager',

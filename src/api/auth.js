@@ -8,7 +8,7 @@ export const apiReqLogin = user => {
       type: 'POST',
       url: LOGIN,
       data: {
-        id: user.id,
+        id: user.id.toLowerCase(),
         pw: user.pw,
       },
       success: result => {

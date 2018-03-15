@@ -76,9 +76,9 @@ class EditAdmin extends Component {
       <div className="body">
         <div className="input-wrapper">
           <div style={{ fontSize: '20px', color: '#fe931f', marginBottom: '20px' }}>
-            {manager.getIn([0, 'name'])}
+            {this.props.managers.getIn([0, 'name'])}
           </div>
-          <div style={{ fontSize: '20px' }}>{manager.getIn([0, 'id'])}</div>
+          <div style={{ fontSize: '20px' }}>{this.props.managers.getIn([0, 'id'])}</div>
           <input type="password" placeholder="비밀번호" ref={pw => (this.pw = pw)} />
           {/*<input
             type="password"
