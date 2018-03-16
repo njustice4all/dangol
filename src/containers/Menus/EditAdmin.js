@@ -7,9 +7,9 @@ import { openPopup } from '../../actions/ui';
 
 class EditAdmin extends Component {
   componentDidMount = () => {
-    const { initGetManagers, id, secret, managers } = this.props;
+    const { initGetManagers, id, secret, managers, role } = this.props;
     if (secret) {
-      initGetManagers({ id, secret, ceo: true }).then(result => {
+      initGetManagers({ id, secret, ceo: role === 'ceo' ? true : false }).then(result => {
         if (!result.success) {
           this._onLogout();
         }
@@ -18,11 +18,11 @@ class EditAdmin extends Component {
   };
 
   componentWillReceiveProps = nextProps => {
-    const { initGetManagers } = this.props;
+    const { initGetManagers, role } = this.props;
 
     if (nextProps.secret !== this.props.secret) {
       const { id, secret } = nextProps;
-      initGetManagers({ id, secret, ceo: true }).then(result => {
+      initGetManagers({ id, secret, ceo: role === 'ceo' ? true : false }).then(result => {
         if (!result.success) {
           this._onLogout();
         }
@@ -60,26 +60,24 @@ class EditAdmin extends Component {
       userPw: this.pw.value,
     };
 
-    if (first === '1') {
-      setFirst();
-    }
-
     initSetManager(payload);
     navigateTo('/order/reception');
   };
 
   render() {
-    const { managers, id } = this.props;
+    const { managers, id, role } = this.props;
     const manager = managers.filter(manager => manager.get('id') === id);
 
     return (
       <div className="body">
         <div className="input-wrapper">
           <div style={{ fontSize: '20px', color: '#fe931f', marginBottom: '20px' }}>
-            {this.props.managers.getIn([0, 'name'])}
+            {manager.getIn([0, 'name'])}
           </div>
-          <div style={{ fontSize: '20px' }}>{this.props.managers.getIn([0, 'id'])}</div>
-          <input type="password" placeholder="비밀번호" ref={pw => (this.pw = pw)} />
+          <div style={{ fontSize: '20px' }}>{manager.getIn([0, 'id'])}</div>
+          {role === 'ceo' ? (
+            <input type="password" placeholder="비밀번호" ref={pw => (this.pw = pw)} />
+          ) : null}
           {/*<input
             type="password"
             placeholder="비밀번호 확인"
@@ -87,9 +85,11 @@ class EditAdmin extends Component {
           />*/}
         </div>
         <div className="btn-wrapper" style={{ display: 'flex' }}>
-          <div className="btn big" onClick={this._onModify} style={{ flex: '1' }}>
-            비밀번호 변경
-          </div>
+          {role === 'ceo' ? (
+            <div className="btn big" onClick={this._onModify} style={{ flex: '1' }}>
+              비밀번호 변경
+            </div>
+          ) : null}
           <div
             className="btn big"
             onClick={this._onLogout}
@@ -108,6 +108,7 @@ export default connect(
     first: state.getIn(['auth', 'first']),
     secret: state.getIn(['auth', 'secret']),
     managers: state.getIn(['ceo', 'managers']),
+    role: state.getIn(['auth', 'role']),
   }),
   dispatch => ({
     logout: () => dispatch({ type: 'auth/LOGOUT' }),

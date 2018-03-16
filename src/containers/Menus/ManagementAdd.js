@@ -78,6 +78,7 @@ class ManagementAdd extends Component {
       navigateTo,
       first,
       ceoId,
+      setFirst,
     } = this.props;
 
     if (this.validate()) {
@@ -107,6 +108,7 @@ class ManagementAdd extends Component {
       initSetManager(payload);
 
       if (first === '1') {
+        setFirst();
         navigateTo('/order/reception');
       } else {
         navigateTo('/menus/management');
@@ -205,5 +207,6 @@ export default connect(
     initSetManager: payload => dispatch(initSetManager(payload)),
     navigateTo: route => dispatch(push(route)),
     openPopup: ui => dispatch(openPopup(ui)),
+    setFirst: () => dispatch({ type: 'auth/SET_FIRST' }),
   })
 )(ManagementAdd);
