@@ -48,9 +48,14 @@ class OrderProgress extends Component {
   render() {
     const { order, coords, router, lists, isFetching } = this.props;
     const pathname = router.location.pathname.split('/order/')[1];
+    const height = window.innerHeight - 96;
 
     return (
-      <div className="body" onScroll={this._onScroll} ref={scroll => (this.scroll = scroll)}>
+      <div
+        className="body"
+        onScroll={this._onScroll}
+        ref={scroll => (this.scroll = scroll)}
+        style={{ height }}>
         {isFetching ? <Loading /> : null}
         {order.get('processLists').size === 0 ? <EmptyOrder title="처리중인 주문" /> : null}
         <ul className="list-items">

@@ -48,9 +48,14 @@ class OrderComplete extends Component {
   render() {
     const { doneLists, coords, router, order, isFetching } = this.props;
     const pathname = router.location.pathname.split('/order/')[1];
+    const height = window.innerHeight - 96;
 
     return (
-      <div className="body" onScroll={this._onScroll} ref={scroll => (this.scroll = scroll)}>
+      <div
+        className="body"
+        onScroll={this._onScroll}
+        ref={scroll => (this.scroll = scroll)}
+        style={{ height }}>
         {isFetching ? <Loading /> : null}
         {order.get('doneLists').size === 0 ? <EmptyOrder title="완료된 주문" /> : null}
         <ul className="list-items">
