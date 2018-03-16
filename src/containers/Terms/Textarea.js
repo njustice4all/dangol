@@ -15,9 +15,11 @@ const Textarea = ({ options, terms, setTerms }: Props) => {
     type = 'policyText';
   }
 
+  const height = window.innerHeight - 129;
+
   return (
     <div className="terms-contents">
-      <div className="terms-textarea-wrapper">
+      <div className="terms-textarea-wrapper" style={{ height }}>
         <textarea
           className="terms-textarea"
           value={terms}
