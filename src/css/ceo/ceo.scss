@@ -370,6 +370,7 @@ input {
 
 .image__wrapper {
   overflow: auto;
+  -webkit-overflow-scrolling: touch;
   white-space: nowrap;
 }
 
@@ -924,7 +925,7 @@ input {
     padding: 8px;
     color: $color-font-default;
     overflow: auto;
-    // -webkit-overflow-scrolling: touch;
+    -webkit-overflow-scrolling: touch;
     .options {
       margin: 5px 0;
       font-size: 13px;

@@ -12,8 +12,10 @@ import {
   initSetProducts,
   initGetProducts,
 } from '../../../actions/ceo';
+import { openPopup } from '../../../actions/ui';
 
 import Converter from '../../../utils/Converter';
+import validateProduct from '../../../utils/validateProduct';
 
 class ProductInput extends Component {
   state = { preview: List(), productDetail: '' };
@@ -48,7 +50,7 @@ class ProductInput extends Component {
   };
 
   componentWillReceiveProps = nextProps => {
-    const { initGetProducts, initGetProductDetail } = this.props;
+    const { initGetProducts, initGetProductDetail, productDetail } = this.props;
 
     if (nextProps.setProducts !== this.props.setProducts) {
       const { session, siteId } = nextProps;
@@ -56,7 +58,9 @@ class ProductInput extends Component {
       return;
     }
 
-    this.setState(prevState => ({ productDetail: nextProps.productDetail }));
+    if (productDetail.size !== nextProps.productDetail.size) {
+      this.setState(prevState => ({ productDetail: nextProps.productDetail }));
+    }
   };
 
   _onChangeByKeys = (key1, key2) => e => {
@@ -173,7 +177,14 @@ class ProductInput extends Component {
 
   onConfirm = (isNew, idx) => () => {
     const { productDetail, preview } = this.state;
-    const { initGetProducts, initUploadImage, initSetProducts, siteId, navigateTo } = this.props;
+    const {
+      initGetProducts,
+      initUploadImage,
+      initSetProducts,
+      siteId,
+      navigateTo,
+      openPopup,
+    } = this.props;
 
     if (isNew) {
       initUploadImage({
@@ -204,9 +215,13 @@ class ProductInput extends Component {
       });
     } else {
       const result = Converter.toSetProductData(productDetail, null, idx);
-      initSetProducts({ result, siteId });
-      // this.props.history.goBack();
-      navigateTo('/ceo/products');
+
+      if (validateProduct(result)) {
+        initSetProducts({ result, siteId });
+        navigateTo('/ceo/products');
+      } else {
+        openPopup('fail');
+      }
     }
   };
 
@@ -345,5 +360,6 @@ export default connect(
     initGetProducts: payload => dispatch(initGetProducts(payload)),
     closeModal: () => dispatch({ type: 'ceo/CLOSE_MODAL' }),
     navigateTo: route => dispatch(push(route)),
+    openPopup: ui => dispatch(openPopup(ui)),
   })
 )(ProductInput);

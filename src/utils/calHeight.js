@@ -1,5 +1,4 @@
 export default pathname => {
-  console.log(pathname);
   const html = document.getElementsByTagName('html');
   const body = document.getElementsByTagName('body');
   const root = document.getElementById('root');
