@@ -189,6 +189,7 @@ export const initUploadImage = payload => async dispatch => {
         payload.idx
       );
       dispatch(initSetProducts({ result, siteId: payload.siteId }));
+      payload.goBack();
     }
   } catch (error) {
     console.error(error);

@@ -41,6 +41,8 @@ export default (routeObject: routeObject, status: string, payment: string): rout
       return { classname: 'order-manage-wrapper add', title: '업소 정보 수정', goBack: true };
     case '/ceo/products':
       return { classname: 'order-manage-wrapper add', title: '업소 정보 수정', goBack: true };
+    case '/ceo/products/input':
+      return { classname: 'order-manage-wrapper add', title: '업소 정보 수정', goBack: true };
     case '/ceo/terms/use':
       return {
         classname: 'order-manage-wrapper add terms',

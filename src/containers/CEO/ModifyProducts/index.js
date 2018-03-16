@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Map, List, fromJS } from 'immutable';
+import { push } from 'react-router-redux';
 
 import { initGetProducts, initDelProduct } from '../../../actions/ceo';
 import { createUniqueId } from '../../../utils';
@@ -41,7 +42,8 @@ class ModifyProducts extends Component {
   };
 
   addProduct = () => {
-    this.setState(prevState => ({ showInputModal: true, isNew: true }));
+    // this.setState(prevState => ({ showInputModal: true, isNew: true }));
+    this.props.navigateTo(`/ceo/products/input?idx=${null}&isNew=${true}`);
   };
 
   onImageChange = productIndex => e => {
@@ -73,10 +75,14 @@ class ModifyProducts extends Component {
 
   togglePopup = (idx, type, isNew) => e => {
     this.setState(prevState => ({
-      showInputModal: !prevState.showInputModal,
+      // showInputModal: !prevState.showInputModal,
       idx,
       isNew: false,
     }));
+  };
+
+  goProductInput = idx => {
+    this.props.navigateTo(`/ceo/products/input?idx=${idx}&isNew=${false}`);
   };
 
   renderProducts = () => {
@@ -92,6 +98,7 @@ class ModifyProducts extends Component {
         removeProduct={this.removeProduct}
         togglePopup={this.togglePopup}
         siteId={siteId}
+        goProductInput={this.goProductInput}
       />
     ));
   };
@@ -157,6 +164,7 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
   initGetProducts: payload => dispatch(initGetProducts(payload)),
   initDelProduct: payload => dispatch(initDelProduct(payload)),
+  navigateTo: route => dispatch(push(route)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(ModifyProducts);

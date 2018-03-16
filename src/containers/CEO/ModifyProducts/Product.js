@@ -15,12 +15,19 @@ const ProductImage = ({ product, siteId }) => {
 };
 
 export default class Product extends Component {
+  _onPress = idx => e => {
+    const { togglePopup, goProductInput } = this.props;
+
+    togglePopup(idx)(e);
+    goProductInput(idx);
+  };
+
   render() {
     const { product, togglePopup, removeProduct, siteId } = this.props;
 
     return (
       <div className="items products">
-        <div className="product__wrapper-normal" onClick={togglePopup(product.get('idx'))}>
+        <div className="product__wrapper-normal" onClick={this._onPress(product.get('idx'))}>
           <div className="image__wrapper">
             <i className="fa fa-camera" aria-hidden="true" />
             <ProductImage product={product} siteId={siteId} />

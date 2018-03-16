@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import cx from 'classnames';
 
+import getPlatform from '../../../utils/getMobileOperatingSystem';
+
 class OptionWrapper extends Component {
   render() {
     const {
@@ -13,9 +15,14 @@ class OptionWrapper extends Component {
       _onChangeOptionName,
     } = this.props;
 
+    const height = window.innerHeight - 312;
+
     return (
       <div className="row-wrapper options" style={{ position: 'relative' }}>
-        <div className="option-wrapper" style={{ paddingTop: 0 }}>
+        <div className="btn-add-option">
+          <span onClick={_onAddOption}>+ 옵션 추가</span>
+        </div>
+        <div className="option-wrapper" style={{ paddingTop: 0, height }}>
           {options.map((option, index) => (
             <div className="options" key={`options-${index}`}>
               <div className="option-title-wrapper">
@@ -73,9 +80,6 @@ class OptionWrapper extends Component {
               })}
             </div>
           ))}
-        </div>
-        <div className="btn-add-option">
-          <span onClick={_onAddOption}>+ 옵션 추가</span>
         </div>
       </div>
     );

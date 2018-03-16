@@ -17,6 +17,7 @@ import ModifyShop from './CEO/ModifyShop';
 import ModifyProducts from './CEO/ModifyProducts';
 import Terms from './Terms';
 import { StopDelivery, Setting, Management, ManagementAdd, EditAdmin } from './Menus';
+import ProductInput from './CEO/ModifyProducts/ProductInput';
 
 import { initFetchOrderLists } from '../actions/order';
 import { initGetShopInfo } from '../actions/ceo';
@@ -94,6 +95,7 @@ class App extends Component {
     const hideHeader =
       pathname === '/ceo/shop' ||
       pathname === '/ceo/products' ||
+      pathname === '/ceo/products/input' ||
       pathname === '/' ||
       pathname.split('/').includes('terms');
 
@@ -140,6 +142,7 @@ class App extends Component {
             <Route exact path="/menus/admin" component={EditAdmin} />
             <Route exact path="/ceo/shop" component={ModifyShop} />
             <Route exact path="/ceo/products" component={ModifyProducts} />
+            <Route exact path="/ceo/products/input" component={ProductInput} />
             <Route path="/ceo/terms/:options" component={Terms} />
           </Switch>
         </div>

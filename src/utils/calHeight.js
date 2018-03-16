@@ -1,10 +1,12 @@
 export default pathname => {
+  console.log(pathname);
   const html = document.getElementsByTagName('html');
   const body = document.getElementsByTagName('body');
   const root = document.getElementById('root');
 
   if (
     pathname.split('/').includes('terms') ||
+    pathname === '/ceo/products/input' ||
     pathname.split('/').includes('order')
     // pathname === '/ceo/products'
   ) {
@@ -16,4 +18,4 @@ export default pathname => {
     body[0].style.height = 'auto';
     root.style.height = 'auto';
   }
-}
+};
