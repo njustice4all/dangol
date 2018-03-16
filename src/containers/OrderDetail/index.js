@@ -61,14 +61,15 @@ class OrderDetail extends Component {
     }
 
     const isReception = pathname.split('/').includes('reception');
+    const height = window.innerHeight - (isReception ? 165 : 175);
 
     return (
-      <div
-        className="body"
-        style={{ height: `calc(100% - ${isReception ? '114' : '125'}px)`, overflow: 'scroll' }}>
-        <Order detail={detail} />
-        <Customer detail={detail} shopCoords={shopCoords} />
-        <Products detail={detail} />
+      <div>
+        <div className="body" style={{ height, overflow: 'scroll' }}>
+          <Order detail={detail} />
+          <Customer detail={detail} shopCoords={shopCoords} />
+          <Products detail={detail} />
+        </div>
         <ButtonFooter isComplete={isComplete} isProgress={isProgress} donePayment={donePayment} />
       </div>
     );

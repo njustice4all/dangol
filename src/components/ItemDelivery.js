@@ -67,7 +67,7 @@ const ItemDelivery = ({
             <span className="title">배달</span>
           </div>
         </div>
-        <div className="right-wrapper">
+        <div className="right-wrapper" style={{ paddingTop: '15px' }}>
           <div className="address">{order.get('address')}</div>
           {/*<div className="info">
             <span className="icon mark">{coords.distance}km</span> |{' '}
