@@ -14,12 +14,21 @@ const Row = ({ name, id, password, header, deleteMember, goEdit }) => (
     <div className="id" style={{ position: 'relative' }}>
       {id}
       {header ? null : (
-        <span style={{ position: 'absolute', right: '10px' }} onClick={deleteMember(id)}>
+        <span
+          style={{
+            display: 'flex',
+            justifyContent: 'center',
+            position: 'absolute',
+            top: 0,
+            right: 0,
+            width: '40px',
+            height: '49px',
+          }}
+          onClick={deleteMember(id)}>
           <img src="/img/delete.svg" style={{ width: '17px' }} />
         </span>
       )}
     </div>
-    {/*<div className="pw">{password}</div>*/}
   </div>
 );
 
@@ -35,7 +44,6 @@ class Management extends Component {
         }
       });
     }
-    // alert(`secret - ${secret}`);
   };
 
   componentWillReceiveProps = nextProps => {

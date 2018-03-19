@@ -6,11 +6,14 @@ import { initGetPauseOrder, initSetPauseOrder } from '../../actions/setting';
 
 const styles = {
   btnWrapper: {
-    position: 'fixed',
-    padding: 0,
-  },
-  btn: {
-    borderRadius: 0,
+    position: 'absolute',
+    bottom: 0,
+    width: '100%',
+    textAlign: 'center',
+    backgroundColor: '#fe931f',
+    padding: '14px',
+    color: 'white',
+    fontSize: '18px',
   },
 };
 
@@ -136,10 +139,8 @@ class StopDelivery extends Component {
             </div>
           </li>
         </ul>
-        <div className="btn-wrapper" style={styles.btnWrapper}>
-          <div className="btn big" style={styles.btn} onClick={this._onPress}>
-            저장하기
-          </div>
+        <div style={styles.btnWrapper}>
+          <div onClick={this._onPress}>저장하기</div>
         </div>
       </div>
     );
