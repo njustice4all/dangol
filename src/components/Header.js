@@ -22,6 +22,8 @@ type Props = {
   openPopup: string => void,
   first: string,
   processLists: List<Map<string, any>>,
+  orderSize: number,
+  orderProcessSize: number,
 };
 
 const ButtonOpenSideMenu = ({ openSideMenu }) => {
@@ -43,17 +45,21 @@ const ButtonBack = ({ goBack, first }) => {
   return <div className="btn back" onClick={goBack} />;
 };
 
-const TabMenu = ({ path, handleRoutes }) => (
+const TabMenu = ({ path, handleRoutes, orderSize, orderProcessSize }) => (
   <div className="tabmenu item3">
     <ul>
       <li className={cx('tab', { active: path === '/order/reception' ? true : false })}>
-        <div onClick={handleRoutes('/order/reception')}>
-          주문접수{/*<span className="count">12</span>*/}
+        <div onClick={handleRoutes('/order/reception')} style={{ position: 'relative' }}>
+          주문접수<span className="count">
+            <span>{orderSize}</span>
+          </span>
         </div>
       </li>
       <li className={cx('tab', { active: path === '/order/progress' ? true : false })}>
-        <div onClick={handleRoutes('/order/progress')}>
-          처리중{/*<span className="count">4</span>*/}
+        <div onClick={handleRoutes('/order/progress')} style={{ position: 'relative' }}>
+          처리중<span className="count">
+            <span>{orderProcessSize}</span>
+          </span>
         </div>
       </li>
       <li className={cx('tab', { active: path === '/order/complete' ? true : false })}>
@@ -137,7 +143,17 @@ class Header extends Component<Props> {
   };
 
   render() {
-    const { customProps, router, order, status, detail, first, processLists } = this.props;
+    const {
+      customProps,
+      router,
+      order,
+      status,
+      detail,
+      first,
+      processLists,
+      orderSize,
+      orderProcessSize,
+    } = this.props;
 
     let isComplete = false;
     if (
@@ -178,7 +194,12 @@ class Header extends Component<Props> {
           payment={type}
         />
         {customProps.buttonOpenSideMenu && (
-          <TabMenu handleRoutes={this.handleRoutes} path={router.location.pathname} />
+          <TabMenu
+            handleRoutes={this.handleRoutes}
+            path={router.location.pathname}
+            orderSize={orderSize}
+            orderProcessSize={orderProcessSize}
+          />
         )}
       </div>
     );
@@ -194,6 +215,8 @@ export default withRouter(
       detail: state.getIn(['order', 'detail']),
       first: state.getIn(['auth', 'first']),
       processLists: state.getIn(['order', 'processLists']),
+      orderSize: state.getIn(['order', 'lists']).size,
+      orderProcessSize: state.getIn(['order', 'processLists']).size,
     }),
     dispatch => ({
       openPopup: ui => dispatch(openPopup(ui)),

@@ -6,6 +6,7 @@ import cx from 'classnames';
 
 import { closePopup } from '../actions/ui';
 import { initGetShopInfo } from '../actions/ceo';
+import { initFetchOrderLists, initFetchOrderProcess } from '../actions/order';
 import getMobileOperatingSystem from '../utils/getMobileOperatingSystem';
 
 import { ATY_URI } from '../constants';
@@ -14,15 +15,19 @@ class SideMenu extends Component {
   state = { modifyShop: false, management: false, stopOrder: false, setting: false, faq: false };
 
   componentDidMount = () => {
-    const { initGetShopInfo, siteId } = this.props;
+    const { initGetShopInfo, siteId, initFetchOrderLists, initFetchOrderProcess } = this.props;
     if (siteId) {
       initGetShopInfo({ siteId });
+      initFetchOrderLists({ siteId });
+      initFetchOrderProcess({ siteId });
     }
   };
 
   componentWillReceiveProps = nextProps => {
     if (this.props.siteId !== nextProps.siteId) {
       this.props.initGetShopInfo({ siteId: nextProps.siteId });
+      this.props.initFetchOrderLists({ siteId: nextProps.siteId });
+      this.props.initFetchOrderProcess({ siteId: nextProps.siteId });
     }
   };
 
@@ -189,6 +194,8 @@ export default withRouter(
       closePopup: ui => dispatch(closePopup(ui)),
       initGetShopInfo: payload => dispatch(initGetShopInfo(payload)),
       navigateTo: route => dispatch(push(route)),
+      initFetchOrderLists: payload => dispatch(initFetchOrderLists(payload)),
+      initFetchOrderProcess: payload => dispatch(initFetchOrderProcess(payload)),
     })
   )(SideMenu)
 );
