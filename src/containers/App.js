@@ -167,7 +167,7 @@ export default withRouter(
     }),
     dispatch => ({
       closePopup: ui => dispatch(closePopup(ui)),
-      openPopup: ui => dispatch(openPopup(ui)),
+      openPopup: (ui, payload, order) => dispatch(openPopup(ui, payload, order)),
       locationChange: pathname => dispatch(push(pathname)),
       fromMobile: action => dispatch(action),
       initSignin: user => dispatch(initSignin(user)),

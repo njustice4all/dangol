@@ -18,23 +18,23 @@ const StateRecord = Record({
 });
 
 const _openPopup = (state, action) => {
-  if (action.payload) {
+  if (action.payload && !action.order) {
     return state.withMutations(s =>
       s
         .set(action.ui, true)
         .set('isPop', true)
         .set('payload', action.payload)
     );
-  } else if (action.order) {
+  } else if (!action.payload && action.order) {
     return state.withMutations(s =>
       s
         .set(action.ui, true)
         .set('isPop', true)
         .set('orderType', action.order)
     );
+  } else {
+    return state.withMutations(s => s.set(action.ui, true).set('isPop', true));
   }
-
-  return state.withMutations(s => s.set(action.ui, true).set('isPop', true));
 };
 
 const _closePopup = (state, action) => {
