@@ -17,7 +17,7 @@ class Signin extends Component {
   onLoginButtonPress = () => {
     const { initSignin, locationChange } = this.props;
     const { autoLogin } = this.state;
-    const id = this.id.value.toLowerCase();
+    const id = this.id.value.toLowerCase().trim();
     const pw = this.pw.value;
 
     try {
