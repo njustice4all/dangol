@@ -37,6 +37,7 @@ class App extends Component {
 
     try {
       const user = JSON.parse(localStorage.getItem('user'));
+
       if (user) {
         initSignin({ id: user.id, pw: user.pw, autoLogin: user.autoLogin }).then(value => {
           if (value.redirect) {

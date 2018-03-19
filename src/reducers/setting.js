@@ -2,6 +2,7 @@ import { Record, Map, List } from 'immutable';
 
 const StateRecord = Record({
   info: Map(),
+  push: true,
   management: Map({
     managers: List(),
   }),
@@ -47,6 +48,18 @@ export const setting = (state = new StateRecord(), action) => {
       return getOrderPause(state, action);
     case 'setting/SET_ORDER_PAUSE':
       return setOrderPause(state, action);
+    case 'setting/TOGGLE_PUSH':
+      // try {
+      //   if (localStorage.getItem('push')) {
+      //     localStorage.removeItem('push');
+      //   } else {
+      //     localStorage.setItem('push', JSON.stringify(true));
+      //   }
+      // } catch (error) {
+      //   console.log(error);
+      // }
+
+      return state.set('push', !state.get('push'));
     default:
       return state;
   }
