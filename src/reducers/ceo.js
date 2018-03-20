@@ -106,6 +106,7 @@ export const ceo = (state = new StateRecord(), action) => {
     case 'ceo/DELETE_MANAGER':
     case 'ceo/GET_TERMS':
     case 'ceo/SET_TERMS':
+    case 'ceo/UPLOAD_IMAGE':
       return state.setIn(['status', 'isFetching'], true);
 
     case 'ceo/SET_SHOP_SUCCESS':
@@ -152,6 +153,9 @@ export const ceo = (state = new StateRecord(), action) => {
 
     case 'ceo/SET_TERMS_SUCCESS':
       return state;
+
+    case 'ceo/RESET_DETAIL':
+      return state.set('productDetail', Map());
 
     case 'ceo/SET_SHOP_FAILURE':
     case 'ceo/REQ_ADDRESS_FAILURE':

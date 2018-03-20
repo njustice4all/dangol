@@ -13,6 +13,7 @@ import {
   initGetProducts,
 } from '../../../actions/ceo';
 import { openPopup } from '../../../actions/ui';
+import Loading from '../../../components/Loading';
 
 import Converter from '../../../utils/Converter';
 import validateProduct from '../../../utils/validateProduct';
@@ -58,10 +59,10 @@ class ProductInput extends Component {
       return;
     }
 
-    if (productDetail.size !== nextProps.productDetail.size) {
-      this.setState(prevState => ({ productDetail: nextProps.productDetail }));
-    }
+    this.setState(prevState => ({ productDetail: nextProps.productDetail }));
   };
+
+  componentWillUnmount = () => this.props.resetDetail();
 
   _onChangeByKeys = (key1, key2) => e => {
     e.persist();
@@ -251,6 +252,7 @@ class ProductInput extends Component {
         className="items products popup"
         style={{ border: 'none' }}
         ref={scroll => (this.scroll = scroll)}>
+        {this.props.fetching ? <Loading /> : null}
         <div className="product__wrapper popup">
           <div className="wrapper-padding" style={{ padding: '8px' }}>
             <div className="image__wrapper" style={{ maxWidth: '100%' }}>
@@ -292,7 +294,7 @@ class ProductInput extends Component {
                 <span className="row-title">상품명</span>
                 <input
                   type="text"
-                  value={info && info.get('name')}
+                  value={info ? info.get('name') : ''}
                   onChange={this._onChangeByKeys('info', 'name')}
                   placeholder="상품명을 입력하세요."
                   ref={name => (this.name = name)}
@@ -302,7 +304,7 @@ class ProductInput extends Component {
                 <span className="row-title">가격</span>
                 <input
                   type="number"
-                  value={sellInfo && sellInfo.get('price')}
+                  value={sellInfo ? sellInfo.get('price') : 0}
                   onChange={this._onChangeByKeys('sellinfo', 'price')}
                   ref={price => (this.price = price)}
                   onClick={e => e.target.select()}
@@ -313,7 +315,7 @@ class ProductInput extends Component {
                 <span className="row-title">설명</span>
                 <input
                   type="text"
-                  value={info && info.get('contents')}
+                  value={info ? info.get('contents') : ''}
                   onChange={this._onChangeByKeys('info', 'contents')}
                   ref={contents => (this.contents = contents)}
                 />
@@ -352,6 +354,7 @@ export default connect(
     session: state.getIn(['auth', 'session']),
     siteId: state.getIn(['auth', 'siteId']),
     userId: state.getIn(['auth', 'siteUserId']),
+    fetching: state.getIn(['ceo', 'status', 'isFetching']),
   }),
   dispatch => ({
     initUploadImage: payload => dispatch(initUploadImage(payload)),
@@ -361,5 +364,6 @@ export default connect(
     closeModal: () => dispatch({ type: 'ceo/CLOSE_MODAL' }),
     navigateTo: route => dispatch(push(route)),
     openPopup: ui => dispatch(openPopup(ui)),
+    resetDetail: () => dispatch({ type: 'ceo/RESET_DETAIL' }),
   })
 )(ProductInput);
