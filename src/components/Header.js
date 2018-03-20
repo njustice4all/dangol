@@ -24,6 +24,7 @@ type Props = {
   processLists: List<Map<string, any>>,
   orderSize: number,
   orderProcessSize: number,
+  role: string,
 };
 
 const ButtonOpenSideMenu = ({ openSideMenu }) => {
@@ -37,37 +38,39 @@ const ButtonOpenSideMenu = ({ openSideMenu }) => {
 };
 
 // TODO: 어떤방식으로 할것인가...?
-const ButtonBack = ({ goBack, first }) => {
-  if (first === '1' || first === '') {
+const ButtonBack = ({ goBack, first, role }) => {
+  if ((first === '1' || first === '') && role === 'ceo') {
     return null;
   }
 
   return <div className="btn back" onClick={goBack} />;
 };
 
-const TabMenu = ({ path, handleRoutes, orderSize, orderProcessSize }) => (
-  <div className="tabmenu item3">
-    <ul>
-      <li className={cx('tab', { active: path === '/order/reception' ? true : false })}>
-        <div onClick={handleRoutes('/order/reception')} style={{ position: 'relative' }}>
-          주문접수<span className="count">
-            <span>{orderSize}</span>
-          </span>
-        </div>
-      </li>
-      <li className={cx('tab', { active: path === '/order/progress' ? true : false })}>
-        <div onClick={handleRoutes('/order/progress')} style={{ position: 'relative' }}>
-          처리중<span className="count">
-            <span>{orderProcessSize}</span>
-          </span>
-        </div>
-      </li>
-      <li className={cx('tab', { active: path === '/order/complete' ? true : false })}>
-        <div onClick={handleRoutes('/order/complete')}>처리완료</div>
-      </li>
-    </ul>
-  </div>
-);
+const TabMenu = ({ path, handleRoutes, orderSize, orderProcessSize }) => {
+  return (
+    <div className="tabmenu item3">
+      <ul>
+        <li className={cx('tab', { active: path === '/order/reception' ? true : false })}>
+          <div onClick={handleRoutes('/order/reception')} style={{ position: 'relative' }}>
+            주문접수<span className="count">
+              <span>{orderSize || 0}</span>
+            </span>
+          </div>
+        </li>
+        <li className={cx('tab', { active: path === '/order/progress' ? true : false })}>
+          <div onClick={handleRoutes('/order/progress')} style={{ position: 'relative' }}>
+            처리중<span className="count">
+              <span>{orderProcessSize || 0}</span>
+            </span>
+          </div>
+        </li>
+        <li className={cx('tab', { active: path === '/order/complete' ? true : false })}>
+          <div onClick={handleRoutes('/order/complete')}>처리완료</div>
+        </li>
+      </ul>
+    </div>
+  );
+};
 
 const OrderType = ({ type, date }) => {
   let title: string = '배달';
@@ -153,6 +156,7 @@ class Header extends Component<Props> {
       processLists,
       orderSize,
       orderProcessSize,
+      role,
     } = this.props;
 
     let isComplete = false;
@@ -177,7 +181,7 @@ class Header extends Component<Props> {
         style={customProps.color ? { backgroundColor: customProps.color } : {}}>
         {customProps.buttonOpenSideMenu && <ButtonOpenSideMenu openSideMenu={this.openSideMenu} />}
         {(customProps.detail || customProps.goBack) && (
-          <ButtonBack goBack={this._goBack} first={first} />
+          <ButtonBack goBack={this._goBack} first={first} role={role} />
         )}
         <div className="title">{customProps.title}</div>
         {customProps.detail && (
@@ -217,6 +221,7 @@ export default withRouter(
       processLists: state.getIn(['order', 'processLists']),
       orderSize: state.getIn(['order', 'orderListsObj', 'maxCount']),
       orderProcessSize: state.getIn(['order', 'processListsObj', 'maxCount']),
+      role: state.getIn(['auth', 'role']),
     }),
     dispatch => ({
       openPopup: ui => dispatch(openPopup(ui)),

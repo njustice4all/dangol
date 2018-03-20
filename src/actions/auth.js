@@ -55,7 +55,7 @@ export const initSignin = user => async dispatch => {
         localStorage.setItem('user', JSON.stringify(user));
       }
 
-      if (result.first === '1') {
+      if (result.first === '1' && result.role === 'ceo') {
         return { redirect: true, role: result.role };
       }
       return { redirect: false };

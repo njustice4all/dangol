@@ -60,6 +60,10 @@ class EditAdmin extends Component {
       userPw: this.pw.value,
     };
 
+    if (first === '1') {
+      setFirst();
+    }
+
     initSetManager(payload);
     navigateTo('/order/reception');
   };
