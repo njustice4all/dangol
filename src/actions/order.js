@@ -48,6 +48,7 @@ export const initFetchOrderLists = payload => async dispatch => {
         fetchOrderListsSuccess(Converter.listsToState(response.list, 'payDone'), {
           currentPage: parseInt(response.curPage, 10),
           maxPage: response.maxPage,
+          maxCount: response.maxCount,
         })
       );
     }
@@ -104,6 +105,7 @@ export const initFetchOrderProcess = payload => async dispatch => {
         fetchOrderProcessSuccess(Converter.listsToState(response.list), {
           currentPage: parseInt(response.curPage, 10),
           maxPage: response.maxPage,
+          maxCount: response.maxCount,
         })
       );
     }
@@ -293,6 +295,7 @@ export const fetchOrderMore = payload => async dispatch => {
           {
             currentPage: parseInt(response.curPage, 10),
             maxPage: response.maxPage,
+            maxCount: response.maxCount,
           }
         )
       );

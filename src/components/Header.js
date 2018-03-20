@@ -215,8 +215,8 @@ export default withRouter(
       detail: state.getIn(['order', 'detail']),
       first: state.getIn(['auth', 'first']),
       processLists: state.getIn(['order', 'processLists']),
-      orderSize: state.getIn(['order', 'lists']).size,
-      orderProcessSize: state.getIn(['order', 'processLists']).size,
+      orderSize: state.getIn(['order', 'orderListsObj', 'maxCount']),
+      orderProcessSize: state.getIn(['order', 'processListsObj', 'maxCount']),
     }),
     dispatch => ({
       openPopup: ui => dispatch(openPopup(ui)),

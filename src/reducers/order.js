@@ -23,10 +23,12 @@ const StateRecord = Record({
   orderListsObj: {
     maxPage: '',
     currentPage: '',
+    maxCount: '',
   },
   processListsObj: {
     maxPage: '',
     currentPage: '',
+    maxCount: '',
   },
   doneListsObj: {
     maxPage: '',
