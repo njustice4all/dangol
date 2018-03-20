@@ -88,6 +88,11 @@ class OrderReject extends Component {
         paid = false;
       }
 
+      if (pathname.split('/').includes('reception')) {
+        this.props.decOrder('orderListsObj');
+      }
+      this.props.decOrder('processListsObj');
+
       initSetOrderCancel({ results, sessionId, siteId, orderNo, option, paid });
       this.onCancelButtonPress();
       history.push('/order/complete');
@@ -105,7 +110,7 @@ class OrderReject extends Component {
           <div className="header">
             <div className="title">취소사유</div>
           </div>
-          <div className="body">
+          <div className="body" style={{ overflow: 'hidden' }}>
             <ul className="list-items">
               {options.map((option, index) => (
                 <li
@@ -148,6 +153,7 @@ export default withRouter(
       setStatus: status => dispatch(setStatus(status)),
       batchActions: (first, second) => dispatch(batchActions(first, second)),
       initSetOrderCancel: payload => dispatch(initSetOrderCancel(payload)),
+      decOrder: payload => dispatch({ type: 'order/DEC_ORDER', payload }),
     })
   )(OrderReject)
 );

@@ -84,6 +84,7 @@ class DeliveryAccept extends Component {
 
       initSetOrderProcess({ results, sessionId, siteId, orderNo, option });
       closePopup('order');
+      this.props.decOrder('orderListsObj');
       history.push('/order/progress');
     } else {
       this.setState(prevState => ({ error: true }));
@@ -150,6 +151,7 @@ export default withRouter(
       batchActions: (first, second) => dispatch(batchActions(first, second)),
       initSetDeliveryProcess: payload => dispatch(initSetDeliveryProcess(payload)),
       initSetOrderProcess: payload => dispatch(initSetOrderProcess(payload)),
+      decOrder: payload => dispatch({ type: 'order/DEC_ORDER', payload }),
     })
   )(DeliveryAccept)
 );

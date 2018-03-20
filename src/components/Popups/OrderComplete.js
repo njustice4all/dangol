@@ -24,6 +24,7 @@ class OrderComplete extends Component {
 
     closePopup('orderComplete');
     initSetOrderComplete({ results, sessionId, siteId, orderNo });
+    this.props.decOrder('processListsObj');
     locationChange('/order/complete');
   };
 
@@ -65,5 +66,6 @@ export default connect(
     closePopup: ui => dispatch(closePopup(ui)),
     locationChange: pathname => dispatch(push(pathname)),
     initSetOrderComplete: payload => dispatch(initSetOrderComplete(payload)),
+    decOrder: payload => dispatch({ type: 'order/DEC_ORDER', payload }),
   })
 )(OrderComplete);

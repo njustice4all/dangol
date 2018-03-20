@@ -5,12 +5,6 @@ const StateRecord = Record({
   doneLists: new List(),
   processLists: List(),
   detail: List(),
-  // detail: fromJS({
-  //   order: {},
-  //   orderDetail: {},
-  //   process: 'pending',
-  //   option: '',
-  // }),
   coords: {
     lat: null,
     lng: null,
@@ -81,11 +75,7 @@ const getDoneLists = (state, action) => {
 
 const getOrderDetailSuccess = (state, action) => {
   return state.withMutations(mutator =>
-    mutator
-      // .setIn(['detail', 'order'], fromJS(action.order.order))
-      // .setIn(['detail', 'orderDetail'], fromJS(action.order.orderDetail))
-      .set('detail', fromJS(action.order))
-      .set('isFetching', false)
+    mutator.set('detail', fromJS(action.order)).set('isFetching', false)
   );
 };
 
@@ -123,6 +113,13 @@ const fetchOrderMore = (state, action) => {
         .set('isFetching', false)
     );
   }
+};
+
+const decOrder = (state, action) => {
+  const type = action.payload;
+  const maxCount = state.getIn([type, 'maxCount']) - 1;
+
+  return state.setIn([type, 'maxCount'], maxCount);
 };
 
 export const order = (state = new StateRecord(), action) => {
@@ -164,6 +161,9 @@ export const order = (state = new StateRecord(), action) => {
 
     case 'order/GET_ORDER_MORE_SUCCESS':
       return fetchOrderMore(state, action);
+
+    case 'order/DEC_ORDER':
+      return decOrder(state, action);
 
     case 'order/FETCH_ORDER_LISTS_ERROR':
     case 'order/FETCH_ORDER_DETAIL_ERROR':

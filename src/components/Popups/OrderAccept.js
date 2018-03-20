@@ -24,6 +24,7 @@ class OrderAccept extends Component {
 
     closePopup('orderAccept');
     initSetOrderProcess({ results, sessionId, siteId, orderNo });
+    this.props.decOrder('orderListsObj');
     locationChange('/order/progress');
   };
 
@@ -65,5 +66,6 @@ export default connect(
     closePopup: ui => dispatch(closePopup(ui)),
     locationChange: pathname => dispatch(push(pathname)),
     initSetOrderProcess: payload => dispatch(initSetOrderProcess(payload)),
+    decOrder: payload => dispatch({ type: 'order/DEC_ORDER', payload }),
   })
 )(OrderAccept);
