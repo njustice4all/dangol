@@ -1,8 +1,17 @@
 import { Record, Map, List } from 'immutable';
 
+const getPushState = () => {
+  const pushState = JSON.parse(localStorage.getItem('push'));
+  if (pushState === null) {
+    return true;
+  }
+
+  return pushState;
+};
+
 const StateRecord = Record({
   info: Map(),
-  push: true,
+  push: getPushState(),
   management: Map({
     managers: List(),
   }),
@@ -49,15 +58,7 @@ export const setting = (state = new StateRecord(), action) => {
     case 'setting/SET_ORDER_PAUSE':
       return setOrderPause(state, action);
     case 'setting/TOGGLE_PUSH':
-      // try {
-      //   if (localStorage.getItem('push')) {
-      //     localStorage.removeItem('push');
-      //   } else {
-      //     localStorage.setItem('push', JSON.stringify(true));
-      //   }
-      // } catch (error) {
-      //   console.log(error);
-      // }
+      localStorage.setItem('push', JSON.stringify(!state.get('push')));
 
       return state.set('push', !state.get('push'));
     default:

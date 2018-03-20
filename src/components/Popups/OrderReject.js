@@ -95,7 +95,11 @@ class OrderReject extends Component {
 
       initSetOrderCancel({ results, sessionId, siteId, orderNo, option, paid });
       this.onCancelButtonPress();
-      history.push('/order/complete');
+      if (paid) {
+        history.push('/order/progress');
+      } else {
+        history.push('/order/complete');
+      }
     } else {
       this.setState(prevState => ({ error: true }));
     }
