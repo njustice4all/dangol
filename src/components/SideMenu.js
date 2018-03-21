@@ -12,7 +12,14 @@ import getMobileOperatingSystem from '../utils/getMobileOperatingSystem';
 import { ATY_URI } from '../constants';
 
 class SideMenu extends Component {
-  state = { modifyShop: false, management: false, stopOrder: false, setting: false, faq: false };
+  state = {
+    modifyShop: false,
+    management: false,
+    stopOrder: false,
+    statistics: false,
+    setting: false,
+    faq: false,
+  };
 
   componentDidMount = () => {
     const { initGetShopInfo, siteId, initFetchOrderLists, initFetchOrderProcess } = this.props;
@@ -64,7 +71,7 @@ class SideMenu extends Component {
 
   render() {
     const { open, order, shop, siteId, auth, role, session } = this.props;
-    const { modifyShop, management, stopOrder, setting, faq } = this.state;
+    const { modifyShop, management, stopOrder, statistics, setting, faq } = this.state;
     const os = getMobileOperatingSystem();
 
     return (
@@ -142,7 +149,13 @@ class SideMenu extends Component {
                       onTouchEnd={this._onTouchEnd('stopOrder')}>
                       배달 주문 임시 중단
                     </div>
-                    {/*<div className="title">업소 통계</div>*/}
+                    <div
+                      className={cx('drawer-title', { selected: statistics })}
+                      onClick={this._onPress('/menus/statistics')}
+                      onTouchStart={this._onTouchStart('statistics')}
+                      onTouchEnd={this._onTouchEnd('statistics')}>
+                      업소 통계
+                    </div>
                   </div>
                 </li>
                 <li

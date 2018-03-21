@@ -31,6 +31,8 @@ export default (routeObject: routeObject, status: string, payment: string): rout
       return { classname: 'order-manage-wrapper add', title: '업소 부관리자 등록', goBack: true };
     case '/menus/management/addReseller':
       return { classname: 'order-manage-wrapper add', title: '리셀러 등록', goBack: true };
+    case '/menus/statistics':
+      return { classname: 'order-manage-wrapper add', title: '업소 통계', buttonClose: true };
     case '/menus/admin':
       return {
         classname: 'order-manage-wrapper add',

@@ -1,0 +1,28 @@
+@import '../core.scss';
+
+.statistics-container {
+  padding: 7px;
+}
+
+.date-range-wrapper {
+  display: flex;
+  color: $color-dark-grey;
+  margin-bottom: 10px;
+
+  .picker-box {
+    flex: 1;
+    padding: 8px;
+    text-align: center;
+    border: 1px solid $color-border;
+    border-right: none;
+  }
+
+  .picker-box:last-child {
+    border-right: 1px solid $color-border;
+  }
+
+  .picker-box.selected {
+    color: #fff;
+    background-color: $color-theme;
+  }
+}

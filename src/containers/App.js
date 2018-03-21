@@ -16,7 +16,7 @@ import OrderDetail from './OrderDetail';
 import ModifyShop from './CEO/ModifyShop';
 import ModifyProducts from './CEO/ModifyProducts';
 import Terms from './Terms';
-import { StopDelivery, Setting, Management, ManagementAdd, EditAdmin } from './Menus';
+import { StopDelivery, Setting, Management, ManagementAdd, EditAdmin, Statistics } from './Menus';
 import ProductInput from './CEO/ModifyProducts/ProductInput';
 
 import { initFetchOrderLists } from '../actions/order';
@@ -130,6 +130,7 @@ class App extends Component {
             <Route exact path="/menus/setting" component={Setting} />
             <Route exact path="/menus/management" component={Management} />
             <Route exact path="/menus/management/add" component={ManagementAdd} />
+            <Route exact path="/menus/statistics" component={Statistics} />
             <Route
               exact
               path="/menus/management/addReseller"

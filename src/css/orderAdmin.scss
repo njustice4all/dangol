@@ -12,6 +12,7 @@
 @import 'order/_manage.scss';
 
 @import 'ceo/ceo.scss';
+@import 'statistics/statistics.scss';
 @import 'loading/index.scss';
 @import 'popup/index.scss';
 
@@ -72,4 +73,8 @@ input[type='checkbox'] {
   overflow: auto;
   // overflow-y: scroll;
   -webkit-overflow-scrolling: touch;
+}
+
+.DateRangePicker_picker {
+  top: 0 !important;
 }
