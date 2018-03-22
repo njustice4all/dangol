@@ -59,7 +59,9 @@ class ProductInput extends Component {
       return;
     }
 
-    this.setState(prevState => ({ productDetail: nextProps.productDetail }));
+    if (nextProps.productDetail.size !== this.props.productDetail.size) {
+      this.setState(prevState => ({ productDetail: nextProps.productDetail }));
+    }
   };
 
   componentWillUnmount = () => this.props.resetDetail();
