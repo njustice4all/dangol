@@ -4,6 +4,8 @@ import React, { Component } from 'react';
 import cx from 'classnames';
 
 import DatePicker from './DatePicker';
+import Graph from './Graph';
+import Table from './Table';
 
 type State = {
   dateRanges: Array<{ id: string, name: string, selected: boolean }>,
@@ -19,7 +21,7 @@ class Statistics extends Component<{}, State> {
     ],
   };
 
-  changeRange = (id: string) => (): void => {
+  changeRange = (id: string) => () => {
     this.setState(prevState => ({
       dateRanges: prevState.dateRanges.map(element => {
         if (element.id === id) {
@@ -43,6 +45,8 @@ class Statistics extends Component<{}, State> {
           ))}
         </div>
         <DatePicker />
+        <Graph />
+        <Table />
       </div>
     );
   }

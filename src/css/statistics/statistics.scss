@@ -7,7 +7,6 @@
 .date-range-wrapper {
   display: flex;
   color: $color-dark-grey;
-  margin-bottom: 10px;
 
   .picker-box {
     flex: 1;
@@ -24,5 +23,121 @@
   .picker-box.selected {
     color: #fff;
     background-color: $color-theme;
+  }
+}
+
+.picker-container {
+  position: relative;
+  margin: 10px 0;
+
+  .arrow-wrapper {
+    display: inline-block;
+    position: absolute;
+    z-index: 1;
+    right: 14px;
+    top: 12px;
+
+    img {
+      transform: rotate(-90deg);
+      width: 15px;
+    }
+  }
+}
+
+.DateRangePickerInput {
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+  border-color: $color-border !important;
+}
+
+.DateInput {
+  width: 100px !important;
+
+  .DateInput_input {
+    font-weight: 500 !important;
+    font-size: 15px !important;
+    width: 100% !important;
+    text-align: center !important;
+    padding: 8px 0 !important;
+    line-height: initial !important;
+    color: black !important;
+  }
+}
+
+.graph-container {
+  height: 250px;
+  background-color: #bebebe;
+  margin-bottom: 10px;
+}
+
+.table-container {
+  .total-wrapper {
+    border: 1px solid $color-border;
+    background-color: $color-dark-grey;
+    color: white;
+    padding: 0 25px;
+    margin-bottom: 10px;
+  }
+
+  .total-table-rows {
+    display: flex;
+    padding: 12px 0;
+
+    .rows {
+      flex: 1;
+      span {
+        color: $color-theme;
+      }
+    }
+
+    .rows.value {
+      text-align: right;
+    }
+  }
+
+  .price-table-wrapper {
+    border: 1px solid $color-border;
+
+    .price-table-rows {
+      display: flex;
+      position: relative;
+
+      .rows {
+        flex: 1;
+        padding: 11px 35px 11px 22px;
+      }
+
+      .rows.value {
+        text-align: right;
+        span {
+          color: red;
+        }
+
+        .row-arrow {
+          position: absolute;
+          right: 10px;
+          img {
+            width: 15px;
+            transform: rotate(-90deg);
+          }
+        }
+      }
+    }
+
+    .price-table-rows.child {
+      background-color: #f3f3f3;
+
+      .rows {
+        padding-left: 34px;
+      }
+      .rows.value span {
+        color: black;
+      }
+    }
+
+    .price-table-rows.border {
+      border-top: 1px solid $color-border;
+    }
   }
 }
