@@ -7,6 +7,8 @@ import type Moment from 'moment';
 type InitialDate = {
   toDay: Moment,
   previousWeek: Moment,
+  rangeWeeks: Moment,
+  rangeMonth: Moment,
 };
 
 type CustomDate = {
@@ -30,9 +32,11 @@ type SetDate = {
 class DateHandler {
   initialDate = (): InitialDate => {
     const toDay = moment(new Date());
-    const previousWeek = moment(new Date(Date.parse(toDay) - 7 * 1000 * 60 * 60 * 24));
+    const previousWeek = moment(toDay).subtract('days', 7);
+    const rangeWeeks = moment(toDay).subtract('weeks', 7);
+    const rangeMonth = moment(toDay).subtract('month', 7);
 
-    return { toDay, previousWeek };
+    return { toDay, previousWeek, rangeWeeks, rangeMonth };
   };
 
   getDate = (startDate: Moment, endDate: Moment): CustomDate => {
@@ -61,11 +65,17 @@ class DateHandler {
       case 'day':
         return { startDate: this.initialDate().previousWeek, endDate: this.initialDate().toDay };
       case 'week':
-        return { startDate: moment(), endDate: moment() };
+        return {
+          startDate: this.initialDate().rangeWeeks,
+          endDate: this.initialDate().previousWeek,
+        };
       case 'month':
-        return { startDate: moment(), endDate: moment() };
+        return {
+          startDate: this.initialDate().rangeMonth,
+          endDate: this.initialDate().previousWeek,
+        };
       default:
-        return { startDate: moment(), endDate: moment() };
+        return { startDate: null, endDate: null };
     }
   };
 }
