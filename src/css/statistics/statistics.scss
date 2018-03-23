@@ -29,6 +29,7 @@
 .picker-container {
   position: relative;
   margin: 10px 0;
+  z-index: 5;
 
   .arrow-wrapper {
     display: inline-block;
@@ -65,10 +66,16 @@
   }
 }
 
+.DateRangePicker_picker {
+  z-index: 10 !important;
+}
+
 .graph-container {
-  height: 250px;
-  background-color: #bebebe;
   margin-bottom: 10px;
+  .graph-scroll-wrapper {
+    overflow-x: auto;
+    overflow-y: hidden;
+  }
 }
 
 .table-container {
@@ -102,6 +109,7 @@
     .price-table-rows {
       display: flex;
       position: relative;
+      color: $color-dark-grey;
 
       .rows {
         flex: 1;
@@ -127,6 +135,7 @@
 
     .price-table-rows.child {
       background-color: #f3f3f3;
+      color: black;
 
       .rows {
         padding-left: 34px;

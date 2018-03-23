@@ -312,3 +312,29 @@ export const apiSetTerms = payload => {
     });
   });
 };
+
+/**
+ * 통계
+ */
+export const apiStatistics = payload => {
+  const { siteId, start, end } = payload;
+
+  return new Promise((resolve, reject) => {
+    $.ajax({
+      type: 'POST',
+      url: ATY_URI + '/aty_convert_statistic.php',
+      data: {
+        keyWord: 'GetStatisticPayment',
+        siteId,
+        start,
+        end,
+      },
+      success: result => {
+        resolve(result);
+      },
+      error: error => {
+        reject(error);
+      },
+    });
+  });
+};

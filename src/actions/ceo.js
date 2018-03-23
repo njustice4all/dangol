@@ -13,6 +13,7 @@ import {
   apiDeleteManager,
   apiGetTerms,
   apiSetTerms,
+  apiStatistics,
 } from '../api/ceo';
 import apiUploadImage from '../api/image';
 import Converter from '../utils/Converter';
@@ -367,6 +368,29 @@ export const initSetTerms = payload => async dispatch => {
       dispatch(setTermsError({ error: true }));
     } else {
       dispatch(setTermsSuccess({ success: true }));
+    }
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+/**
+ * 통계
+ */
+const getStatistics = () => ({ type: 'ceo/GET_STATISTICS' });
+const getStatisticsSuccess = payload => ({ type: 'ceo/GET_STATISTICS_SUCCESS', payload });
+const getStatisticsError = error => ({ type: 'ceo/GET_STATISTICS_ERROR', error });
+
+export const fetchStatistics = payload => async dispatch => {
+  dispatch(getStatistics());
+
+  const response = await apiStatistics(payload);
+
+  try {
+    if (!response) {
+      dispatch(getStatisticsError({ error: true }));
+    } else {
+      dispatch(getStatisticsSuccess(response));
     }
   } catch (error) {
     console.error(error);

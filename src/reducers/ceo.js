@@ -16,6 +16,7 @@ const StateRecord = Record({
   }),
   setProducts: false,
   managers: List(),
+  statistics: Map(),
 });
 
 const withError = (state, action) => {
@@ -92,6 +93,12 @@ const getManagers = (state, action) => {
   );
 };
 
+const setStatistics = (state, action) => {
+  return state.withMutations(mutator =>
+    mutator.setIn(['status', 'isFetching'], false).set('statistics', fromJS(action.payload))
+  );
+};
+
 export const ceo = (state = new StateRecord(), action) => {
   switch (action.type) {
     case 'ceo/GET_SHOP':
@@ -106,6 +113,7 @@ export const ceo = (state = new StateRecord(), action) => {
     case 'ceo/DELETE_MANAGER':
     case 'ceo/GET_TERMS':
     case 'ceo/SET_TERMS':
+    case 'ceo/GET_STATISTICS':
     case 'ceo/UPLOAD_IMAGE':
       return state.setIn(['status', 'isFetching'], true);
 
@@ -157,6 +165,9 @@ export const ceo = (state = new StateRecord(), action) => {
     case 'ceo/RESET_DETAIL':
       return state.set('productDetail', Map());
 
+    case 'ceo/GET_STATISTICS_SUCCESS':
+      return setStatistics(state, action);
+
     case 'ceo/SET_SHOP_FAILURE':
     case 'ceo/REQ_ADDRESS_FAILURE':
     case 'ceo/SET_PRODUCTS_FAILURE':
@@ -169,6 +180,7 @@ export const ceo = (state = new StateRecord(), action) => {
     case 'ceo/DELETE_MANAGER_ERROR':
     case 'ceo/GET_TERMS_ERROR':
     case 'ceo/SET_TERMS_ERROR':
+    case 'ceo/GET_STATISTICS_ERROR':
       return withError(state, action);
 
     case 'ceo/RESET_ADDRESS':
