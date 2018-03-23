@@ -19,6 +19,7 @@ import type Moment from 'moment';
 type Props = {
   siteId: string,
   fetching: boolean,
+  datasets: Object,
   fetchStatistics: Object => void,
 };
 
@@ -75,7 +76,7 @@ class Statistics extends Component<Props, State> {
 
   render() {
     const { dateRanges, startDate, endDate, focusedInput } = this.state;
-    const { fetching } = this.props;
+    const { fetching, datasets } = this.props;
 
     return (
       <div className="statistics-container">
@@ -95,7 +96,7 @@ class Statistics extends Component<Props, State> {
           endDate={endDate}
           focusedInput={focusedInput}
         />
-        <Graph />
+        <Graph data={datasets} />
         <Table />
       </div>
     );
@@ -106,6 +107,7 @@ export default connect(
   state => ({
     siteId: state.getIn(['auth', 'siteId']),
     fetching: state.getIn(['ceo', 'status', 'isFetching']),
+    datasets: state.getIn(['ceo', 'statistics']),
   }),
   dispatch => ({
     fetchStatistics: payload => dispatch(fetchStatistics(payload)),

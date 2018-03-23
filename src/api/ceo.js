@@ -324,7 +324,7 @@ export const apiStatistics = payload => {
       type: 'POST',
       url: ATY_URI + '/aty_convert_statistic.php',
       data: {
-        keyWord: 'GetStatisticPayment',
+        keyWord: 'GetStatisticSales',
         siteId,
         start,
         end,

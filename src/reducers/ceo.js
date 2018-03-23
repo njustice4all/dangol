@@ -16,7 +16,29 @@ const StateRecord = Record({
   }),
   setProducts: false,
   managers: List(),
-  statistics: Map(),
+  statistics: fromJS({
+    labels: [],
+    datasets: [
+      {
+        label: '구매건수',
+        type: 'line',
+        fill: false,
+        borderColor: 'rgba(38, 185, 154, 0.4)',
+        backgroundColor: 'rgba(38, 185, 154, 0.4)',
+        data: [],
+        yAxisID: 'y-axis-1',
+      },
+      {
+        label: '매출액',
+        type: 'bar',
+        fill: false,
+        backgroundColor: 'rgba(99, 105, 254, 0.4)',
+        borderColor: 'rgba(99, 105, 254, 0.4)',
+        data: [],
+        yAxisID: 'y-axis-2',
+      },
+    ],
+  }),
 });
 
 const withError = (state, action) => {
@@ -95,7 +117,11 @@ const getManagers = (state, action) => {
 
 const setStatistics = (state, action) => {
   return state.withMutations(mutator =>
-    mutator.setIn(['status', 'isFetching'], false).set('statistics', fromJS(action.payload))
+    mutator
+      .setIn(['status', 'isFetching'], false)
+      .setIn(['statistics', 'labels'], fromJS(action.payload.labels))
+      .setIn(['statistics', 'datasets', 0, 'data'], fromJS(action.payload.datasets.count))
+      .setIn(['statistics', 'datasets', 1, 'data'], fromJS(action.payload.datasets.sum))
   );
 };
 
