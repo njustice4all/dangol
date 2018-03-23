@@ -163,6 +163,20 @@ class Convert {
 
     return fromJS(result);
   };
+
+  calWidth = data => {
+    if (data) {
+      if (data.size < 5) {
+        return 500;
+      } else if (data.size >= 5 && data.size < 11) {
+        return data.size * 100;
+      }
+
+      return 1000;
+    }
+
+    return 500;
+  };
 }
 
 export default new Convert();

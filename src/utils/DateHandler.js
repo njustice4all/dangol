@@ -22,6 +22,11 @@ type CustomDate = {
   },
 };
 
+type SetDate = {
+  startDate: Moment,
+  endDate: Moment,
+};
+
 class DateHandler {
   initialDate = (): InitialDate => {
     const toDay = moment(new Date());
@@ -47,6 +52,21 @@ class DateHandler {
     }
 
     return { start, end };
+  };
+
+  setDateById = (id: string): SetDate => {
+    switch (id) {
+      case 'hour':
+        return { startDate: this.initialDate().toDay, endDate: this.initialDate().toDay };
+      case 'day':
+        return { startDate: this.initialDate().previousWeek, endDate: this.initialDate().toDay };
+      case 'week':
+        return { startDate: moment(), endDate: moment() };
+      case 'month':
+        return { startDate: moment(), endDate: moment() };
+      default:
+        return { startDate: moment(), endDate: moment() };
+    }
   };
 }
 

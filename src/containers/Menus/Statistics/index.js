@@ -19,6 +19,7 @@ import type Moment from 'moment';
 type Props = {
   siteId: string,
   fetching: boolean,
+  data: Object,
   datasets: Object,
   fetchStatistics: Object => void,
 };
@@ -36,7 +37,7 @@ class Statistics extends Component<Props, State> {
     endDate: DateHandler.initialDate().toDay,
     focusedInput: null,
     dateRanges: [
-      { id: 'today', name: '오늘', selected: false }, // 오늘(시간)
+      { id: 'hour', name: '오늘', selected: false }, // 오늘(시간)
       { id: 'day', name: '일간', selected: true }, // 7일
       { id: 'week', name: '주간', selected: false }, // 7주
       { id: 'month', name: '월간', selected: false }, // 7달
@@ -52,6 +53,11 @@ class Statistics extends Component<Props, State> {
   };
 
   changeRange = (id: string) => () => {
+    const { fetchStatistics, siteId } = this.props;
+    const { startDate, endDate } = DateHandler.setDateById(id);
+
+    const date = DateHandler.getDate(startDate, endDate);
+
     this.setState(prevState => ({
       dateRanges: prevState.dateRanges.map(element => {
         if (element.id === id) {
@@ -59,7 +65,11 @@ class Statistics extends Component<Props, State> {
         }
         return { ...element, selected: false };
       }),
+      startDate,
+      endDate,
     }));
+
+    fetchStatistics({ siteId, start: date.start, end: date.end });
   };
 
   onDatesChange = ({ startDate, endDate }: State): void => {
@@ -76,7 +86,7 @@ class Statistics extends Component<Props, State> {
 
   render() {
     const { dateRanges, startDate, endDate, focusedInput } = this.state;
-    const { fetching, datasets } = this.props;
+    const { fetching, data, datasets } = this.props;
 
     return (
       <div className="statistics-container">
@@ -96,8 +106,8 @@ class Statistics extends Component<Props, State> {
           endDate={endDate}
           focusedInput={focusedInput}
         />
-        <Graph data={datasets} />
-        <Table />
+        <Graph data={data} />
+        <Table data={data} datasets={datasets} />
       </div>
     );
   }
@@ -107,7 +117,8 @@ export default connect(
   state => ({
     siteId: state.getIn(['auth', 'siteId']),
     fetching: state.getIn(['ceo', 'status', 'isFetching']),
-    datasets: state.getIn(['ceo', 'statistics']),
+    data: state.getIn(['ceo', 'statistics', 'detail']),
+    datasets: state.getIn(['ceo', 'statistics', 'datasets']),
   }),
   dispatch => ({
     fetchStatistics: payload => dispatch(fetchStatistics(payload)),
