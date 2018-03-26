@@ -36,10 +36,11 @@ class Management extends Component {
   state = { showModal: false };
 
   componentDidMount = () => {
-    const { initGetManagers, id, secret } = this.props;
+    const { initGetManagers, id, secret, openPopup } = this.props;
     if (secret) {
       initGetManagers({ id, secret }).then(result => {
         if (!result.success) {
+          openPopup('logout');
           this._onLogout();
         }
       });
@@ -47,12 +48,13 @@ class Management extends Component {
   };
 
   componentWillReceiveProps = nextProps => {
-    const { initGetManagers } = this.props;
+    const { initGetManagers, openPopup } = this.props;
 
     if (nextProps.secret !== this.props.secret) {
       const { id, secret } = nextProps;
       initGetManagers({ id, secret }).then(result => {
         if (!result.success) {
+          openPopup('logout');
           this._onLogout();
         }
       });

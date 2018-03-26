@@ -10,6 +10,7 @@ import {
   NewOrder,
   Refund,
   Fail,
+  Logout,
 } from '../components/Popups';
 
 class PopupController extends Component {
@@ -41,6 +42,8 @@ class PopupController extends Component {
       return <Refund />;
     } else if (type.fail) {
       return <Fail />;
+    } else if (type.logout) {
+      return <Logout />;
     }
   };
 

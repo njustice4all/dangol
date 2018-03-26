@@ -9,9 +9,10 @@ class ManagementAdd extends Component {
   state = { id: '', name: '', duplicate: false };
 
   componentDidMount = () => {
-    const { initGetManagers, id, secret } = this.props;
+    const { initGetManagers, id, secret, openPopup } = this.props;
     initGetManagers({ id, secret }).then(result => {
       if (!result.success) {
+        openPopup('logout');
         this._onLogout();
       }
     });

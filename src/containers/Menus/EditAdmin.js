@@ -7,10 +7,11 @@ import { openPopup } from '../../actions/ui';
 
 class EditAdmin extends Component {
   componentDidMount = () => {
-    const { initGetManagers, id, secret, managers, role } = this.props;
+    const { initGetManagers, id, secret, managers, role, openPopup } = this.props;
     if (secret) {
       initGetManagers({ id, secret, ceo: role === 'ceo' ? true : false }).then(result => {
         if (!result.success) {
+          openPopup('logout');
           this._onLogout();
         }
       });
@@ -18,12 +19,13 @@ class EditAdmin extends Component {
   };
 
   componentWillReceiveProps = nextProps => {
-    const { initGetManagers, role } = this.props;
+    const { initGetManagers, role, openPopup } = this.props;
 
     if (nextProps.secret !== this.props.secret) {
       const { id, secret } = nextProps;
       initGetManagers({ id, secret, ceo: role === 'ceo' ? true : false }).then(result => {
         if (!result.success) {
+          openPopup('logout');
           this._onLogout();
         }
       });

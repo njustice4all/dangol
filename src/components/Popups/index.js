@@ -7,3 +7,4 @@ export { default as DeleteProduct } from './DeleteProduct';
 export { default as NewOrder } from './NewOrder';
 export { default as Refund } from './Refund';
 export { default as Fail } from './Fail';
+export { default as Logout } from './Logout';

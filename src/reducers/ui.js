@@ -13,6 +13,7 @@ const StateRecord = Record({
   newOrder: false,
   refund: false,
   fail: false,
+  logout: false,
   payload: '',
   orderType: 'delivery',
 });
