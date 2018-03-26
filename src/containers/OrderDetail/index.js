@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import isEmpty from 'lodash/isEmpty';
+import { push } from 'react-router-redux';
 
 import { initFetchOrderDetail } from '../../actions/order';
 import { initGetCoords } from '../../actions/order';
+import { openPopup } from '../../actions/ui';
 
 import Products from './Products';
 import Customer from './Customer';
@@ -16,10 +17,16 @@ import getPayment from '../../utils/getPayment';
 
 class OrderDetail extends Component {
   componentDidMount = () => {
-    const { initFetchOrderDetail, match, session, siteId } = this.props;
+    const { initFetchOrderDetail, match, session, siteId, lists, processLists } = this.props;
     const no = match.params.no;
 
     initFetchOrderDetail({ session, siteId, no });
+  };
+
+  componentWillReceiveProps = nextProps => {
+    if (this.props.detail.size !== nextProps.detail.size) {
+      this.checkAuthentication(nextProps.detail);
+    }
   };
 
   componentDidUpdate = prevProps => {
@@ -36,6 +43,54 @@ class OrderDetail extends Component {
       console.error(error);
     }
   };
+
+  checkAuthentication = detail => {
+    const { lists, processLists, match, pathname, openPopup, logout, navigateTo } = this.props;
+    const no = match.params.no;
+
+    // 처리완료는 체크안해도됨
+    if (pathname.split('/').includes('complete')) return;
+
+    const getIndexByTarget = (target, no) => {
+      return this.props[target].findIndex(list => list.getIn(['data', 'idx']) === no);
+    };
+
+    const listIndex = getIndexByTarget('lists', no);
+    const processIndex = getIndexByTarget('processLists', no);
+
+    const checkSameState = state => (element, index) => element.get('state') === state;
+
+    let listStateIsSame = false;
+    let resultStateIsSame = false;
+
+    try {
+      if (pathname.split('/').includes('reception')) {
+        listStateIsSame = lists
+          .getIn([listIndex, 'data', 'product'])
+          .every(checkSameState('payDone'));
+      } else {
+        listStateIsSame = processLists
+          .getIn([processIndex, 'data', 'product'])
+          .every(checkSameState('deliveryPrepare'));
+      }
+
+      if (pathname.split('/').includes('reception') && listStateIsSame) {
+        resultStateIsSame = detail.get('orderDetail').every(checkSameState('payDone'));
+      } else {
+        resultStateIsSame = detail.get('orderDetail').every(checkSameState('deliveryPrepare'));
+      }
+
+      if (!resultStateIsSame) {
+        openPopup('logout');
+        logout();
+        navigateTo('/');
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  componentWillUnmount = () => this.props.resetDetail();
 
   render() {
     const {
@@ -90,5 +145,9 @@ export default connect(
   dispatch => ({
     initFetchOrderDetail: payload => dispatch(initFetchOrderDetail(payload)),
     initGetCoords: address => dispatch(initGetCoords(address)),
+    resetDetail: () => dispatch({ type: 'order/RESET_DETAIL' }),
+    openPopup: ui => dispatch(openPopup(ui)),
+    logout: () => dispatch({ type: 'auth/LOGOUT' }),
+    navigateTo: route => dispatch(push(route)),
   })
 )(OrderDetail);

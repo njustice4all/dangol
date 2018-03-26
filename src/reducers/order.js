@@ -4,7 +4,7 @@ const StateRecord = Record({
   lists: new List(),
   doneLists: new List(),
   processLists: List(),
-  detail: List(),
+  detail: Map(),
   coords: {
     lat: null,
     lng: null,
@@ -164,6 +164,9 @@ export const order = (state = new StateRecord(), action) => {
 
     case 'order/DEC_ORDER':
       return decOrder(state, action);
+
+    case 'order/RESET_DETAIL':
+      return state.set('detail', Map());
 
     case 'order/FETCH_ORDER_LISTS_ERROR':
     case 'order/FETCH_ORDER_DETAIL_ERROR':
