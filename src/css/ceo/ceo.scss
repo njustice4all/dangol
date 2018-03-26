@@ -1477,3 +1477,46 @@ input {
     font-size: 14px;
   }
 }
+
+.payment-type-wrapper {
+  height: 76px;
+  overflow: hidden;
+  transition: 0.5s height;
+}
+
+.payment-type-wrapper.close {
+  height: 0;
+}
+
+.legend-wrapper {
+  display: flex;
+  justify-content: center;
+}
+
+.legend {
+  width: 20px;
+  height: 10px;
+  display: inline-block;
+  background: #8884d8;
+  margin: 0 5px;
+}
+
+.legend.count {
+  background: #82ca9d;
+}
+
+.custom-tooltip {
+  margin: 0px;
+  padding: 10px;
+  background-color: rgb(255, 255, 255);
+  border: 1px solid rgb(204, 204, 204);
+  white-space: nowrap;
+
+  .legend {
+    margin: 0 10px 0 0;
+  }
+
+  .legend-value {
+    color: red;
+  }
+}

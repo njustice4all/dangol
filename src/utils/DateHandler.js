@@ -32,9 +32,9 @@ type SetDate = {
 class DateHandler {
   initialDate = (): InitialDate => {
     const toDay = moment(new Date());
-    const previousWeek = moment(toDay).subtract('days', 7);
-    const rangeWeeks = moment(toDay).subtract('weeks', 7);
-    const rangeMonth = moment(toDay).subtract('month', 7);
+    const previousWeek = moment(toDay).subtract(7, 'days');
+    const rangeWeeks = moment(toDay).subtract(7, 'weeks');
+    const rangeMonth = moment(toDay).subtract(7, 'month');
 
     return { toDay, previousWeek, rangeWeeks, rangeMonth };
   };

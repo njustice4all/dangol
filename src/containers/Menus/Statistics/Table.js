@@ -88,8 +88,10 @@ const Table = ({ datasets, data }: Props) => {
       </div>
       <div className="price-table-wrapper">
         <Rows name="지금 바로 결제" value={creditCard + mobile} icon />
-        <Rows name="카드 결제" value={creditCard} child />
-        <Rows name="휴대폰 결제" value={mobile} child />
+        <div className={cx('payment-type-wrapper', { close: false })}>
+          <Rows name="카드 결제" value={creditCard} child />
+          <Rows name="휴대폰 결제" value={mobile} child />
+        </div>
         <Rows name="만나서 결제" value={meetPay} border />
       </div>
     </div>

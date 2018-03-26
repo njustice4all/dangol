@@ -80,7 +80,7 @@ class Statistics extends Component<Props, State> {
     fetchStatistics({ siteId, start: date.start, end: date.end });
   };
 
-  onFocusChange = (focusedInput: string) => this.setState({ focusedInput });
+  onFocusChange = (focusedInput: ?string) => this.setState({ focusedInput });
 
   onPressPickerButton = () => this.setState(prevState => ({ focusedInput: 'startDate' }));
 

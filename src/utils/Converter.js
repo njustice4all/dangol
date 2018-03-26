@@ -112,6 +112,10 @@ class Convert {
       return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
     }
 
+    if (number === 0) {
+      return 0;
+    }
+
     return '';
   };
 

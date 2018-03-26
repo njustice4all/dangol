@@ -9,7 +9,7 @@ import type Moment from 'moment';
 
 type Props = {
   onDatesChange: (startDate: Moment, endDate: Moment) => void,
-  onFocusChange: (focusedInput: string) => void,
+  onFocusChange: (focusedInput: ?string) => void,
   onPressPickerButton: () => void,
   startDate: ?Moment,
   endDate: ?Moment,
@@ -37,7 +37,8 @@ const DatePicker = ({
       focusedInput={focusedInput}
       onFocusChange={onFocusChange}
       orientation="vertical"
-      withFullScreenPortal
+      // withFullScreenPortal
+      withPortal
       displayFormat="YYYY.MM.DD"
       startDatePlaceholderText="시작일"
       endDatePlaceholderText="종료일"
